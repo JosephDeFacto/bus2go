@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block body %}
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_row(form.departFrom) }}
+        {{ form_row(form.travelTo) }}
+        <input type="submit" value="submit">
+        {{ form_end(form) }}
+    {% endif %}
+    {# <button type="submit" class="btn">Search</button>#}
+    {#<form action="{{ path('app_search') }}" method="get">#}
+    {#<input name="q" value="query">#}
+    {# <input name="depart_from" value="">
+        <input name="travel_to" value="">#}
+
+
+    {# </form>#}
+    {% for result in results %}
+
+        <div class="panel-group routes-list">
+            <div class="gb--card panel">
+                <div class="gb--card-header">
+                    <div class="gb--route-station">
+                        <div class="gb--row">
+                            {{ result.departing_on }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+
+
+
+
+{% endblock %}

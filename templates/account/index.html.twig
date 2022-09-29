@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccountController!{% endblock %}
+
+
+{% block body %}
+
+    <div class="bg-white p-3 {#shadow-sm#} {#rounded-sm#}">
+        <div class="items-center space-x-2 font-semibold text-gray-900 leading-8">
+            {#<span class="tracking-wide">My Info</span>#}
+            {#<h1 class="font-medium leading-tight text-5xl mt-0 mb-2 text-blue-500">My Info</h1>#}
+            <h1 class="text-center p-3 mt-0 bg-blend-color">My Info</h1>
+        </div>
+        <div class="text-gray-700">
+            <div class="grid md:grid-cols-2 text-amber-300 text-sm">
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">First Name</div>
+                    <div class="px-4 py-2">{{ user.firstname }}</div>
+                </div>
+
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Lastname Name</div>
+                    <div class="px-4 py-2">{{ user.lastname }}</div>
+                </div>
+
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Email</div>
+                    <div class="px-4 py-2">{{ user.email }}</div>
+                </div>
+
+                <div class="grid grid-cols-2">
+                    <div class="px-4 py-2 font-semibold">Mobile</div>
+                    <div class="px-4 py-2">{{ user.mobile }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="flex-1 align-middle" href="#changePassword">Change Password</a>
+    <h1 class="text-center font-semibold p-3 mt-10 bg-blend-color">My Tickets</h1>
+
+
+
+{% endblock %}

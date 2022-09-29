@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/style.css">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+
+    <body class="homepage-bs" id="body">
+        <div class="text-box">This design is trash, but I gave my very best, and also I tried to implement <a class="external" href="https://getbem.com/">BEM</a></div>
+        <script>
+            setTimeout(() => {
+                let textBox = document.querySelector('.text-box');
+
+                textBox.style.display = 'none';
+            }, 5000);
+        </script>
+
+        <div class="navigation-bs">
+            <header class="bs--header">
+
+                <span class="logo">
+                    <a href="{{ path('app_index') }}">
+                        <img class="bs__img" src="bus.png">
+                        <p class="bs--logo__text bs--logo__text-six">#gowiththebus</p>
+                    </a>
+                </span>
+                <ul class="bs--menu__nav">
+                    <li class="bs-menu--item">
+                        <a href="#discounts">Discounts</a>
+                    </li>
+                    <li class="bs-menu--item">
+                        <a href="#about">About</a>
+                    </li>
+                    <li class="bs-menu--item">
+                        <a href="{{ path('app_login') }}">Login</a>
+                    </li>
+                    <li class="bs-menu--item">
+                        <a href="{{ path('cart_index') }}">My Tickets</a>
+                    </li>
+                </ul>
+
+                {#<button type="button" class="bs--btn__login">My Tickets</button>#}
+            </header>
+            <div class="main-hero">
+
+                <h1 class="main-hero__title">Travel safe with US!</h1>
+                <div class="main-hero__line"></div>
+                <h2 class="main-hero__subtitle">Make your reservation & Enjoy the ride</h2>
+                <div class="main-hero__line-second"></div>
+            </div>
+        </div>
+
+        {% block body %}{% endblock %}
+
+
+    </body>
+</html>
