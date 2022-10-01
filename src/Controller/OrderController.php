@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Cart;
+use App\Entity\CartTicket;
 use App\Entity\Order;
-use App\Entity\TravelSchedule;
 use App\Form\OrderTypeFormType;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,18 +15,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class OrderController extends AbstractController
 {
-    /**
-     * @Route("/order", name="app_order")
-     */
-    public function index(EntityManagerInterface $entityManager, Request $request): Response
+
+    public ManagerRegistry $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        // dohvati tikete iz carta i napravi order
-        $cart = $entityManager->getRepository(Cart::class)->findAll();
+        $this->managerRegistry = $managerRegistry;
+    }
 
-        $travelSchedule = $entityManager->getRepository(TravelSchedule::class)->findAll();
+    /**
+     * @Route("/order-checkout", name="app_order")
+     */
+    public function index(Request $request): Response
+    {
 
-        $travel = $this->getUser()->getCart()->getTravelSchedule();
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
+        $cartData = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
+
+        $fee = $cartData[0]->getTravelSchedule()->getFee();
+        $user = $this->getUser();
 
         $order = new Order();
 
@@ -35,18 +42,19 @@ class OrderController extends AbstractController
             'user' => $this->getUser(),
         ]);
 
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $order->setUser($this->getUser());
+            $order->setUser($user);
             $order->setStripeId(1);
-            $order->setPrice($travel->getFee());
+            $order->setPrice($fee);
             $order->setQuantity(1);
 
-            $entityManager->persist($order);
+            $this->managerRegistry->getManager()->persist($order);
 
-            $entityManager->flush();
+            $this->managerRegistry->getManager()->flush();
 
             return $this->redirectToRoute('app_index');
         }
@@ -54,6 +62,5 @@ class OrderController extends AbstractController
         return $this->render('order/index.html.twig', [
             'orderForm' => $form->createView(),
         ]);
-
     }
 }

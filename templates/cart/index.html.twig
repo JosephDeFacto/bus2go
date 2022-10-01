@@ -3,25 +3,56 @@
 {% block title %}Hello BuyController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="sb--main-cart">
     <div class="sb--main__content">
         <div class="sb--main-info">
-            {{ tickets['depart_from'] }}
-            {{ tickets['travel_to'] }}
-            {{ tickets['depart_on'] }}
-            {{ tickets['return_on'] }}
-            {{ tickets['departure_time'] }}
-            {{ tickets['time_arrival'] }}
-            {{ tickets['estimated_time'] }}
-            {{ tickets['fee']|number_format(2, '.', '') }}
-        </div>
 
+            {% if cartTickets is defined %}
+            {% for tickets in cartTickets %}
+                {{ tickets.travelSchedule.getDepartFrom }}
+                {{ tickets.travelSchedule.getTravelTo }}
+                {{ tickets.travelSchedule.getDepartingOn|date('d-m-Y') }}
+                {{ tickets.travelSchedule.getReturningOn|date('d-m-Y') }}
+                {{ tickets.travelSchedule.getDepartureTime|date('H:i') }}
+                {{ tickets.travelSchedule.getTimeOfArrival|date('H:i') }}
+                {{ tickets.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
+                {{ tickets.travelSchedule.getFee|number_format(2, '.', '') }}
+
+
+
+
+                    <div class="btn-increment-decrement" onclick="decrement_quantity({{ tickets.travelSchedule.getId }})">-</div>
+                    <input id="input-quantity-{{ tickets.travelSchedule.getId }}" type="input-quantity"
+                           value="{{ tickets.quantity }}"><div class="btn-increment-decrement" onclick="increment_quantity({{ tickets.travelSchedule.getId }})">+</div>
+                    <input type="submit" class="btn-primary" data-id="{{ tickets.travelSchedule.getId }}">
+                    </form>
+
+
+                <a href="{{ path('cart_increment', {id: tickets.travelSchedule.getId}) }}">+</a>
+
+                <a href="{{ path('cart_decrement', {id: tickets.travelSchedule.getId}) }}">-</a>
+            {% endfor %}
+            {% endif %}
+           {# <a class="btn" id="plusOne" role="button">+</a>
+            <span class="js-increment" id="js-increment">{{ cartTickets[0].quantity }}</span>#}
+        </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '#plusOne', function (e) {
+                $this = $(this);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('cart_increment') }}',
+                    data: {},
+                    success: function(response) {
+                        $("#js-increment").html(response.data);
+                    }
+                })
+            })
+        })
+    </script>
 </div>
 {% endblock %}

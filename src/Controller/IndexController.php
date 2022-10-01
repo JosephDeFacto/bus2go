@@ -20,6 +20,8 @@ class IndexController extends AbstractController
             'method' => 'GET',
         ]);
 
+        dd($form);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

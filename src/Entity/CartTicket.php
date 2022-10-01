@@ -22,6 +22,18 @@ class CartTicket
      */
     private $user;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TravelSchedule::class, inversedBy="cartTickets")
+     */
+    private $travelSchedule;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $quantity = 1;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +47,30 @@ class CartTicket
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTravelSchedule(): ?TravelSchedule
+    {
+        return $this->travelSchedule;
+    }
+
+    public function setTravelSchedule(?TravelSchedule $travelSchedule): self
+    {
+        $this->travelSchedule = $travelSchedule;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

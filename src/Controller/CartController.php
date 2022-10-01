@@ -2,74 +2,111 @@
 
 namespace App\Controller;
 
-use App\Entity\Cart;
-use App\Repository\CartRepository;
+use App\Entity\CartTicket;
+use App\Form\CartTypeFormType;
+use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CartController extends AbstractController
 {
+    public ManagerRegistry $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
+    }
+
     /**
      * @Route("/cart", name="cart_index")
+     * @ParamConverter("cartTicket")
+     * @param Request $request
+     * @param CartTicket $cartTicket
+     * @return Response
      */
-    public function index(): Response
+    public function index(Request $request, CartTicket $cartTicket): Response
     {
+        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
 
-        $user = $this->getUser();
-
-
-        // cart can be null, fix this later
-       /* if (!$user) {
-            throw $this->createNotFoundException("User does not exists");
-        }*/
-        $tickets = $user->getCart()->getTravelSchedule();
+        $t = $cartTicket->getQuantity();
 
 
-        $ticketsCollection = [];
 
-        $ticketsCollection['depart_from'] = $tickets->getDepartFrom();
-        $ticketsCollection['travel_to'] = $tickets->getTravelTo();
-        $ticketsCollection['depart_on'] = $tickets->getDepartingOn()->format('Y/m/d');
-        $ticketsCollection['return_on'] = $tickets->getReturningOn()->format('Y/m/d');
-        $ticketsCollection['departure_time'] = $tickets->getDepartureTime()->format('H:i');
-        $ticketsCollection['time_arrival'] = $tickets->getTimeOfArrival()->format('H:i');
-        $ticketsCollection['estimated_time'] = $tickets->getEstimatedArrivalTime()->format('H:i');
-        $ticketsCollection['fee'] = $tickets->getFee();
 
-        return $this->render('cart/index.html.twig', [
-            'tickets' => $ticketsCollection,
-        ]);
+        return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
     }
 
     /**
      * @Route("/cart/add/{id}"), name="cart_addToCart")
      */
-    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository, ManagerRegistry $registry): RedirectResponse
+    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): RedirectResponse
     {
-
-        $manager = $registry->getManager();
         $id = $request->get('id');
 
-        $cartUser = $this->getUser();
+        $user = $this->getUser();
 
         $travelSchedule = $travelScheduleRepository->find($id);
 
-        $cartTicket = new Cart();
+        $cartTickets = new CartTicket();
 
-        $cartTicket->setUser($cartUser);
-        $cartTicket->setTravelSchedule($travelSchedule);
+        $cartTickets->setUser($user);
+        $cartTickets->setTravelSchedule($travelSchedule);
+        $cartTickets->setQuantity($travelSchedule->getFee());
 
-        $manager->persist($cartTicket);
-        $manager->flush();
+        $this->managerRegistry->getManager()->persist($cartTickets);
+        $this->managerRegistry->getManager()->flush();
 
         $this->addFlash('success', 'Ticket added to cart');
 
-        return $this->redirectToRoute('app_index');
+        return $this->redirectToRoute('cart_index');
     }
 
+    /**
+     * @Route("/cart)", name="cart_increment")
+     */
+    public function increment(Request $request, TravelScheduleRepository $travelScheduleRepository, CartTicketRepository $cartTicketRepository)
+    {
+        $id = $request->get('id');
+
+        /*$schedule = $travelScheduleRepository->find($id); */
+        $schedule = $travelScheduleRepository->findAll();
+
+        $cart = $cartTicketRepository->findOneBy([
+            'travelSchedule' => $schedule,
+        ]);
+
+        $cart->setQuantity($cartTicketRepository->findAll()[0]->getQuantity() + 1);
+        /*$this->managerRegistry->getManager()->persist($cart);*/
+        $this->managerRegistry->getManager()->flush();
+
+        return $this->redirectToRoute('cart_index');
+
+        /*return new JsonResponse(['data' => $cart->getQuantity()]);*/
+    }
+
+    /**
+     * @Route("cart/decrement/{id}", name="cart_decrement")
+     */
+    public function decrement(Request $request, TravelScheduleRepository $travelScheduleRepository, CartTicketRepository $cartTicketRepository)
+    {
+        $id = $request->get('id');
+
+        $schedule = $travelScheduleRepository->find($id);
+
+        $cart = $cartTicketRepository->findOneBy([
+            'travelSchedule' => $schedule,
+        ]);
+        $cart->setQuantity($cartTicketRepository->findAll()[0]->getQuantity() - 1);
+        $this->managerRegistry->getManager()->persist($cart);
+        $this->managerRegistry->getManager()->flush();
+
+        return $this->redirectToRoute('cart_index');
+    }
 }

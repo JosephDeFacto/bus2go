@@ -25,17 +25,15 @@ class Cart
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TravelSchedule::class, inversedBy="carts", fetch="EAGER")
-     * @ORM\JoinColumn(name="travel_schedule_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity=CartTicket::class, mappedBy="cart")
      */
-    private $travelSchedule;
-
+    private $cartTickets;
 
     public function __construct()
     {
-        $this->travelSchedule = new ArrayCollection();
+        $this->cartTickets = new ArrayCollection();
     }
-
+    
     public function getUser(): ?User
     {
         return $this->user;
@@ -48,14 +46,32 @@ class Cart
         return $this;
     }
 
-    public function getTravelSchedule(): ?TravelSchedule
+    /**
+     * @return Collection<int, CartTicket>
+     */
+    public function getCartTickets(): Collection
     {
-        return $this->travelSchedule;
+        return $this->cartTickets;
     }
 
-    public function setTravelSchedule(?TravelSchedule $travelSchedule): self
+    public function addCartTicket(CartTicket $cartTicket): self
     {
-        $this->travelSchedule = $travelSchedule;
+        if (!$this->cartTickets->contains($cartTicket)) {
+            $this->cartTickets[] = $cartTicket;
+            $cartTicket->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartTicket(CartTicket $cartTicket): self
+    {
+        if ($this->cartTickets->removeElement($cartTicket)) {
+            // set the owning side to null (unless already changed)
+            if ($cartTicket->getCart() === $this) {
+                $cartTicket->setCart(null);
+            }
+        }
 
         return $this;
     }
