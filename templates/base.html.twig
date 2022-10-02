@@ -37,22 +37,41 @@
                         <p class="bs--logo__text bs--logo__text-six">#gowiththebus</p>
                     </a>
                 </span>
+
                 <ul class="bs--menu__nav">
                     {% if app.user %}
-                    <li class="bs-menu--item">
-                        <a href="#discounts">Discounts</a>
-                    </li>
-                    <li class="bs-menu--item">
-                        <a href="#about">About</a>
-                    </li>
+                        <li class="bs-menu--item">
+                            <a href="#discounts">Discounts</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="#about">About</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="{{ path('cart_index') }}">My Tickets</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="{{ path('app_logout') }}">Logout</a>
+                        </li>
                     {% else %}
-                    <li class="bs-menu--item">
-                        <a href="{{ path('app_login') }}">Login</a>
-                    </li>
+                        <li class="bs-menu--item">
+                            <a href="#discounts">Discounts</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="#about">About</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="{{ path('cart_index') }}">My Tickets</a>
+                        </li>
+
+                        <li class="bs-menu--item">
+                            <a href="{{ path('app_login') }}">Login</a>
+                        </li>
                     {% endif %}
-                    <li class="bs-menu--item">
-                        <a href="{{ path('cart_index') }}">My Tickets</a>
-                    </li>
                 </ul>
 
                 {#<button type="button" class="bs--btn__login">My Tickets</button>#}
@@ -67,7 +86,6 @@
         </div>
 
         {% block body %}{% endblock %}
-
 
     </body>
 </html>

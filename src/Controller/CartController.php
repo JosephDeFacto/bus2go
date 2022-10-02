@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CartTicket;
+use App\Form\CartTypeForm;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
@@ -37,35 +38,42 @@ class CartController extends AbstractController
 
         $t = $cartTicket->getQuantity();
 
-
-
-
         return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
     }
 
     /**
      * @Route("/cart/add/{id}"), name="cart_addToCart")
      */
-    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): RedirectResponse
+    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
     {
+
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $id = $request->get('id');
 
         $user = $this->getUser();
 
-        $travelSchedule = $travelScheduleRepository->find($id);
-
         $cartTickets = new CartTicket();
 
-        $cartTickets->setUser($user);
-        $cartTickets->setTravelSchedule($travelSchedule);
-        $cartTickets->setQuantity($travelSchedule->getFee());
+        $form = $this->createForm(CartTypeFormType::class, $cartTickets);
 
-        $this->managerRegistry->getManager()->persist($cartTickets);
-        $this->managerRegistry->getManager()->flush();
+        $form->handleRequest($request);
+        $travelSchedule = $travelScheduleRepository->find($id);
 
-        $this->addFlash('success', 'Ticket added to cart');
 
-        return $this->redirectToRoute('cart_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cartTickets->setUser($user);
+            $cartTickets->setTravelSchedule($travelSchedule);
+            $cartTickets->setQuantity($cartTickets->getQuantity());
+
+            $this->managerRegistry->getManager()->persist($cartTickets);
+            $this->managerRegistry->getManager()->flush();
+
+            $this->addFlash('success', 'Ticket added to cart');
+
+            return $this->redirectToRoute('cart_index');
+        }
+
+        return $this->render('cart/index.html.twig', ['form' => $form->createView()]);
     }
 
     /**

@@ -70,6 +70,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->orders = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
+
 
     public function getId(): ?int
     {
