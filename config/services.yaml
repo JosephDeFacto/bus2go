@@ -32,3 +32,10 @@ services:
 
     App\Entity\CartTicket:
         autowire: true
+
+    App\Entity\TravelSchedule:
+        autowire: true
+
+    App\Entity\User:
+        autowire: true
+

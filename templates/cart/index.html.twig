@@ -8,42 +8,30 @@
     <div class="sb--main__content">
         <div class="sb--main-info">
 
-            {% if form is defined %}
-            {{ form_start(form) }}
-                {{ form_row(form.quantity) }}
-                {{ form_row(form.submit) }}
-            {{ form_end(form) }}
+            {% if cartTickets is defined %}
+
+                {% for tickets in cartTickets %}
+                    {{ tickets.travelSchedule.getDepartFrom }}
+                    {{ tickets.travelSchedule.getTravelTo }}
+                    {{ tickets.travelSchedule.getDepartingOn|date('d-m-Y') }}
+                    {{ tickets.travelSchedule.getReturningOn|date('d-m-Y') }}
+                    {{ tickets.travelSchedule.getDepartureTime|date('H:i') }}
+                    {{ tickets.travelSchedule.getTimeOfArrival|date('H:i') }}
+                    {{ tickets.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
+                    {{ tickets.travelSchedule.getFee|number_format(2, '.', '') }}
+                    {{ tickets.quantity }}
+                    <a href="{{ path('cart_updateToCart', {id: tickets.id}) }}">Update</a>
+                    <a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>
+                    <a href="{{ path('app_order') }}">Order</a>
+
+                {% endfor %}
+
             {% endif %}
 
-            {% if cartTickets is defined %}
-            {% for tickets in cartTickets %}
-                {{ tickets.travelSchedule.getDepartFrom }}
-                {{ tickets.travelSchedule.getTravelTo }}
-                {{ tickets.travelSchedule.getDepartingOn|date('d-m-Y') }}
-                {{ tickets.travelSchedule.getReturningOn|date('d-m-Y') }}
-                {{ tickets.travelSchedule.getDepartureTime|date('H:i') }}
-                {{ tickets.travelSchedule.getTimeOfArrival|date('H:i') }}
-                {{ tickets.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-                {{ tickets.travelSchedule.getFee|number_format(2, '.', '') }}
-            {% endfor %}
-            {% endif %}
+
+
+
         </div>
     </div>
-
-    {#<script>
-        $(document).ready(function () {
-            $(document).on('click', '#plusOne', function (e) {
-                $this = $(this);
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path('cart_increment') }}',
-                    data: {},
-                    success: function(response) {
-                        $("#js-increment").html(response.data);
-                    }
-                })
-            })
-        })
-    </script>#}
 </div>
 {% endblock %}

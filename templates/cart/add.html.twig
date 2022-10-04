@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if travelSchedule is defined %}
+        {{ travelSchedule.departFrom }}
+        {{ travelSchedule.travelTo }}
+        {{ travelSchedule.departingOn|date('Y-m-d') }}
+        {{ travelSchedule.returningOn|date('Y-m-d') }}
+        {{ travelSchedule.departureTime|date('H:i') }}
+        {{ travelSchedule.timeOfArrival|date('H:i') }}
+        {{ travelSchedule.estimatedArrivalTime|date('H:i') }}
+        {{ travelSchedule.fee }}
+    {% endif %}
+    {% if form is defined %}
+    {{ form_start(form) }}
+
+    {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+

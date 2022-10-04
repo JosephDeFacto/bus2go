@@ -12,10 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-
 class OrderController extends AbstractController
 {
-
     public ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
@@ -26,7 +24,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/order-checkout", name="app_order")
      */
-    public function index(Request $request): Response
+    public function index(Request $request, CartTicket $cartTicket): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -42,15 +40,20 @@ class OrderController extends AbstractController
             'user' => $this->getUser(),
         ]);
 
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $order->setUser($user);
-            $order->setStripeId(1);
-            $order->setPrice($fee);
-            $order->setQuantity(1);
+            foreach ($cartData as $data) {
+
+                $order->setUser($user);
+                $order->setStripeId(1);
+                $order->setPrice($fee);
+                $order->setQuantity(1);
+                $order->setCartTicket($data);
+            }
+
+
 
             $this->managerRegistry->getManager()->persist($order);
 

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CartTicket;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,18 @@ class CartTicketRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function checkTicket(User $user)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "SELECT * FROM cart_ticket WHERE user_id = '$user'";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue(':user_id', $user);
+
+        $result = $stmt->executeQuery();
+
+        return $result->fetchAllAssociative();
     }
 
 //    /**

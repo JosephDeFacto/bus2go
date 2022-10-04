@@ -38,6 +38,11 @@ class Order
      */
     private $quantity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CartTicket::class, inversedBy="orders")
+     */
+    private $cartTicket;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Order
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getCartTicket(): ?CartTicket
+    {
+        return $this->cartTicket;
+    }
+
+    public function setCartTicket(?CartTicket $cartTicket): self
+    {
+        $this->cartTicket = $cartTicket;
 
         return $this;
     }

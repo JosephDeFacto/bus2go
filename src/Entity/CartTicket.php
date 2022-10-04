@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CartTicketRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +20,7 @@ class CartTicket
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
     private $user;
 
@@ -32,6 +34,21 @@ class CartTicket
      * @ORM\Column(type="integer", nullable=true)
      */
     private $quantity = 1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=PassengerType::class, inversedBy="cartTickets")
+     */
+    private $passengerType;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket")
+     */
+    private $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -78,6 +95,48 @@ class CartTicket
     public function __toString(): string
     {
         return $this->getUser();
+    }
+
+    public function getPassengerType(): ?PassengerType
+    {
+        return $this->passengerType;
+    }
+
+    public function setPassengerType(?PassengerType $passengerType): self
+    {
+        $this->passengerType = $passengerType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setCartTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getCartTicket() === $this) {
+                $order->setCartTicket(null);
+            }
+        }
+
+        return $this;
     }
 
 

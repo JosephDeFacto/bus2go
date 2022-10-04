@@ -22,6 +22,7 @@
         <input type="submit" value="Search" class="btn btn--black__search">
         {{ form_end(form) }}
     {% endif %}
+
     {#dump (results) radi#}
     {# {{ dump(results) }}#}
     {# <button type="submit" class="btn">Search</button>#}
@@ -45,7 +46,14 @@
             <div class="sb--row sb--row-middle sb--travel-info__title">
                 <div class="sb--row sb--row-justify">
                     <div class="sb--results-notification">
-                        <span data-notification="{% if rows is defined %}{{ rows[0]['COUNT(*)'] }} results">{{ rows[0]['COUNT(*)'] }} results {% endif %}</span>
+                        <span data-notification="{% if rows is defined %}{{ rows[0]['COUNT(*)'] }} results">{{ rows[0]['COUNT(*)'] }} results <br>{% endif %}</span>
+                        {% if results is defined %}
+                            {% for searchResult in results|slice(0,1) %}
+                                Departing On: {{ searchResult.departing_on }}<br>
+                                Returning On: {{ searchResult.returning_on }}
+
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -100,32 +108,14 @@
                         </div>
                         <div class="sb--route-element route--select">
                             <a href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Buy ticket<div class="sb--column-middle"></div></a>
+                            {#<a href="{{ path('app_cart_addtocart') }}">Buy ticket<div class="sb--column-middle"></div></a>#}
+
                         </div>
-
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
-       {# <form>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
-                <div>
-                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">First name</label>
-                    <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
-                </div>
-                <div>
-                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Last name</label>
-                    <input type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
-                </div>
-            </div>
-        </form>#}
-        {#{% for searchResult in results %}
-            {{ searchResult.depart_from }}
-        {% endfor %}#}
     {% endfor %}
         {% endif %}
     </div>

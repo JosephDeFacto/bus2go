@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\CartTicket;
-use App\Form\CartTypeForm;
+use App\Entity\TravelSchedule;
+use App\Entity\User;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
+use App\Repository\PassengerTypeRepository;
 use App\Repository\TravelScheduleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,9 +36,8 @@ class CartController extends AbstractController
      */
     public function index(Request $request, CartTicket $cartTicket): Response
     {
-        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
 
-        $t = $cartTicket->getQuantity();
+        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
 
         return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
     }
@@ -44,28 +45,28 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/add/{id}"), name="cart_addToCart")
      */
-    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
+    public function addToCart(CartTicketRepository $cartTicketRepository, Request $request, TravelScheduleRepository $travelScheduleRepository, TravelSchedule $travelSchedule): Response
     {
-
         $this->denyAccessUnlessGranted('ROLE_USER');
+
         $id = $request->get('id');
 
         $user = $this->getUser();
+        $cartTicket = new CartTicket();
 
-        $cartTickets = new CartTicket();
-
-        $form = $this->createForm(CartTypeFormType::class, $cartTickets);
-
-        $form->handleRequest($request);
         $travelSchedule = $travelScheduleRepository->find($id);
 
+        $form = $this->createForm(CartTypeFormType::class, $cartTicket);
+
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $cartTickets->setUser($user);
-            $cartTickets->setTravelSchedule($travelSchedule);
-            $cartTickets->setQuantity($cartTickets->getQuantity());
 
-            $this->managerRegistry->getManager()->persist($cartTickets);
+            $cartTicket->setUser($user);
+            $cartTicket->setTravelSchedule($travelSchedule);
+            $cartTicket->setQuantity($cartTicket->getQuantity());
+
+            $this->managerRegistry->getManager()->persist($cartTicket);
             $this->managerRegistry->getManager()->flush();
 
             $this->addFlash('success', 'Ticket added to cart');
@@ -73,48 +74,42 @@ class CartController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
 
-        return $this->render('cart/index.html.twig', ['form' => $form->createView()]);
+        return $this->render('cart/add.html.twig', ['form' => $form->createView(), 'cartTicket' => $cartTicket, 'travelSchedule' => $travelSchedule]);
     }
 
     /**
-     * @Route("/cart)", name="cart_increment")
+     * @Route("cart/update/{id}", name="cart_updateToCart")
      */
-    public function increment(Request $request, TravelScheduleRepository $travelScheduleRepository, CartTicketRepository $cartTicketRepository)
+    public function updateCart(ManagerRegistry $registry, Request $request, CartTicketRepository $cartTicketRepository, CartTicket $cartTicket)
     {
         $id = $request->get('id');
 
-        /*$schedule = $travelScheduleRepository->find($id); */
-        $schedule = $travelScheduleRepository->findAll();
+        $cart = $cartTicketRepository->find($id);
 
-        $cart = $cartTicketRepository->findOneBy([
-            'travelSchedule' => $schedule,
-        ]);
 
-        $cart->setQuantity($cartTicketRepository->findAll()[0]->getQuantity() + 1);
-        /*$this->managerRegistry->getManager()->persist($cart);*/
-        $this->managerRegistry->getManager()->flush();
+        $form = $this->createForm(CartTypeFormType::class, $cart);
 
-        return $this->redirectToRoute('cart_index');
+        $form->handleRequest($request);
 
-        /*return new JsonResponse(['data' => $cart->getQuantity()]);*/
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $cartTicket->setQuantity($cartTicket->getQuantity());
+            $entityManager = $registry->getManager();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('cart_index');
+        }
+
+        return $this->render('cart/update.html.twig', ['cartTicket' => $cart, 'form' => $form->createView()]);
     }
 
     /**
-     * @Route("cart/decrement/{id}", name="cart_decrement")
+     * @Route("cart/delete/{id}", name="cart_deleteToCart")
      */
-    public function decrement(Request $request, TravelScheduleRepository $travelScheduleRepository, CartTicketRepository $cartTicketRepository)
+
+    public function deleteFromCart()
     {
-        $id = $request->get('id');
-
-        $schedule = $travelScheduleRepository->find($id);
-
-        $cart = $cartTicketRepository->findOneBy([
-            'travelSchedule' => $schedule,
-        ]);
-        $cart->setQuantity($cartTicketRepository->findAll()[0]->getQuantity() - 1);
-        $this->managerRegistry->getManager()->persist($cart);
-        $this->managerRegistry->getManager()->flush();
-
-        return $this->redirectToRoute('cart_index');
+        // Riješi ovo
     }
+
 }

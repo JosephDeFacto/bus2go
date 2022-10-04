@@ -3,15 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\TravelScheduleRepository;
+use App\Type\PassengerTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass=TravelScheduleRepository::class)
  */
 class TravelSchedule
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -79,11 +82,20 @@ class TravelSchedule
      */
     private $carts;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $passenger;
+
     public function __construct()
     {
         $this->carts = new ArrayCollection();
     }
-
 
 
     public function getId(): ?int
@@ -258,5 +270,34 @@ class TravelSchedule
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getPassenger(): ?string
+    {
+        return $this->passenger;
+    }
+
+    public function setPassenger(string $passenger): self
+    {
+
+        if (!in_array($passenger, PassengerTypeEnum::getAvailableTypes())) {
+            throw new InvalidArgumentException('Invalid type');
+        }
+
+        $this->passenger = $passenger;
+
+        return $this;
     }
 }

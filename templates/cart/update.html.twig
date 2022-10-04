@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update Cart{% endblock %}
+{% block body %}
+    {{ cartTicket.travelSchedule.getTravelTo }}
+    {% if form is defined %}
+        {{ form_start(form) }}
+            {{ form_row(form.quantity) }}
+        {{ form_end(form) }}
+    {% endif %}
+
+{% endblock %}
