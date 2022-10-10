@@ -40,17 +40,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable="true")
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable="true")
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable="true")
      */
     private $mobile;
 
@@ -63,6 +63,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
      */
     private $orders;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
 
 
     public function __construct()
@@ -251,5 +256,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
     }
 }

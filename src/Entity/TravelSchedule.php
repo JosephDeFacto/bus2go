@@ -7,7 +7,7 @@ use App\Type\PassengerTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use http\Exception\InvalidArgumentException;
+
 
 /**
  * @ORM\Entity(repositoryClass=TravelScheduleRepository::class)
@@ -87,14 +87,16 @@ class TravelSchedule
      */
     private $quantity;
 
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=DiscountTravelSchedule::class, mappedBy="travelSchedule")
      */
-    private $passenger;
+    private $discountTravelSchedules;
 
     public function __construct()
     {
         $this->carts = new ArrayCollection();
+        $this->discountTravelSchedules = new ArrayCollection();
     }
 
 
@@ -284,19 +286,32 @@ class TravelSchedule
         return $this;
     }
 
-    public function getPassenger(): ?string
+    /**
+     * @return Collection<int, DiscountTravelSchedule>
+     */
+    public function getDiscountTravelSchedules(): Collection
     {
-        return $this->passenger;
+        return $this->discountTravelSchedules;
     }
 
-    public function setPassenger(string $passenger): self
+    public function addDiscountTravelSchedule(DiscountTravelSchedule $discountTravelSchedule): self
     {
-
-        if (!in_array($passenger, PassengerTypeEnum::getAvailableTypes())) {
-            throw new InvalidArgumentException('Invalid type');
+        if (!$this->discountTravelSchedules->contains($discountTravelSchedule)) {
+            $this->discountTravelSchedules[] = $discountTravelSchedule;
+            $discountTravelSchedule->setTravelSchedule($this);
         }
 
-        $this->passenger = $passenger;
+        return $this;
+    }
+
+    public function removeDiscountTravelSchedule(DiscountTravelSchedule $discountTravelSchedule): self
+    {
+        if ($this->discountTravelSchedules->removeElement($discountTravelSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($discountTravelSchedule->getTravelSchedule() === $this) {
+                $discountTravelSchedule->setTravelSchedule(null);
+            }
+        }
 
         return $this;
     }

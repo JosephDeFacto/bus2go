@@ -1,20 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% if travelSchedule is defined %}
-        {{ travelSchedule.departFrom }}
-        {{ travelSchedule.travelTo }}
-        {{ travelSchedule.departingOn|date('Y-m-d') }}
-        {{ travelSchedule.returningOn|date('Y-m-d') }}
-        {{ travelSchedule.departureTime|date('H:i') }}
-        {{ travelSchedule.timeOfArrival|date('H:i') }}
-        {{ travelSchedule.estimatedArrivalTime|date('H:i') }}
-        {{ travelSchedule.fee }}
-    {% endif %}
-    {% if form is defined %}
-    {{ form_start(form) }}
+    <div class="sb--cart-content">
+            {% if travelSchedule is defined %}
+                <div class="sb--cart-row">
+                    DEPART FROM: {{ travelSchedule.departFrom }}
+                </div>
+                <div class="sb--cart-row">
+                    TRAVEL TO: {{ travelSchedule.travelTo }}
+                </div>
+                <div class="sb--cart-row">
+                    DEPARTING ON: {{ travelSchedule.departingOn|date('Y-m-d') }}
+                </div>
+                <div class="sb--cart-row">
+                    RETURNING ON: {{ travelSchedule.returningOn|date('Y-m-d') }}
+                </div>
+                <div class="sb--cart-row">
+                    DEPARTURE TIME: {{ travelSchedule.departureTime|date('H:i') }}
+                </div>
+                <div class="sb--cart-row">
+                    TIME OF ARRIVAL: {{ travelSchedule.timeOfArrival|date('H:i') }}
+                </div>
+                <div class="sb--cart-row">
+                    ESTIMATED ARRIVAL TIME: {{ travelSchedule.estimatedArrivalTime|date('H:i') }}
+                </div>
+                <div class="sb--cart-row">
+                    PRICE: {{ travelSchedule.fee }} HRK
+                </div>
 
-    {{ form_end(form) }}
-    {% endif %}
+            {% endif %}
+            <div class="sb--cart-row">
+                {% if form is defined %}
+                    {{ form_start(form) }}
+
+                    {{ form_end(form) }}
+
+                {% endif %}
+            </div>
+
+
+    </div>
+
 {% endblock %}
 

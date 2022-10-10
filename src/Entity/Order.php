@@ -40,8 +40,15 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=CartTicket::class, inversedBy="orders")
+     * @ORM\JoinColumn(name="cart_ticket_id", referencedColumnName="id")
      */
     private $cartTicket;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $reference;
+
 
     public function getId(): ?int
     {
@@ -104,6 +111,19 @@ class Order
     public function setCartTicket(?CartTicket $cartTicket): self
     {
         $this->cartTicket = $cartTicket;
+
+        return $this;
+    }
+
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

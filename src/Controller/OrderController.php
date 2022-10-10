@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\CartTicket;
 use App\Entity\Order;
 use App\Form\OrderTypeFormType;
+use App\Repository\CartTicketRepository;
+use App\Repository\OrderRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +26,8 @@ class OrderController extends AbstractController
     /**
      * @Route("/order-checkout", name="app_order")
      */
-    public function index(Request $request, CartTicket $cartTicket): Response
+    public function index(Request $request, CartTicketRepository $cartTicketRepository): Response
     {
-
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $cartData = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
@@ -34,15 +35,19 @@ class OrderController extends AbstractController
         $fee = $cartData[0]->getTravelSchedule()->getFee();
         $user = $this->getUser();
 
-        $order = new Order();
+        $userCart = $cartTicketRepository->findBy(['user' => $user]);
+
 
         $form = $this->createForm(OrderTypeFormType::class, null, [
             'user' => $this->getUser(),
         ]);
 
         $form->handleRequest($request);
-
+        $order = new Order();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $date = new \DateTime();
+            $reference = $date->format('dmY').'-'.uniqid();
 
             foreach ($cartData as $data) {
 
@@ -51,19 +56,23 @@ class OrderController extends AbstractController
                 $order->setPrice($fee);
                 $order->setQuantity(1);
                 $order->setCartTicket($data);
+                $order->setReference($reference);
             }
 
-
-
             $this->managerRegistry->getManager()->persist($order);
-
             $this->managerRegistry->getManager()->flush();
+
 
             return $this->redirectToRoute('app_index');
         }
 
         return $this->render('order/index.html.twig', [
             'orderForm' => $form->createView(),
+            'reference' => $order->getReference(),
+            'userCart' => $userCart,
+            'user' => $user,
         ]);
     }
+
+
 }

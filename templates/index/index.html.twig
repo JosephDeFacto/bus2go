@@ -23,6 +23,13 @@
         {{ form_end(form) }}
     {% endif %}
 
+    {% for flash in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endfor %}
+    {% for flash in app.flashes('error') %}
+        <div class="alert alert-danger">{{ flash }}</div>
+    {% endfor %}
+
     {#dump (results) radi#}
     {# {{ dump(results) }}#}
     {# <button type="submit" class="btn">Search</button>#}
@@ -73,7 +80,13 @@
                 <div class="sb--route-element sb--route-station">
                     <div>
                         <div class="sb--row">
+                            <div class="sb--row-title">
+                                DEPARTURE TIME
+                            </div>
                             <span class="sb-emphasize">{{ searchResult.departure_time|date('H:i') }}</span>
+                        </div>
+                        <div class="sb--row-title">
+                            DEPART FROM
                         </div>
                         <span class="sb--truncate">{{ searchResult.depart_from }}</span>
                     </div>
@@ -90,12 +103,18 @@
                 </div>
                 <div class="sb--route-element sb--route-station">
                     <div class="sb--row">
+                        <div class="sb--row-title">
+                            TIME OF ARRIVAL
+                        </div>
                         <span class="sb-emphasize">{{ searchResult.time_of_arrival|date('H:i') }}</span>
+                    </div>
+                    <div class="sb--row-title">
+                        TRAVEL TO
                     </div>
                     <span class="sb--truncate">{{ searchResult.travel_to }}</span>
                 </div>
                 <div class="sb--route-element sb--route-travel-company">
-                    <a class="company-more">more info (dodaj path do informacija)</a>
+                    <a class="company-more">more info</a>
                     <span class="sb--company-code">Slavonija Bus (hardkodirano)</span>
                 </div>
                 <div class="sb--route-element">

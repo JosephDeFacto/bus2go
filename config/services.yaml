@@ -13,6 +13,7 @@ services:
 
         bind:
             $stripeSK: "%env(STRIPE_SK)%"
+            $formLoginAuthenticator: '@security.authenticator.form_login.main'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -38,4 +39,10 @@ services:
 
     App\Entity\User:
         autowire: true
+
+    App\Entity\Order:
+        autowire: true
+
+    Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown'
+
 

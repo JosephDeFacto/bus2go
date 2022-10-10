@@ -29,7 +29,7 @@ class CartTypeFormType extends AbstractType
                 'choice_label' => 'type',
             ])*/
 
-            ->add('submit', SubmitType::class, ['attr' =>  ['class' => 'btn-cart']])
+            ->add('submit', SubmitType::class, ['attr' =>  ['class' => 'btn-cart-submit']])
         ;
 
     }

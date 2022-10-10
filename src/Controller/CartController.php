@@ -4,15 +4,12 @@ namespace App\Controller;
 
 use App\Entity\CartTicket;
 use App\Entity\TravelSchedule;
-use App\Entity\User;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
-use App\Repository\PassengerTypeRepository;
 use App\Repository\TravelScheduleRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,13 +28,14 @@ class CartController extends AbstractController
      * @Route("/cart", name="cart_index")
      * @ParamConverter("cartTicket")
      * @param Request $request
-     * @param CartTicket $cartTicket
      * @return Response
      */
-    public function index(Request $request, CartTicket $cartTicket): Response
+    public function index(Request $request): Response
     {
+        $id = $request->get('id');
+        $user = $this->getUser();
 
-        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
+        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
 
         return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
     }
@@ -45,7 +43,7 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/add/{id}"), name="cart_addToCart")
      */
-    public function addToCart(CartTicketRepository $cartTicketRepository, Request $request, TravelScheduleRepository $travelScheduleRepository, TravelSchedule $travelSchedule): Response
+    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -86,7 +84,6 @@ class CartController extends AbstractController
 
         $cart = $cartTicketRepository->find($id);
 
-
         $form = $this->createForm(CartTypeFormType::class, $cart);
 
         $form->handleRequest($request);
@@ -99,17 +96,7 @@ class CartController extends AbstractController
 
             return $this->redirectToRoute('cart_index');
         }
-
         return $this->render('cart/update.html.twig', ['cartTicket' => $cart, 'form' => $form->createView()]);
-    }
-
-    /**
-     * @Route("cart/delete/{id}", name="cart_deleteToCart")
-     */
-
-    public function deleteFromCart()
-    {
-        // Riješi ovo
     }
 
 }

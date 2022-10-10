@@ -10,20 +10,27 @@
 
 <div class="example-wrapper">
 
+    {% for cart in userCart %}
+        {{ cart.travelSchedule.getDepartFrom }}
+        {{ cart.travelSchedule.getTravelTo }}
+        {{ cart.travelSchedule.getDepartingOn|date('d-m-Y') }}
+        {{ cart.travelSchedule.getReturningOn|date('d-m-Y') }}
+        {{ cart.travelSchedule.getDepartureTime|date('H:i') }}
+        {{ cart.travelSchedule.getTimeOfArrival|date('H:i') }}
+        {{ cart.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
+        {{ cart.getQuantity }}
+        {{ cart.travelSchedule.getFee }}
+
+        Total: {{ cart.travelSchedule.getFee * cart.getQuantity }}<br>
+
+    {% endfor %}
+
+        Your data:
+        {{ user.firstname }} {{ user.lastname }} {{ user.mobile }} {{ user.email }}
     {{ form_start(orderForm) }}
 
     {{ form_end(orderForm) }}
 
-    <script>
-        $.ajax(
-            "{{ path('app_order') }}",
-            {
-                success: function(data) {
-                    console.log("Data from server " + data);
-                }
-            }
-        )
-    </script>
 
 </div>
 {% endblock %}

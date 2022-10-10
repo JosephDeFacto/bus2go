@@ -510,7 +510,7 @@ input[type=email], input[type=password] {
 }
 
 .sb--travel-info {
-    background: #fff;
+    /*background: #fff;*/
     width: 100%;
     padding: 2rem 0;
     position: sticky;
@@ -543,12 +543,14 @@ input[type=email], input[type=password] {
 }
 
 .sb--results-notification {
-
+    color: brown;
+    font-weight: 900;
+    margin-left: 50px;
+    letter-spacing: 1px;
 }
 
 [data-notification] {
     color: #888888;
-    margin: 0 0 0 10px;
 }
 
 .sb--main-cart {
@@ -562,4 +564,39 @@ input[type=email], input[type=password] {
 
 .sb--main-info {
 
+}
+
+.sb--row-title {
+    margin-left: -20px;
+    font-size: 12px;
+    color: brown;
+}
+
+.sb-emphasize {
+    color: black;
+}
+
+.sb--truncate {
+    color: black;
+}
+
+.sb--cart-content {
+    background: #cbb4d4;
+    height: 500px;
+}
+
+.sb--cart-row {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: brown;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.btn-cart-submit {
+    width: 350px;
+    text-align: center;
+    margin-top: 10px;
 }

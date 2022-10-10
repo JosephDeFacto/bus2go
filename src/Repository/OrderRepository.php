@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Order;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Order>
@@ -37,6 +40,17 @@ class OrderRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function removeCartId($user_id)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "DELETE FROM `cart_ticket` WHERE user_id = '$user_id'";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue(':user_id', $user_id);
+
+        return $stmt->executeQuery();
+
     }
 
 //    /**

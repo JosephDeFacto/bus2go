@@ -52,6 +52,18 @@ class CartTicketRepository extends ServiceEntityRepository
         return $result->fetchAllAssociative();
     }
 
+    public function emptyCart($id)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "DELETE FROM cart_ticket WHERE user_id = '{$id}'";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue(':user_id', $id);
+
+        return $stmt->executeQuery();
+    }
+
+
+
 //    /**
 //     * @return CartTicket[] Returns an array of CartTicket objects
 //     */
