@@ -50,31 +50,16 @@ class OrderRepository extends ServiceEntityRepository
         $stmt->bindValue(':user_id', $user_id);
 
         return $stmt->executeQuery();
-
     }
 
-//    /**
-//     * @return Order[] Returns an array of Order objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function fetchLastRow($user_id)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "SELECT id /*CONCAT('F-', LPAD(id, 6, '0'))*/ FROM `order` WHERE user_id = '$user_id' ORDER BY id DESC LIMIT 1";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue(':user_id', $user_id);
+        $result = $stmt->executeQuery();
 
-//    public function findOneBySomeField($value): ?Order
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $result->fetchOne();
+    }
 }

@@ -36,20 +36,15 @@ class CartTicket
     private $quantity = 1;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PassengerType::class, inversedBy="cartTickets")
-     */
-    private $passengerType;
-
-    /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $orders;
+
 
     public function __construct()
     {
         $this->orders = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -97,18 +92,6 @@ class CartTicket
         return $this->getUser();
     }
 
-    public function getPassengerType(): ?PassengerType
-    {
-        return $this->passengerType;
-    }
-
-    public function setPassengerType(?PassengerType $passengerType): self
-    {
-        $this->passengerType = $passengerType;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Order>
      */
@@ -138,6 +121,4 @@ class CartTicket
 
         return $this;
     }
-
-
 }

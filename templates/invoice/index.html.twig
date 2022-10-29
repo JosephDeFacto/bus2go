@@ -1,0 +1,157 @@
+
+{% block title %}{% endblock %}
+
+{% if invoice.user is defined %}
+
+    {% if invoice.user is not null %}
+
+        {% if cartTicket is defined %}
+
+            {% set firstname = invoice.user.firstname %}
+            {% set lastname = invoice.user.lastname %}
+            {% set userEmail = invoice.user.email %}
+            {% set invoiceNumber = invoice.invoiceNumber %}
+            {% set issueDate = invoice.issueDate|date('Y-m-d') %}
+            {% set departFrom = invoice.orders.cartTicket.travelSchedule.departFrom %}
+            {% set travelTo = invoice.orders.cartTicket.travelSchedule.travelTo %}
+            {% set departingOn = invoice.orders.cartTicket.travelSchedule.departingOn|date('Y-m-d') %}
+            {% set returningOn = invoice.orders.cartTicket.travelSchedule.returningOn|date('Y-m-d') %}
+            {% set departureTime = invoice.orders.cartTicket.travelSchedule.departureTime|date('H:i') %}
+            {% set timeOfArrival = invoice.orders.cartTicket.travelSchedule.timeOfArrival %}
+            {% set estimatedArrivalTime = invoice.orders.cartTicket.travelSchedule.estimatedArrivalTime|date('H:i') %}
+            {% set price = invoice.orders.cartTicket.travelSchedule.fee|number_format(2, '.', ',') %}
+            {% set quantity = invoice.orders.quantity %}
+            {% set subtotal = price * quantity %}
+
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}
+
+
+{% block body %}
+<style>
+
+    body {
+        margin: 0;
+    }
+
+    .sb--invoice-wrapper {
+        background: #faf8f2;
+        height: 100%;
+    }
+
+    .sb--right-sender {
+        display: flex;
+        flex-direction: row-reverse;
+        margin-right: 45px;
+        padding: 20px;
+    }
+
+    .border-between {
+        border: 1px solid black;
+    }
+
+    .sb--invoice-main {
+        margin: 20px;
+    }
+
+    .sb--invoice-info-left, .sb--invoice-info-right {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sb--invoice-info-left {
+        align-items: flex-start;
+        margin-left: 20%;
+    }
+
+    .sb--invoice-info-right {
+        align-items: flex-end;
+        margin-right: 20%;
+    }
+
+    .sb--invoice-data {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    table, thead, th, td, tbody {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    tr {
+        background: cornsilk;
+        font-size: 20px;
+    }
+
+    td {
+        text-align: center;
+        background: darkgrey;
+        font-size: 20px;
+    }
+
+</style>
+
+<div class="sb--invoice-wrapper">
+    <div class="sb--right-sender">
+        Sender: Autobusno poduzeće XYZ
+    </div>
+    <div class="border-between"></div>
+    <div class="sb--invoice-main">
+        <h1>INVOICE</h1>
+        <div class="sb--invoice-info-left">
+            {% if invoiceNumber is defined %}
+            <p>Invoice Number: #{{ invoiceNumber }}</p>
+            {% endif %}
+            {% if issueDate is defined %}
+            <p>Date: {{ issueDate }}</p>
+            {% endif %}
+            {#<p>Payment Date: 11 October 2022</p>#}
+        </div>
+        <div class="sb--invoice-info-right">
+            <p>Receiver:</p>
+            {% if firstname is defined and lastname is defined and userEmail is defined %}
+            <p>{{ firstname }} {{ lastname }}</p>
+
+            <p>{{ userEmail }}</p>
+            {% endif %}
+        </div>
+        <div class="sb--invoice-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>FROM - TO, DATE</th>
+                        <th>PRICE (&euro;)</th>
+                        <th>QUANTITY</th>
+                        <th>SUBTOTAL (&euro;)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% if departFrom is defined and travelTo is defined and departingOn is defined and returningOn is defined %}
+                        <td>{{ departFrom }} - {{ travelTo }}; {{ departingOn }} - {{ returningOn }}</td>
+                        {% endif %}
+                        {% if price is defined %}
+                        <td>{{ price }}</td>
+                        {% endif %}
+                        {% if quantity is defined %}
+                        <td>{{ quantity }}</td>
+                        {% endif %}
+                        {% if subtotal is defined %}
+                        <td>{{ subtotal|number_format(2, '.', ',') }}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="border-between"></div>
+        <div class="sb--footer-info">
+
+        </div>
+    </div>
+</div>
+{% endblock %}

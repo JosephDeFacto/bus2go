@@ -43,6 +43,14 @@ services:
     App\Entity\Order:
         autowire: true
 
+    App\Helper\InvoiceGenerator:
+        autowire: true
+
     Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown'
 
 
+    App\Service\Verificator\VerifyEmail:
+        $lifetime: 'lifetime'
+
+    App\Service\Verificator\VerifyEmailToken:
+        $key: 'key'

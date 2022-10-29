@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class OrderController extends AbstractController
 {
-    public ManagerRegistry $managerRegistry;
+    private ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
     {
@@ -25,8 +25,12 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order-checkout", name="app_order")
+     * @param Request $request
+     * @param CartTicketRepository $cartTicketRepository
+     * @param OrderRepository $orderRepository
+     * @return Response|null
      */
-    public function index(Request $request, CartTicketRepository $cartTicketRepository): Response
+    public function index(Request $request, CartTicketRepository $cartTicketRepository, OrderRepository $orderRepository): ?Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -34,9 +38,10 @@ class OrderController extends AbstractController
 
         $fee = $cartData[0]->getTravelSchedule()->getFee();
         $user = $this->getUser();
-
+       /* $currentDay = date(strtotime('now'));
+        $lastDayOfYear = strtotime('12/31');
+        $numberOfDays = $lastDayOfYear - $currentDay;*/
         $userCart = $cartTicketRepository->findBy(['user' => $user]);
-
 
         $form = $this->createForm(OrderTypeFormType::class, null, [
             'user' => $this->getUser(),
@@ -54,16 +59,18 @@ class OrderController extends AbstractController
                 $order->setUser($user);
                 $order->setStripeId(1);
                 $order->setPrice($fee);
-                $order->setQuantity(1);
+                $order->setQuantity($data->getQuantity());
                 $order->setCartTicket($data);
                 $order->setReference($reference);
             }
 
+            $orders = $orderRepository->findOneBy(['user' => $user]);
+
             $this->managerRegistry->getManager()->persist($order);
             $this->managerRegistry->getManager()->flush();
 
+            return $this->redirectToRoute('app_invoice');
 
-            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('order/index.html.twig', [
@@ -73,6 +80,4 @@ class OrderController extends AbstractController
             'user' => $user,
         ]);
     }
-
-
 }

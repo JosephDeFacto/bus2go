@@ -39,10 +39,16 @@ class BusCompany
      */
     private $drivers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="busCompany")
+     */
+    private $invoice;
+
     public function __construct()
     {
         $this->buses = new ArrayCollection();
         $this->drivers = new ArrayCollection();
+        $this->invoice = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +134,36 @@ class BusCompany
             // set the owning side to null (unless already changed)
             if ($driver->getBusCompany() === $this) {
                 $driver->setBusCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoice(): Collection
+    {
+        return $this->invoice;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoice->contains($invoice)) {
+            $this->invoice[] = $invoice;
+            $invoice->setBusCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoice->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getBusCompany() === $this) {
+                $invoice->setBusCompany(null);
             }
         }
 
