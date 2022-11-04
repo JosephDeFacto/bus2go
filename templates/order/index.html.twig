@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello OrderController!{% endblock %}
@@ -32,4 +33,20 @@
 
 
 </div>
+{% endblock %}
+#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+    {{ orders.departFrom }}
+    {{ orders.travelTo }}
+    {{ orders.returnOn|date('d-m-Y') }}
+    {{ orders.departureTime|date('d-m-Y') }}
+    {{ orders.timeOfArrival|date('H:i') }}
+    {{ orders.estArrivalTime|date('H:i') }}
+    {{ orders.fee }}
 {% endblock %}

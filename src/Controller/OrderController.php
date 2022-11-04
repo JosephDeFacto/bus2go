@@ -24,28 +24,55 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Route("/orders", name="order_index")
+     */
+    public function index(): Response
+    {
+        // get my orders
+        $myOrders = $this->managerRegistry->getRepository(Order::class)->findBy(['user' => $this->getUser()]);
+
+        $orderData = [];
+        foreach ($myOrders as $orders) {
+            $orderData['departFrom'] = $orders->getCartTicket()->getTravelSchedule()->getDepartFrom();
+            $orderData['travelTo'] = $orders->getCartTicket()->getTravelSchedule()->getTravelTo();
+            $orderData['returnOn'] = $orders->getCartTicket()->getTravelSchedule()->getReturningOn();
+            $orderData['departureTime'] = $orders->getCartTicket()->getTravelSchedule()->getDepartureTime();
+            $orderData['timeOfArrival'] = $orders->getCartTicket()->getTravelSchedule()->getTimeOfArrival();
+            $orderData['estArrivalTime'] = $orders->getCartTicket()->getTravelSchedule()->getEstimatedArrivalTime();
+            $orderData['fee'] = $orders->getCartTicket()->getTravelSchedule()->getFee();
+        }
+
+        return $this->render('order/index.html.twig', ['orders' => $orderData]);
+    }
+
+    /**
      * @Route("/order-checkout", name="app_order")
      * @param Request $request
      * @param CartTicketRepository $cartTicketRepository
      * @param OrderRepository $orderRepository
      * @return Response|null
      */
-    public function index(Request $request, CartTicketRepository $cartTicketRepository, OrderRepository $orderRepository): ?Response
+    public function orderCheckout(Request $request, CartTicketRepository $cartTicketRepository, OrderRepository $orderRepository): ?Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $cartData = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
 
         $fee = $cartData[0]->getTravelSchedule()->getFee();
-        $user = $this->getUser();
+        $loggedUser = $this->getUser();
        /* $currentDay = date(strtotime('now'));
         $lastDayOfYear = strtotime('12/31');
         $numberOfDays = $lastDayOfYear - $currentDay;*/
-        $userCart = $cartTicketRepository->findBy(['user' => $user]);
+        $userCart = $cartTicketRepository->findBy(['user' => $loggedUser]);
 
         $form = $this->createForm(OrderTypeFormType::class, null, [
             'user' => $this->getUser(),
         ]);
+
+        $sessionData = $request->getSession()->get('session');
+        $quantity = $sessionData->getQuantity();
+        $user = $sessionData->getUser();
+        $travel = $sessionData->getTravelSchedule();
 
         $form->handleRequest($request);
         $order = new Order();
@@ -56,19 +83,18 @@ class OrderController extends AbstractController
 
             foreach ($cartData as $data) {
 
-                $order->setUser($user);
+                $order->setUser($loggedUser);
                 $order->setStripeId(1);
                 $order->setPrice($fee);
-                $order->setQuantity($data->getQuantity());
+                $order->setQuantity($quantity);
                 $order->setCartTicket($data);
                 $order->setReference($reference);
             }
 
-            $orders = $orderRepository->findOneBy(['user' => $user]);
-
             $this->managerRegistry->getManager()->persist($order);
             $this->managerRegistry->getManager()->flush();
 
+            $clearSession = $request->getSession()->remove('session');
             return $this->redirectToRoute('app_invoice');
 
         }
