@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\CartTicket;
-use App\Entity\TravelSchedule;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,21 +30,10 @@ class CartController extends AbstractController
      */
     public function index(Request $request): Response
     {
-
         $user = $this->getUser();
-
         $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
 
         return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
-       /* $user = $this->getUser();
-        if ($request->getSession()->has('session')) {
-            $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
-            return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
-            dd($request->getSession()->get('session'));
-        }
-
-        $this->addFlash('warning-cart', 'Your cart is empty!');
-        return $this->render('cart/index.html.twig', []);*/
     }
 
     /**
@@ -116,13 +103,29 @@ class CartController extends AbstractController
     {
         $id = $request->get('id');
 
-        $cart = $this->managerRegistry->getRepository(CartTicket::class)->find($id);
+        $cartId = $this->managerRegistry->getRepository(CartTicket::class)->find($id);
 
         $entityManager = $this->managerRegistry->getManager();
-        $entityManager->remove($cart);
+        $entityManager->remove($cartId);
         $entityManager->flush();
         return $this->redirectToRoute('app_index');
+    }
 
+    /**
+     * @Route("cart/clear", name="cart_clear")
+     */
+    public function clearCart(ManagerRegistry $registry): Response
+    {
+        $entityManager = $registry->getManager();
+
+        $cartTickets = $entityManager->getRepository(CartTicket::class)->findAll();
+
+        foreach ($cartTickets as $tickets) {
+            $entityManager->remove($tickets);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_index');
 
     }
 }
