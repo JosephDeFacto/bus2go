@@ -36,7 +36,7 @@ class CartTicket
     private $quantity = 1;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
      */
     private $orders;
 

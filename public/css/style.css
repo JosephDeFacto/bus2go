@@ -601,3 +601,14 @@ input[type=email], input[type=password] {
     margin-top: 10px;
 }
 
+.flash-success {
+    color: #0d9488;
+}
+
+.flash-warning {
+    color: red;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+
+}

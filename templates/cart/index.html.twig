@@ -6,6 +6,16 @@
 
 <div class="sb--main-cart">
     <div class="sb--main__content">
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning-cart') %}
+            <div class="flash-warning">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="sb--main-info">
 
             {% if cartTickets is defined %}
@@ -21,13 +31,12 @@
                     {{ tickets.quantity }}
                     {{ tickets.travelSchedule.getFee|number_format(2, '.', '') * tickets.quantity }}
                     <a href="{{ path('cart_updateToCart', {id: tickets.id}) }}">Change Quantity</a>
-                   {# <a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>#}
+                    {#<a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>#}
                     <a href="{{ path('app_order') }}">Make an order</a>
 
                 {% endfor %}
 
             {% endif %}
-
 
 
 

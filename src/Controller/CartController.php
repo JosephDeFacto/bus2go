@@ -7,6 +7,7 @@ use App\Entity\TravelSchedule;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
+use Couchbase\MatchAllSearchQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CartController extends AbstractController
 {
+    public const CART_KEY_NAME = 'cart_id';
     public ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
@@ -32,12 +34,15 @@ class CartController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $id = $request->get('id');
         $user = $this->getUser();
+        if ($request->getSession()->has('session')) {
+            $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
+            return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
+            /*dd($request->getSession()->get('session'));*/
+        }
 
-        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
-
-        return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
+        $this->addFlash('warning-cart', 'Your cart is empty!');
+        return $this->render('cart/index.html.twig', []);
     }
 
     /**
@@ -63,6 +68,7 @@ class CartController extends AbstractController
             $cartTicket->setUser($user);
             $cartTicket->setTravelSchedule($travelSchedule);
             $cartTicket->setQuantity($cartTicket->getQuantity());
+            $session = $request->getSession()->set('session', $cartTicket);
 
             $this->managerRegistry->getManager()->persist($cartTicket);
             $this->managerRegistry->getManager()->flush();

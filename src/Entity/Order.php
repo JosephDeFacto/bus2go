@@ -21,7 +21,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders", cascade={"persist", "remove"})
      */
     private $user;
 
@@ -41,8 +41,8 @@ class Order
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CartTicket::class, inversedBy="orders")
-     * @ORM\JoinColumn(name="cart_ticket_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=CartTicket::class, inversedBy="orders", fetch="EAGER")
+     * @ORM\JoinColumn(name="cart_ticket_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $cartTicket;
 
@@ -56,9 +56,15 @@ class Order
      */
     private $invoices;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="orders")
+     */
+    private $orderItems;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
 
@@ -164,6 +170,36 @@ class Order
             // set the owning side to null (unless already changed)
             if ($invoice->getOrders() === $this) {
                 $invoice->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrders() === $this) {
+                $orderItem->setOrders(null);
             }
         }
 
