@@ -32,15 +32,21 @@ class CartController extends AbstractController
      */
     public function index(Request $request): Response
     {
+
         $user = $this->getUser();
+
+        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
+
+        return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
+       /* $user = $this->getUser();
         if ($request->getSession()->has('session')) {
             $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
             return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
-            /*dd($request->getSession()->get('session'));*/
+            dd($request->getSession()->get('session'));
         }
 
         $this->addFlash('warning-cart', 'Your cart is empty!');
-        return $this->render('cart/index.html.twig', []);
+        return $this->render('cart/index.html.twig', []);*/
     }
 
     /**
@@ -103,4 +109,20 @@ class CartController extends AbstractController
         return $this->render('cart/update.html.twig', ['cartTicket' => $cart, 'form' => $form->createView()]);
     }
 
+    /**
+     * @Route("cart/delete/{id}", name="cart_deleteToCart")
+     */
+    public function deleteFromCart(Request $request)
+    {
+        $id = $request->get('id');
+
+        $cart = $this->managerRegistry->getRepository(CartTicket::class)->find($id);
+
+        $entityManager = $this->managerRegistry->getManager();
+        $entityManager->remove($cart);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_index');
+
+
+    }
 }

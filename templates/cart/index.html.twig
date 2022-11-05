@@ -31,7 +31,7 @@
                     {{ tickets.quantity }}
                     {{ tickets.travelSchedule.getFee|number_format(2, '.', '') * tickets.quantity }}
                     <a href="{{ path('cart_updateToCart', {id: tickets.id}) }}">Change Quantity</a>
-                    {#<a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>#}
+                    <a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>
                     <a href="{{ path('app_order') }}">Make an order</a>
 
                 {% endfor %}

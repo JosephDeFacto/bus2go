@@ -42,7 +42,14 @@ class OrderController extends AbstractController
             $orderData['fee'] = $orders->getCartTicket()->getTravelSchedule()->getFee();
         }
 
-        return $this->render('order/index.html.twig', ['orders' => $orderData]);
+        if ($orderData) {
+            return $this->render('order/index.html.twig', ['orders' => $orderData]);
+        }
+
+        $this->addFlash('warning-orders', 'You have no orders yet!');
+        return $this->render('order/index.html.twig', []);
+
+
     }
 
     /**

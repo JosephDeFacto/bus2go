@@ -42,11 +42,20 @@
 
 {% block body %}
 
-    {{ orders.departFrom }}
-    {{ orders.travelTo }}
-    {{ orders.returnOn|date('d-m-Y') }}
-    {{ orders.departureTime|date('d-m-Y') }}
-    {{ orders.timeOfArrival|date('H:i') }}
-    {{ orders.estArrivalTime|date('H:i') }}
-    {{ orders.fee }}
+    {% if orders is not defined %}
+        {% for message in app.flashes('warning-orders') %}
+            <div class="flash-warning">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% else %}
+        {{ orders.departFrom }}
+        {{ orders.travelTo }}
+        {{ orders.returnOn|date('d-m-Y') }}
+        {{ orders.departureTime|date('d-m-Y') }}
+        {{ orders.timeOfArrival|date('H:i') }}
+        {{ orders.estArrivalTime|date('H:i') }}
+        {{ orders.fee }}
+    {% endif %}
+
 {% endblock %}
