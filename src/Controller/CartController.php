@@ -7,7 +7,6 @@ use App\Entity\TravelSchedule;
 use App\Form\CartTypeFormType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
-use Couchbase\MatchAllSearchQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CartController extends AbstractController
 {
-    public const CART_KEY_NAME = 'cart_id';
     public ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
