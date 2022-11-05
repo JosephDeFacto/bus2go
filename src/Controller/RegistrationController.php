@@ -57,6 +57,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            return $this->redirectToRoute('app_login');
+
             // generate a signed url and email it to the user
             $signature = $this->verifyEmail->generateSignature('app_verify_email', $user->getId(), $user->getEmail());
            /* $signatureComponents = $this->verifyEmailHelper->generateSignature(
