@@ -54,3 +54,9 @@ services:
 
     App\Service\Verificator\VerifyEmailToken:
         $key: 'key'
+
+    my.oauth_aware.user_provider.service:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider
+        arguments:
+            - '@fos_user.user_manager'
+            - ['username']

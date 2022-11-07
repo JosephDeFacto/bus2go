@@ -47,6 +47,22 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "friendsofsymfony/user-bundle": {
+        "version": "v3.1.0"
+    },
+    "hwi/oauth-bundle": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.6",
+            "ref": "18ce21f16066cccfa0803c9e846a2e4f4bec92ab"
+        },
+        "files": [
+            "config/packages/hwi_oauth.yaml",
+            "config/routes/hwi_oauth_routing.yaml"
+        ]
+    },
     "knplabs/knp-snappy-bundle": {
         "version": "1.9",
         "recipe": {
@@ -57,6 +73,30 @@
         },
         "files": [
             "config/packages/knp_snappy.yaml"
+        ]
+    },
+    "nyholm/psr7": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "0cd4d2d0e7f646fda75f9944f747a56e6ed13d4c"
+        },
+        "files": [
+            "config/packages/nyholm_psr7.yaml"
+        ]
+    },
+    "php-http/httplug-bundle": {
+        "version": "1.27",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.6",
+            "ref": "87b3d491d593d2c6e3b90bf0689ac69a188bfa5f"
+        },
+        "files": [
+            "config/packages/httplug.yaml"
         ]
     },
     "phpunit/phpunit": {

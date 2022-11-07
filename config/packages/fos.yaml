@@ -1,0 +1,10 @@
+# FOSUser
+fos_user:
+  from_email:
+    address: "admin.support@no-reply.com"
+    sender_name: "Demo String"
+  db_driver: orm
+  firewall_name: main
+  user_class: UserBundle\Entity\User
+  service:
+    mailer: fos_user.mailer.noop
