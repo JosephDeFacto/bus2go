@@ -48,8 +48,6 @@ class OrderController extends AbstractController
 
         $this->addFlash('warning-orders', 'You have no orders yet!');
         return $this->render('order/index.html.twig', []);
-
-
     }
 
     /**
@@ -67,9 +65,9 @@ class OrderController extends AbstractController
 
         $fee = $cartData[0]->getTravelSchedule()->getFee();
         $loggedUser = $this->getUser();
-       /* $currentDay = date(strtotime('now'));
-        $lastDayOfYear = strtotime('12/31');
-        $numberOfDays = $lastDayOfYear - $currentDay;*/
+        /* $currentDay = date(strtotime('now'));
+         $lastDayOfYear = strtotime('12/31');
+         $numberOfDays = $lastDayOfYear - $currentDay;*/
         $userCart = $cartTicketRepository->findBy(['user' => $loggedUser]);
 
         $form = $this->createForm(OrderTypeFormType::class, null, [
@@ -84,12 +82,10 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
         $order = new Order();
         if ($form->isSubmitted() && $form->isValid()) {
-
             $date = new \DateTime();
             $reference = $date->format('dmY').'-'.uniqid();
 
             foreach ($cartData as $data) {
-
                 $order->setUser($loggedUser);
                 $order->setStripeId(1);
                 $order->setPrice($fee);
@@ -103,7 +99,6 @@ class OrderController extends AbstractController
 
             $clearSession = $request->getSession()->remove('session');
             return $this->redirectToRoute('app_invoice');
-
         }
 
         return $this->render('order/order-checkout.html.twig', [

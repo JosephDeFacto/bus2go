@@ -7,7 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
-
 /**
  * @extends ServiceEntityRepository<TravelSchedule>
  *
@@ -63,13 +62,13 @@ class TravelScheduleRepository extends ServiceEntityRepository
          return $result->fetchAllAssociative();*/
 
         // THIS WORKS TOO
-       /* $qb = $this->createQueryBuilder('t')
-            ->where('t.fee = :fee')
-            ->setParameter('fee', $fee);
+        /* $qb = $this->createQueryBuilder('t')
+             ->where('t.fee = :fee')
+             ->setParameter('fee', $fee);
 
 
-        $query = $qb->getQuery();
-        return $query->execute();*/
+         $query = $qb->getQuery();
+         return $query->execute();*/
     }
 
     public function countSearchResult($departFrom, $travelTo, $departingOn, $returningOn): array

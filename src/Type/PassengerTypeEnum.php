@@ -2,12 +2,11 @@
 
 namespace App\Type;
 
-
 abstract class PassengerTypeEnum
 {
-    const TYPE_STUDENT = 'student';
-    const TYPE_ADULT = 'adult';
-    const TYPE_PENSIONER = 'pensioner';
+    public const TYPE_STUDENT = 'student';
+    public const TYPE_ADULT = 'adult';
+    public const TYPE_PENSIONER = 'pensioner';
     /**
      * @var string[]
      */

@@ -8,13 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity(repositoryClass=TravelScheduleRepository::class)
  */
 class TravelSchedule
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -149,7 +147,7 @@ class TravelSchedule
 
     public function setReturningOn(\DateTimeInterface $returningOn): self
     {
-       /* $this->returningOn = $returningOn->format('Y-m-d H:i:s');*/
+        /* $this->returningOn = $returningOn->format('Y-m-d H:i:s');*/
         $this->returningOn = $returningOn->format('Y-m-d');
 
         return $this;

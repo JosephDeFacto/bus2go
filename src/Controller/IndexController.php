@@ -19,13 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-
     /**
      * @Route("/", name="app_index")
      */
     public function index(Request $request, TravelScheduleRepository $travelScheduleRepository, BusCompanyRepository $busCompanyRepository): Response
     {
-
         $busCompanies = $busCompanyRepository->findAll();
 
         $form = $this->createForm(SearchFormType::class, null, [

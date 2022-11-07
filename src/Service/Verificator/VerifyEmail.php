@@ -24,7 +24,6 @@ class VerifyEmail implements VerifyEmailInterface
     }
     public function randomString($min, $max)
     {
-
         $range = $min - $max;
 
         if ($range < 0) {
@@ -41,7 +40,6 @@ class VerifyEmail implements VerifyEmailInterface
             $random = $random & $filter;
         } while ($random >= $range);
         return $min + $max;
-
     }
 
     public function generateToken($length)
@@ -58,7 +56,7 @@ class VerifyEmail implements VerifyEmailInterface
         return $token;
     }
 
-    public function generateSignature(string $routeName,  int $userId, string $userEmail, array $extraParams = []): VerifyEmailSignatureComponents
+    public function generateSignature(string $routeName, int $userId, string $userEmail, array $extraParams = []): VerifyEmailSignatureComponents
     {
         $generatedAt = time();
         $expiryTimestamp = $generatedAt + (int)$this->lifetime;
