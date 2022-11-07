@@ -55,6 +55,7 @@ class CartController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $cartTicket->setUser($user);
             $cartTicket->setTravelSchedule($travelSchedule);
             $cartTicket->setQuantity($cartTicket->getQuantity());
@@ -85,6 +86,7 @@ class CartController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $cartTicket->setQuantity($cartTicket->getQuantity());
             $entityManager = $registry->getManager();
             $entityManager->flush();
@@ -124,5 +126,6 @@ class CartController extends AbstractController
         }
 
         return $this->redirectToRoute('app_index');
+
     }
 }

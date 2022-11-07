@@ -22,6 +22,6 @@ class PaymentController extends AbstractController
      */
     public function index(): Response
     {
-        return new Response('');
+       return new Response('');
     }
 }

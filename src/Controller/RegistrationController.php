@@ -20,7 +20,6 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
-
 class RegistrationController extends AbstractController
 {
     private VerifyEmailHelperInterface $verifyEmailHelper;
@@ -40,6 +39,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginFormAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -47,7 +47,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
+            $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -61,15 +61,15 @@ class RegistrationController extends AbstractController
 
             // generate a signed url and email it to the user
             $signature = $this->verifyEmail->generateSignature('app_verify_email', $user->getId(), $user->getEmail());
-            /* $signatureComponents = $this->verifyEmailHelper->generateSignature(
-                 'app_verify_email',
-                 $user->getId(),
-                 $user->getEmail()
-             );*/
+           /* $signatureComponents = $this->verifyEmailHelper->generateSignature(
+                'app_verify_email',
+                $user->getId(),
+                $user->getEmail()
+            );*/
 
-            /* $expiresAt = \DateTime::createFromImmutable($signatureComponents->getExpiresAt());
-             $expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-             $expiryTime = \IntlDateFormatter::formatObject($expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get())));*/
+           /* $expiresAt = \DateTime::createFromImmutable($signatureComponents->getExpiresAt());
+            $expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            $expiryTime = \IntlDateFormatter::formatObject($expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get())));*/
 
             $email = new TemplatedEmail();
             $email->from('admin.admin@no-reply.com');
@@ -79,7 +79,8 @@ class RegistrationController extends AbstractController
 
             try {
                 $this->mailer->send($email);
-            } catch (TransportExceptionInterface $exception) {
+            } catch (TransportExceptionInterface $exception)
+            {
                 $exception->getDebug();
             }
 
@@ -90,20 +91,20 @@ class RegistrationController extends AbstractController
             );
 
 
-            /* $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                 (new TemplatedEmail())
-                     ->from(new Address('admin.admin@no-reply.com', 'ADmin'))
-                     ->to($user->getEmail())
-                     ->subject('Please Confirm your Email')
-                     ->htmlTemplate('registration/confirmation_email.html.twig')
-             );
-             // do anything else you need here, like send an email
+           /* $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('admin.admin@no-reply.com', 'ADmin'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+            // do anything else you need here, like send an email
 
-             return $userAuthenticator->authenticateUser(
-                 $user,
-                 $authenticator,
-                 $request
-             );*/
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
+            );*/
         }
 
         return $this->render('registration/register.html.twig', [

@@ -33,7 +33,7 @@ class Cart
     {
         $this->cartTickets = new ArrayCollection();
     }
-
+    
     public function getUser(): ?User
     {
         return $this->user;
@@ -75,4 +75,5 @@ class Cart
 
         return $this;
     }
+
 }

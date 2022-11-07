@@ -31,6 +31,7 @@ class CartTypeFormType extends AbstractType
 
             ->add('submit', SubmitType::class, ['attr' =>  ['class' => 'btn-cart-submit']])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

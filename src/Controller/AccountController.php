@@ -16,6 +16,7 @@ class AccountController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
+
         $authenticatedUser = $this->getUser();
         $userData = $userRepository->findAll();
 
@@ -27,14 +28,12 @@ class AccountController extends AbstractController
 
 
 
-        return $this->render(
-            'account/index.html.twig',
+        return $this->render('account/index.html.twig',
             [
                 'user' => $authenticatedUser,
                 'userData' => $userData,
                 'all' => $all,
-            ]
-        );
+            ]);
     }
 
     /**
@@ -42,6 +41,7 @@ class AccountController extends AbstractController
      */
     public function myTickets(UserRepository $userRepository): Response
     {
+
         $data = ['Hello'];
 
         return $this->render('account/myTickets.html.twig', ['data' => $data]);

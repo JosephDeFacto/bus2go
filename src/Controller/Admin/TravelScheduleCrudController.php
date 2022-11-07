@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller\Admin;
-
 use App\Entity\TravelSchedule;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,8 +12,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
+
 class TravelScheduleCrudController extends AbstractCrudController
 {
+
     public static function getEntityFqcn(): string
     {
         return TravelSchedule::class;
@@ -22,6 +23,7 @@ class TravelScheduleCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+
         return $actions
             ->add('index', 'detail');
     }
@@ -46,4 +48,5 @@ class TravelScheduleCrudController extends AbstractCrudController
     {
         return $crud->setEntityLabelInSingular('TravelSchedule')->setEntityLabelInPlural('TravelSchedules');
     }
+
 }
