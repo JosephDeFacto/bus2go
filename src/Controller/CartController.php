@@ -91,7 +91,10 @@ class CartController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $cartTicket->setQuantity($cartTicket->getQuantity());
+            $cartTicket->setChildQuantity($form->getData()->getChildQuantity());
+            $cartTicket->setStudentQuantity($form->getData()->getStudentQuantity());
+            $cartTicket->setAdultQuantity($form->getData()->getAdultQuantity());
+            $cartTicket->setPensionerQuantity($form->getData()->getPensionerQuantity());
             $entityManager = $registry->getManager();
             $entityManager->flush();
 
