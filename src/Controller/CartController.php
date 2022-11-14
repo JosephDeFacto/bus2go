@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CartTicket;
-use App\Form\CartTypeFormType;
+use App\Form\CartType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -50,7 +50,7 @@ class CartController extends AbstractController
 
         $travelSchedule = $travelScheduleRepository->find($id);
 
-        $form = $this->createForm(CartTypeFormType::class, $cartTicket);
+        $form = $this->createForm(CartType::class, $cartTicket);
 
         $form->handleRequest($request);
 
@@ -58,7 +58,11 @@ class CartController extends AbstractController
 
             $cartTicket->setUser($user);
             $cartTicket->setTravelSchedule($travelSchedule);
-            $cartTicket->setQuantity($cartTicket->getQuantity());
+           /* $cartTicket->setQuantity($cartTicket->getQuantity());*/
+            $cartTicket->setChildQuantity($form->getData()->getChildQuantity());
+            $cartTicket->setStudentQuantity($form->getData()->getStudentQuantity());
+            $cartTicket->setAdultQuantity($form->getData()->getAdultQuantity());
+            $cartTicket->setPensionerQuantity($form->getData()->getPensionerQuantity());
             $session = $request->getSession()->set('session', $cartTicket);
 
             $this->managerRegistry->getManager()->persist($cartTicket);
@@ -81,7 +85,7 @@ class CartController extends AbstractController
 
         $cart = $cartTicketRepository->find($id);
 
-        $form = $this->createForm(CartTypeFormType::class, $cart);
+        $form = $this->createForm(CartType::class, $cart);
 
         $form->handleRequest($request);
 

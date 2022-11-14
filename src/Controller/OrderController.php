@@ -28,7 +28,6 @@ class OrderController extends AbstractController
      */
     public function index(): Response
     {
-        // get my orders
         $myOrders = $this->managerRegistry->getRepository(Order::class)->findBy(['user' => $this->getUser()]);
 
         $orderData = [];
@@ -67,9 +66,6 @@ class OrderController extends AbstractController
 
         $fee = $cartData[0]->getTravelSchedule()->getFee();
         $loggedUser = $this->getUser();
-       /* $currentDay = date(strtotime('now'));
-        $lastDayOfYear = strtotime('12/31');
-        $numberOfDays = $lastDayOfYear - $currentDay;*/
         $userCart = $cartTicketRepository->findBy(['user' => $loggedUser]);
 
         $form = $this->createForm(OrderTypeFormType::class, null, [
@@ -79,7 +75,6 @@ class OrderController extends AbstractController
         $sessionData = $request->getSession()->get('session');
         $quantity = $sessionData->getQuantity();
         $user = $sessionData->getUser();
-        $travel = $sessionData->getTravelSchedule();
 
         $form->handleRequest($request);
         $order = new Order();

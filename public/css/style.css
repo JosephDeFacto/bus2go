@@ -611,3 +611,19 @@ input[type=email], input[type=password] {
     font-size: 20px;
     text-transform: uppercase;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding: 50px;
+}
+
+.modal-content {
+    background: #f0f9ff;
+}
+
+
+.fa, .close {
+    cursor: pointer;
+}

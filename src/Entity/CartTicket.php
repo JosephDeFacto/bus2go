@@ -24,7 +24,6 @@ class CartTicket
      */
     private $user;
 
-
     /**
      * @ORM\ManyToOne(targetEntity=TravelSchedule::class, inversedBy="cartTickets")
      */
@@ -33,12 +32,32 @@ class CartTicket
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $quantity = 1;
+    /*private $quantity = 1;*/
 
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
      */
     private $orders;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $childQuantity = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $studentQuantity = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $adultQuantity = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pensionerQuantity = 0;
 
 
     public function __construct()
@@ -75,7 +94,7 @@ class CartTicket
         return $this;
     }
 
-    public function getQuantity(): ?int
+   /* public function getQuantity(): ?int
     {
         return $this->quantity;
     }
@@ -85,7 +104,7 @@ class CartTicket
         $this->quantity = $quantity;
 
         return $this;
-    }
+    }*/
 
     public function __toString(): string
     {
@@ -118,6 +137,54 @@ class CartTicket
                 $order->setCartTicket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChildQuantity(): ?int
+    {
+        return $this->childQuantity;
+    }
+
+    public function setChildQuantity(int $childQuantity): self
+    {
+        $this->childQuantity = $childQuantity;
+
+        return $this;
+    }
+
+    public function getStudentQuantity(): ?int
+    {
+        return $this->studentQuantity;
+    }
+
+    public function setStudentQuantity(int $studentQuantity): self
+    {
+        $this->studentQuantity = $studentQuantity;
+
+        return $this;
+    }
+
+    public function getAdultQuantity(): ?int
+    {
+        return $this->adultQuantity;
+    }
+
+    public function setAdultQuantity(int $adultQuantity): self
+    {
+        $this->adultQuantity = $adultQuantity;
+
+        return $this;
+    }
+
+    public function getPensionerQuantity(): ?int
+    {
+        return $this->pensionerQuantity;
+    }
+
+    public function setPensionerQuantity(int $pensionerQuantity): self
+    {
+        $this->pensionerQuantity = $pensionerQuantity;
 
         return $this;
     }

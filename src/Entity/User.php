@@ -54,10 +54,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $mobile;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Cart::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $cart;
 
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
@@ -208,28 +204,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMobile(int $mobile): self
     {
         $this->mobile = $mobile;
-
-        return $this;
-    }
-
-    public function getCart(): ?Cart
-    {
-        return $this->cart;
-    }
-
-    public function setCart(?Cart $cart): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($cart === null && $this->cart !== null) {
-            $this->cart->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($cart !== null && $cart->getUser() !== $this) {
-            $cart->setUser($this);
-        }
-
-        $this->cart = $cart;
 
         return $this;
     }

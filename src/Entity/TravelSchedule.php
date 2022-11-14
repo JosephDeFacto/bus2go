@@ -77,10 +77,6 @@ class TravelSchedule
      */
     private $city;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="travelSchedule")
-     */
-    private $carts;
 
     /**
      * @ORM\Column(type="integer")
@@ -93,9 +89,28 @@ class TravelSchedule
      */
     private $discountTravelSchedules;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $childPrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $studentPrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $adultPrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $pensionerPrice;
+
     public function __construct()
     {
-        $this->carts = new ArrayCollection();
         $this->discountTravelSchedules = new ArrayCollection();
     }
 
@@ -239,35 +254,6 @@ class TravelSchedule
         return $this;
     }
 
-    /**
-     * @return Collection<int, Cart>
-     */
-    public function getCarts(): Collection
-    {
-        return $this->carts;
-    }
-
-    public function addCart(Cart $cart): self
-    {
-        if (!$this->carts->contains($cart)) {
-            $this->carts[] = $cart;
-            $cart->setTravelSchedule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCart(Cart $cart): self
-    {
-        if ($this->carts->removeElement($cart)) {
-            // set the owning side to null (unless already changed)
-            if ($cart->getTravelSchedule() === $this) {
-                $cart->setTravelSchedule(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function __toString(): string
     {
@@ -312,6 +298,54 @@ class TravelSchedule
                 $discountTravelSchedule->setTravelSchedule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChildPrice(): ?int
+    {
+        return $this->childPrice;
+    }
+
+    public function setChildPrice(int $childPrice): self
+    {
+        $this->childPrice = $childPrice;
+
+        return $this;
+    }
+
+    public function getStudentPrice(): ?int
+    {
+        return $this->studentPrice;
+    }
+
+    public function setStudentPrice(int $studentPrice): self
+    {
+        $this->studentPrice = $studentPrice;
+
+        return $this;
+    }
+
+    public function getAdultPrice(): ?int
+    {
+        return $this->adultPrice;
+    }
+
+    public function setAdultPrice(int $adultPrice): self
+    {
+        $this->adultPrice = $adultPrice;
+
+        return $this;
+    }
+
+    public function getPensionerPrice(): ?int
+    {
+        return $this->pensionerPrice;
+    }
+
+    public function setPensionerPrice(int $pensionerPrice): self
+    {
+        $this->pensionerPrice = $pensionerPrice;
 
         return $this;
     }

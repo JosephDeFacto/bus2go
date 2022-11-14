@@ -2,6 +2,12 @@
 
 {% block title %}Hello BuyController!{% endblock %}
 
+{% set childQuantity = 0 %}
+{% set studentQuantity = 0 %}
+{% set adultQuantity = 0 %}
+{% set pensionerQuantity = 0 %}
+
+
 {% block body %}
 
 <div class="sb--main-cart">
@@ -28,8 +34,33 @@
                     {{ tickets.travelSchedule.getDepartureTime|date('H:i') }}
                     {{ tickets.travelSchedule.getTimeOfArrival|date('H:i') }}
                     {{ tickets.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-                    {{ tickets.quantity }}
-                    {{ tickets.travelSchedule.getFee|number_format(2, '.', '') * tickets.quantity }}
+                    {{ tickets.getChildQuantity }}
+                    {{ tickets.getStudentQuantity }}
+                    {{ tickets.getAdultQuantity }}
+                    {{ tickets.getPensionerQuantity }}
+
+                    {% if tickets.childQuantity >= 0 %}
+                        {% set childSubtotal = (childQuantity + tickets.childQuantity) * tickets.travelSchedule.childPrice %}
+                    {% endif %}
+
+                    {% if tickets.studentQuantity >= 0 %}
+                        {% set studentSubtotal = (studentQuantity + tickets.studentQuantity) * tickets.travelSchedule.studentPrice %}
+                    {% endif %}
+
+                    {% if tickets.adultQuantity >= 0 %}
+                        {% set adultSubtotal = (studentQuantity + tickets.adultQuantity) * tickets.travelSchedule.adultPrice %}
+                    {% endif %}
+
+                    {% if tickets.pensionerQuantity >= 0 %}
+                        {% set pensionerSubtotal = (pensionerQuantity + tickets.pensionerQuantity) * tickets.travelSchedule.pensionerPrice %}
+                    {% endif %}
+
+                    {% set totalPrice = childSubtotal + studentSubtotal + adultSubtotal + pensionerSubtotal %}
+
+                    Total Price: {{ totalPrice|number_format(2, '.', '') }}
+
+
+                    {#{{ tickets.travelSchedule.getFee|number_format(2, '.', '') * tickets.quantity }}#}
                     <a href="{{ path('cart_updateToCart', {id: tickets.id}) }}">Change Quantity</a>
                     <a href="{{ path('cart_deleteToCart', {id: tickets.id}) }}">Delete</a>
                     <a href="{{ path('cart_clear') }}">Clear Cart</a>

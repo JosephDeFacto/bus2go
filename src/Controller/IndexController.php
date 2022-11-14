@@ -2,16 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\CartTicket;
-use App\Entity\TravelSchedule;
-use App\Form\CartTypeFormType;
 use App\Form\SearchFormType;
 use App\Repository\BusCompanyRepository;
-use App\Repository\CartRepository;
-use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
-use Doctrine\DBAL\Exception\InvalidArgumentException;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
