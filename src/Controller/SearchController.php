@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\SearchFormType;
+use App\Form\SearchType;
 use App\Repository\TravelScheduleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class SearchController extends AbstractController
         /*$departFrom = $request->get('depart_from');
         $travelTo = $request->get('travel_to');*/
 
-        $form = $this->createForm(SearchFormType::class, null, [
+        $form = $this->createForm(SearchType::class, null, [
             'method' => 'GET',
         ]);
 
