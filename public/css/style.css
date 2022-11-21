@@ -527,7 +527,8 @@ input[type=email], input[type=password] {
 
 @media only screen and (max-width: 600px) {
     .homepage-bs {
-        display: flex;
+        /*display: flex;*/
+        justify-content: center;
     }
 
     .main-hero__title, .main-hero__subtitle {
@@ -564,10 +565,22 @@ input[type=email], input[type=password] {
     input::placeholder {
         font-size: 10px;
     }
+}
 
+@media only screen and (max-width: 600px) {
+    .bs--search-form {
+        display: flex;
+        justify-content: center;
+    }
 
+    .btn--black__search {
+        position: relative;
+        left: 0;
+    }
 
-
+    input::placeholder {
+        font-size: 9px;
+    }
 }
 
 @media only screen and (min-width: 1069px) {
