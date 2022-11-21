@@ -1,17 +1,12 @@
 * {
     box-sizing: border-box;
 }
-/* Don't forget webkits */
-/* Change all these shitty colors */
+
 .homepage-bs {
     font-size: 1rem;
     font-family: DejaVu Sans Mono, monospace;
     color: #302e2e;
     line-height: 24px;
-    /*background: #20002c;
-    background: -webkit-linear-gradient(to right, #20002c, #cbb4d4);
-    background: linear-gradient(to right, #20002c, #cbb4d4);*/
-    background: #34e89e;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #0f3443, #34e89e);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
@@ -20,7 +15,6 @@
     margin-left: 20px;
     display: flex;
     justify-content: space-around;
-
     height: 50%;
 }
 
@@ -83,18 +77,6 @@ a {
     margin: 10px 0 0 0;
 }
 
-/*.main-hero__title {
-    font-size: 2rem;
-    line-height: 24px;
-    letter-spacing: 10px;
-    display: flex;
-    justify-content: center;
-    font-family: DejaVu Sans Mono, monospace;
-    color: #20002c;
-    font-weight: bolder;
-    width: 70vw;
-}*/
-
 .main-hero__title {
     line-height: 24px;
     letter-spacing: 10px;
@@ -128,18 +110,6 @@ a {
     width: 35%;
 }
 
-/*.main-hero__subtitle {
-    font-size: 1.8rem;
-    letter-spacing: 10px;
-    display: flex;
-    justify-content: end;
-    color: #20004e;
-    font-weight: bolder;
-    line-height: 24px;
-    font-family: DejaVu Sans Mono, monospace;
-    margin: 7px 30px 0 0;
-}*/
-
 .main-hero__subtitle {
     background: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #fff800 100%);
     background-size: auto auto;
@@ -169,11 +139,7 @@ a {
 }
 
 .bs--search-form {
-    /*display: grid;*/
     display: flex;
-   /* grid-template-columns: min-content min-content min-content min-content;
-    grid-column-gap: 5px;
-    justify-content: center;*/
 }
 
 .search__select--from, .search__select--to, .js-datepicker {
@@ -195,14 +161,9 @@ a {
 }
 
 .search__select-label-from {
-    /*position: absolute;
-    color: white;
-    font-weight: bolder;
-    right: 0;*/
     text-transform: uppercase;
     z-index: 1;
     left: 20%;
-   /* margin: 2px 0 0 6px;*/
     font-size: 10px;
     color: white;
     font-family: DejaVu Sans Mono, monospace;
@@ -214,35 +175,24 @@ a {
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-    /*margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
 
 .search__select-label-datefrom {
-   /* position: absolute;
-    right: 0;
-    left: 50.5vw;
-    z-index: 1;*/
     display: flex;
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-    /*margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
 
 .search__select-label-dateto {
-  /*  position: absolute;
-    right: 0;
-    left: 65.8vw;
-    z-index: 1;*/
     display: flex;
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-   /* margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
@@ -288,7 +238,7 @@ input[type=text]:hover {
 
 .bs__modal-content {
     background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    margin: 5% auto 15% auto;
     border: 1px solid #888;
     width: 80%;
 }
@@ -328,7 +278,6 @@ input[type=email], input[type=password] {
 .search-results_main-content {
     background: #cbb4d4;
     width: 100%;
-   /* margin-top: 35px;*/
     margin-top: -20px;
     height: 60vh;
 }
@@ -439,7 +388,6 @@ input[type=email], input[type=password] {
 }
 
 .sb--travel-info {
-    /*background: #fff;*/
     width: 100%;
     padding: 2rem 0;
     position: sticky;
@@ -460,7 +408,6 @@ input[type=email], input[type=password] {
 
 .sb--main-cart {
     background: #cbb4d4;
-
 }
 
 .sb--row-title {
@@ -535,10 +482,6 @@ input[type=email], input[type=password] {
         font-size: 1rem;
     }
 
-    .bs--menu__nav {
-
-    }
-
     .bs--header {
         justify-content: end;
     }
@@ -552,7 +495,6 @@ input[type=email], input[type=password] {
         justify-content: space-between;
         align-items: center;
     }
-
 
     .btn--black__search {
         position: relative;
@@ -588,5 +530,3 @@ input[type=email], input[type=password] {
         font-size: 15px;
     }
 }
-
-
