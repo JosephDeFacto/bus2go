@@ -11,13 +11,13 @@
 
     {% if form is defined %}
         {{ form_start(form) }}
-        <span class="search__select-label-from">Travel from</span>
+        <span class="search__select-label-from"></span>
         {{ form_row(form.departFrom, {'label':false}) }}
-        <span class="search__select-label-to">Travel to</span>
+        <span class="search__select-label-to"></span>
         {{ form_row(form.travelTo, {'label':false}) }}
-        <span class="search__select-label-datefrom">Departing on</span>
+        <span class="search__select-label-datefrom"></span>
         {{ form_row(form.departingOn, {'label':false}) }}
-        <span class="search__select-label-dateto">Returning on</span>
+        <span class="search__select-label-dateto"></span>
         {{ form_row(form.returningOn, {'label':false}) }}
         <input type="submit" value="Search" class="btn btn--black__search">
         {{ form_end(form) }}
