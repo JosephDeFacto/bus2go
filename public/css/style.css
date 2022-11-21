@@ -124,7 +124,7 @@ a {
     font-size: 1.8rem;
     letter-spacing: 10px;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     color: #20004e;
     font-weight: bolder;
     line-height: 24px;
@@ -478,55 +478,122 @@ input[type=email], input[type=password] {
         justify-content: center;
     }
 
-    .main-hero__title, .main-hero__subtitle {
-        font-size: 1rem;
+    .main-hero__title {
+        font-size: 14px;
+        width: 100%;
+        letter-spacing: 7px;
     }
 
-    .bs--header {
-        justify-content: end;
+    .main-hero__subtitle {
+        font-size: 14px;
+        letter-spacing: 7px;
+        width: 100%;
     }
 
-}
-
-@media only screen and (min-width: 600px) {
-    .homepage-bs {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .btn--black__search {
-        position: relative;
-        left: 0;
-        bottom: 0;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    input::placeholder {
-        font-size: 10px;
-    }
-}
-
-@media only screen and (max-width: 600px) {
     .bs--search-form {
         display: flex;
         justify-content: center;
     }
 
+    .search__select--from, .search__select--to, .js-datepicker {
+        height: 50px;
+        margin: 2px;
+    }
+
+    input[type=submit] {
+        padding-top: 15px;
+        margin-top: 2px;
+    }
+
     .btn--black__search {
         position: relative;
         left: 0;
+        margin-left: 5px;
+        height: 50px;
     }
 
     input::placeholder {
         font-size: 9px;
+    }
+
+    .bs--header {
+        justify-content: end;
+    }
+}
+
+@media only screen and (max-width: 1069px) {
+    input::placeholder {
+        font-size: 15px;
+    }
+
+    .bs--search-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .main-hero__title {
+        width: 100%;
+    }
+
+    .main-hero__subtitle {
+        width: 100%;
+    }
+
+    input[type=submit] {
+        padding-top: 13px;
+    }
+
+    .btn--black__search {
+        position: relative;
+        left: 0;
+        margin-left: 5px;
+        padding-bottom: 13px;
+        margin-top: 2px;
+    }
+
+    .search__select--from, .search__select--to, .js-datepicker {
+        height: 50px;
+        margin: 2px;
+    }
+}
+
+@media only screen and (max-width: 1040px) {
+    .main-hero__subtitle, .main-hero__title {
+        font-size: 25px;
     }
 }
 
 @media only screen and (min-width: 1069px) {
     input::placeholder {
         font-size: 15px;
+    }
+
+    .bs--search-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .main-hero__title {
+        width: 100%;
+    }
+
+    .main-hero__subtitle {
+        width: 100%;
+    }
+
+    input[type=submit] {
+        padding-top: 24px;
+    }
+
+    .btn--black__search {
+        position: relative;
+        left: 0;
+        margin-left: 5px;
+        padding-bottom: 17px;
+        margin-top: 1px;
+    }
+
+    .search__select--from, .search__select--to, .js-datepicker {
+        margin: 2px;
     }
 }
