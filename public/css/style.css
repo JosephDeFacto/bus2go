@@ -68,9 +68,6 @@ a {
 }
 
 .bs--logo__text {
-    position: absolute;
-    top: 30px;
-    left: 220px;
     color: #6cd106;
     font-weight: bolder;
 }
@@ -172,10 +169,11 @@ a {
 }
 
 .bs--search-form {
-    display: grid;
-    grid-template-columns: min-content min-content min-content min-content;
+    /*display: grid;*/
+    display: flex;
+   /* grid-template-columns: min-content min-content min-content min-content;
     grid-column-gap: 5px;
-    justify-content: center;
+    justify-content: center;*/
 }
 
 .search__select--from, .search__select--to, .js-datepicker {
@@ -197,53 +195,54 @@ a {
 }
 
 .search__select-label-from {
-    position: absolute;
+    /*position: absolute;
     color: white;
     font-weight: bolder;
-    right: 0;
+    right: 0;*/
     text-transform: uppercase;
     z-index: 1;
     left: 20%;
-    margin: 2px 0 0 6px;
+   /* margin: 2px 0 0 6px;*/
     font-size: 10px;
+    color: white;
     font-family: DejaVu Sans Mono, monospace;
+    display: flex;
 }
 
 .search__select-label-to {
-    position: absolute;
-    right: 0;
-    left: 35.2vw;
-    z-index: 1;
+    display: flex;
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-    margin: 2px 0 0 6px;
+    /*margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
 
 .search__select-label-datefrom {
-    position: absolute;
+   /* position: absolute;
     right: 0;
     left: 50.5vw;
-    z-index: 1;
+    z-index: 1;*/
+    display: flex;
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-    margin: 2px 0 0 6px;
+    /*margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
 
 .search__select-label-dateto {
-    position: absolute;
+  /*  position: absolute;
     right: 0;
     left: 65.8vw;
-    z-index: 1;
+    z-index: 1;*/
+    display: flex;
     color: white;
     font-weight: bolder;
     text-transform: uppercase;
-    margin: 2px 0 0 6px;
+   /* margin: 2px 0 0 6px;*/
     font-size: 10px;
     font-family: DejaVu Sans Mono, monospace;
 }
@@ -388,10 +387,6 @@ input[type=email], input[type=password] {
     cursor: pointer;
 }
 
-.total-price {
-
-}
-
 .sb--route-price-total-euro {
     display: block;
     margin-right: auto;
@@ -452,30 +447,6 @@ input[type=email], input[type=password] {
     z-index: 3;
 }
 
-.sb--column {
-
-}
-
-.sb--container {
-
-}
-
-.sb--row {
-
-}
-
-.sb--row-middle {
-
-}
-
-.sb--travel-info__title {
-
-}
-
-.sb--row-justify {
-
-}
-
 .sb--results-notification {
     color: brown;
     font-weight: 900;
@@ -489,14 +460,6 @@ input[type=email], input[type=password] {
 
 .sb--main-cart {
     background: #cbb4d4;
-
-}
-
-.sb--main__content {
-
-}
-
-.sb--main-info {
 
 }
 
@@ -561,3 +524,56 @@ input[type=email], input[type=password] {
 .fa, .close {
     cursor: pointer;
 }
+
+@media only screen and (max-width: 600px) {
+    .homepage-bs {
+        display: flex;
+    }
+
+    .main-hero__title, .main-hero__subtitle {
+        font-size: 1rem;
+    }
+
+    .bs--menu__nav {
+
+    }
+
+    .bs--header {
+        justify-content: end;
+    }
+
+}
+
+@media only screen and (min-width: 600px) {
+    .homepage-bs {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .btn--black__search {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    input::placeholder {
+        font-size: 10px;
+    }
+
+
+
+
+}
+
+@media only screen and (min-width: 1069px) {
+    input::placeholder {
+        font-size: 15px;
+    }
+}
+
+
