@@ -79,7 +79,6 @@ a {
 
 .main-hero__title {
     line-height: 24px;
-    letter-spacing: 10px;
     display: flex;
     justify-content: center;
     background: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #fff800 100%);
@@ -115,14 +114,12 @@ a {
     background-size: auto auto;
     background-clip: border-box;
     background-size: 200% auto;
-    /*color: #fff;*/
     background-clip: text;
     text-fill-color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textclip 5s linear;
     font-size: 1.8rem;
-    letter-spacing: 10px;
     display: flex;
     justify-content: center;
     color: #20004e;
@@ -472,21 +469,28 @@ input[type=email], input[type=password] {
     cursor: pointer;
 }
 
+@media only screen and (min-width: 600px) {
+    .main-hero__title {
+
+    }
+
+    .main-hero__subtitle {
+
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .homepage-bs {
-        /*display: flex;*/
         justify-content: center;
     }
 
     .main-hero__title {
         font-size: 14px;
         width: 100%;
-        letter-spacing: 7px;
     }
 
     .main-hero__subtitle {
         font-size: 14px;
-        letter-spacing: 7px;
         width: 100%;
     }
 
@@ -521,6 +525,28 @@ input[type=email], input[type=password] {
     }
 }
 
+@media only screen and (max-width: 534px) {
+    .main-hero__subtitle {
+
+    }
+}
+
+@media only screen and (max-width: 952px) {
+    .main-hero__title, .main-hero__subtitle {
+        font-size: 12px;
+        letter-spacing: 5px;
+
+    }
+}
+
+@media only screen and (min-width: 952px) {
+    .main-hero__title, .main-hero__subtitle {
+        font-size: 28px;
+        letter-spacing: 7px;
+    }
+}
+
+
 @media only screen and (max-width: 1069px) {
     input::placeholder {
         font-size: 15px;
@@ -554,12 +580,6 @@ input[type=email], input[type=password] {
     .search__select--from, .search__select--to, .js-datepicker {
         height: 50px;
         margin: 2px;
-    }
-}
-
-@media only screen and (max-width: 1040px) {
-    .main-hero__subtitle, .main-hero__title {
-        font-size: 25px;
     }
 }
 
