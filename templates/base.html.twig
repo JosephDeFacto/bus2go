@@ -30,7 +30,7 @@
                     </a>
                 </span>
 
-                <ul class="bs--menu__nav">
+                <ul class="bs--menu__nav" id="bs--menu__nav-id">
 
                     {% if app.user %}
                         <li class="bs-menu--item">
@@ -61,6 +61,19 @@
                         <li class="bs-menu--item">
                             <a href="{{ path('app_login') }}">Login</a>
                         </li>
+
+                        <script>
+                            function responsiveDropdown() {
+                                let nav = document.getElementById('bs--menu__nav-id');
+                                if (nav.className === "bs--menu__nav") {
+                                    nav.className += " responsive";
+                                } else {
+                                    nav.className = "bs--menu__nav";
+                                }
+                            }
+                        </script>
+
+                        <a href="javascript:void(0);" class="icon" onclick="responsiveDropdown()">&#9776;</a>
                     {% endif %}
                 </ul>
 

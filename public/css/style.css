@@ -480,6 +480,12 @@ input[type=email], input[type=password] {
 }
 
 @media only screen and (max-width: 600px) {
+    .bs-menu--item {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
     .homepage-bs {
         justify-content: center;
     }
@@ -523,11 +529,35 @@ input[type=email], input[type=password] {
     .bs--header {
         justify-content: end;
     }
-}
 
-@media only screen and (max-width: 534px) {
-    .main-hero__subtitle {
+    .bs--menu__nav {
+        position: relative;
+    }
 
+    .bs--menu__nav.responsive.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .bs--menu__nav.responsive li {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+
+    .bs--menu__nav.responsive {
+        float: none;
+    }
+
+    .bs--menu__nav.responsive {
+        position: relative;
+    }
+
+    .bs--menu__nav.responsive {
+        display: block;
+        width: 100%;
+        text-align: left;
     }
 }
 
@@ -535,7 +565,15 @@ input[type=email], input[type=password] {
     .main-hero__title, .main-hero__subtitle {
         font-size: 12px;
         letter-spacing: 5px;
+    }
 
+    .bs--search-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search__select--from, .search__select--to, .js-datepicker {
+        width: 100%;
     }
 }
 
