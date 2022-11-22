@@ -655,3 +655,51 @@ input[type=email], input[type=password] {
         margin: 2px;
     }
 }
+
+.bs-about-title {
+    text-align: center;
+    color: white;
+}
+
+.bs--about-content {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 0 0;
+}
+
+.img-container {
+    width: 250px;
+    margin: 35px 15px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: darkgrey;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 810px) {
+    .img-container {
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 660px) {
+    .img-container {
+        width: 150px;
+    }
+}
+
+@media only screen and (max-width: 510px) {
+    .bs--about-content {
+        display: grid;
+    }
+
+    .img-container {
+        margin-bottom: -10px;
+    }
+}
