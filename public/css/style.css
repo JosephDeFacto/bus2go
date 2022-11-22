@@ -659,6 +659,7 @@ input[type=email], input[type=password] {
 .bs-about-title {
     text-align: center;
     color: white;
+    margin-top: -10px;
 }
 
 .bs--about-content {
