@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\RegistrationType;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Verificator\VerifyEmailInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
     {
 
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

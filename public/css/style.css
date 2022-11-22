@@ -705,3 +705,7 @@ footer {
         width: 100px;
     }
 }
+
+.register-alert {
+    color: blue !important;
+}
