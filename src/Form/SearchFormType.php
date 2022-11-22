@@ -31,13 +31,13 @@ class SearchFormType extends AbstractType
                 'required' => false,
                 'html5' => false,
             ])
-            ->add('returningOn', DateType::class, [
+           /* ->add('returningOn', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
                 'attr' => ['class' => 'js-datepicker', 'placeholder' => 'optional'],
                 'required' => false,
                 'html5' => false,
-            ])
+            ])*/
             /*->add('quantity', NumberType::class)
 
             ->add('passenger', ChoiceType::class, [

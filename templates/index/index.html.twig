@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Bus2GO{% endblock %}
 
 {% set defaultCurrency = 'KN' %}
 {% set currency = '€' %}
@@ -17,8 +17,8 @@
         {{ form_row(form.travelTo, {'label':false}) }}
         <span class="search__select-label-datefrom"></span>
         {{ form_row(form.departingOn, {'label':false}) }}
-        <span class="search__select-label-dateto"></span>
-        {{ form_row(form.returningOn, {'label':false}) }}
+       {# <span class="search__select-label-dateto"></span>
+        {{ form_row(form.returningOn, {'label':false}) }}#}
         <input type="submit" value="Search" class="btn btn--black__search">
         {{ form_end(form) }}
     {% endif %}
@@ -54,13 +54,16 @@
                 <div class="sb--row sb--row-justify">
                     <div class="sb--results-notification">
                         <span data-notification="{% if rows is defined %}{{ rows[0]['COUNT(*)'] }} results">{{ rows[0]['COUNT(*)'] }} results <br>{% endif %}</span>
-                        {% if results is defined %}
+                        {% if departOn is defined %}
+                        {{ departOn }}
+                        {% endif %}
+                        {#{% if results is defined %}
                             {% for searchResult in results|slice(0,1) %}
                                 Departing On: {{ searchResult.departing_on }}<br>
                                 Returning On: {{ searchResult.returning_on }}
 
                             {% endfor %}
-                        {% endif %}
+                        {% endif %}#}
                     </div>
                 </div>
             </div>
@@ -138,4 +141,5 @@
     {% endfor %}
         {% endif %}
     </div>
+
 {% endblock %}

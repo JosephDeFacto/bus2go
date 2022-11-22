@@ -41,12 +41,12 @@ class TravelScheduleRepository extends ServiceEntityRepository
         }
     }
 
-    public function searchForBuses($departFrom, $travelTo, $departingOn, $returningOn): array
+    public function searchForBuses($departFrom, $travelTo /*$departingOn, $returningOn*/): array
     {
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%' AND departing_on LIKE '%$departingOn%' AND returning_on LIKE '%$returningOn%'";
+        $query = "SELECT * FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
         $stmt = $connection->prepare($query);
-        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo, 'departing_on' => $departingOn, 'returning_on' => $returningOn]);
+        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
 
 
         return $result->fetchAllAssociative();
@@ -72,12 +72,12 @@ class TravelScheduleRepository extends ServiceEntityRepository
         return $query->execute();*/
     }
 
-    public function countSearchResult($departFrom, $travelTo, $departingOn, $returningOn): array
+    public function countSearchResult($departFrom, $travelTo/*, $departingOn, $returningOn*/): array
     {
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT COUNT(*) FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%' AND departing_on LIKE '%$departingOn%' AND returning_on LIKE '%$returningOn%'";
+        $query = "SELECT COUNT(*) FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
         $stmt = $connection->prepare($query);
-        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo, 'departing_on' => $departingOn, 'returning_on' => $returningOn]);
+        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
 
         return $result->fetchAllAssociative();
     }
