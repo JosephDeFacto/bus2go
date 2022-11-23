@@ -17,10 +17,10 @@
             {{ cart.travelSchedule.getDepartureTime|date('H:i') }}
             {{ cart.travelSchedule.getTimeOfArrival|date('H:i') }}
             {{ cart.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-            {{ cart.getQuantity }}
+            {#{{ cart.getQuantity }}#}
             {{ cart.travelSchedule.getFee }}
 
-            Total: {{ cart.travelSchedule.getFee * cart.getQuantity }}<br>
+            Total: {#{{ cart.travelSchedule.getFee * cart.getQuantity }}#}<br>
 
         {% endfor %}
 

@@ -33,12 +33,12 @@ class TravelSchedule
     private $travelTo;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $departingOn;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $returningOn;
 

@@ -20,7 +20,7 @@ class CartTicket
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $user;
 
@@ -29,10 +29,6 @@ class CartTicket
      */
     private $travelSchedule;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    /*private $quantity = 1;*/
 
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="cartTicket", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")

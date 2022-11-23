@@ -47,7 +47,7 @@ class InvoiceController extends AbstractController
         $invoice->setIsSent(true);
         $invoice->setUser($user);
         $invoice->setBusCompany(null);
-        $invoice->setOrders($orders);
+        //$invoice->setOrders($orders);
 
         $this->managerRegistry->getManager()->persist($invoice);
         $this->managerRegistry->getManager()->flush();

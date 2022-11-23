@@ -63,7 +63,7 @@ class CartController extends AbstractController
             $cartTicket->setStudentQuantity($form->getData()->getStudentQuantity());
             $cartTicket->setAdultQuantity($form->getData()->getAdultQuantity());
             $cartTicket->setPensionerQuantity($form->getData()->getPensionerQuantity());
-            $session = $request->getSession()->set('session', $cartTicket);
+            //$session = $request->getSession()->set('session', $cartTicket);
 
             $this->managerRegistry->getManager()->persist($cartTicket);
             $this->managerRegistry->getManager()->flush();

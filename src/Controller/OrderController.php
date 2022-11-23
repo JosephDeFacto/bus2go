@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CartTicket;
 use App\Entity\Order;
-use App\Form\OrderTypeFormType;
+use App\Form\OrderType;
 use App\Repository\CartTicketRepository;
 use App\Repository\OrderRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -68,12 +68,12 @@ class OrderController extends AbstractController
         $loggedUser = $this->getUser();
         $userCart = $cartTicketRepository->findBy(['user' => $loggedUser]);
 
-        $form = $this->createForm(OrderTypeFormType::class, null, [
+        $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser(),
         ]);
 
         $sessionData = $request->getSession()->get('session');
-        $quantity = $sessionData->getQuantity();
+        /*$quantity = $sessionData->getQuantity();*/
         $user = $sessionData->getUser();
 
         $form->handleRequest($request);
@@ -88,7 +88,6 @@ class OrderController extends AbstractController
                 $order->setUser($loggedUser);
                 $order->setStripeId(1);
                 $order->setPrice($fee);
-                $order->setQuantity($quantity);
                 $order->setCartTicket($data);
                 $order->setReference($reference);
             }
@@ -96,7 +95,7 @@ class OrderController extends AbstractController
             $this->managerRegistry->getManager()->persist($order);
             $this->managerRegistry->getManager()->flush();
 
-            $clearSession = $request->getSession()->remove('session');
+            //$clearSession = $request->getSession()->remove('session');
             return $this->redirectToRoute('app_invoice');
 
         }

@@ -35,6 +35,7 @@ class Invoice
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invoices")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
@@ -43,10 +44,6 @@ class Invoice
      */
     private $busCompany;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="invoices")
-     */
-    private $orders;
 
     public function getId(): ?int
     {
@@ -113,15 +110,4 @@ class Invoice
         return $this;
     }
 
-    public function getOrders(): ?Order
-    {
-        return $this->orders;
-    }
-
-    public function setOrders(?Order $orders): self
-    {
-        $this->orders = $orders;
-
-        return $this;
-    }
 }
