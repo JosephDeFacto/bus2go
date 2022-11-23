@@ -65,16 +65,16 @@ class OrderController extends AbstractController
         $cartData = $this->managerRegistry->getRepository(CartTicket::class)->findAll();
 
         $fee = $cartData[0]->getTravelSchedule()->getFee();
-        $loggedUser = $this->getUser();
-        $userCart = $cartTicketRepository->findBy(['user' => $loggedUser]);
+        $user= $this->getUser();
+        $userCart = $cartTicketRepository->findBy(['user' => $user]);
 
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser(),
         ]);
 
-        $sessionData = $request->getSession()->get('session');
+        //$sessionData = $request->getSession()->get('session');
         /*$quantity = $sessionData->getQuantity();*/
-        $user = $sessionData->getUser();
+        //$user = $sessionData->getUser();
 
         $form->handleRequest($request);
         $order = new Order();
@@ -85,7 +85,7 @@ class OrderController extends AbstractController
 
             foreach ($cartData as $data) {
 
-                $order->setUser($loggedUser);
+                $order->setUser($user);
                 $order->setStripeId(1);
                 $order->setPrice($fee);
                 $order->setCartTicket($data);
@@ -95,7 +95,6 @@ class OrderController extends AbstractController
             $this->managerRegistry->getManager()->persist($order);
             $this->managerRegistry->getManager()->flush();
 
-            //$clearSession = $request->getSession()->remove('session');
             return $this->redirectToRoute('app_invoice');
 
         }
