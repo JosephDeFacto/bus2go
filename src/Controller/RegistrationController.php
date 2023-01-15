@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
 
             // generate a signed url and email it to the user
-            $signature = $this->verifyEmail->generateSignature('app_verify_email', $user->getId(), $user->getEmail());
+            //$signature = $this->verifyEmail->generateSignature('app_verify_email', $user->getId(), $user->getEmail());
            /* $signatureComponents = $this->verifyEmailHelper->generateSignature(
                 'app_verify_email',
                 $user->getId(),
@@ -71,7 +71,7 @@ class RegistrationController extends AbstractController
             $expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             $expiryTime = \IntlDateFormatter::formatObject($expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get())));*/
 
-            $email = new TemplatedEmail();
+           /* $email = new TemplatedEmail();
             $email->from('admin.admin@no-reply.com');
             $email->to($user->getEmail());
             $email->htmlTemplate('registration/confirmation_email.html.twig');
@@ -88,7 +88,7 @@ class RegistrationController extends AbstractController
                 $user,
                 $authenticator,
                 $request,
-            );
+            );*/
 
 
            /* $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
