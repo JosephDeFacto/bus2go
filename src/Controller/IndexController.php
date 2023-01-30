@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Repository\BusCompanyRepository;
 use App\Repository\TravelScheduleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\SearchFormType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,12 +16,12 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="app_index")
      */
-    public function index(Request $request, TravelScheduleRepository $travelScheduleRepository, BusCompanyRepository $busCompanyRepository): Response
+    public function index(Request $request, TravelScheduleRepository $travelScheduleRepository)
     {
-
         $form = $this->createForm(SearchFormType::class, null, [
             'method' => 'GET',
         ]);
+
 
         $form->handleRequest($request);
 
@@ -29,18 +29,18 @@ class IndexController extends AbstractController
             $departFrom = $form->getData()->getDepartFrom();
             $travelTo = $form->getData()->getTravelTo();
             $departingOn = $form->getData()->getDepartingOn();
-            /*$returningOn = $form->getData()->getReturningOn();*/
 
-            $schedules = $travelScheduleRepository->searchForBuses($departFrom, $travelTo, $departingOn/*, $returningOn*/);
+            $schedules = $travelScheduleRepository->searchForBuses($departFrom, $travelTo);
 
-            $countSearchRows = $travelScheduleRepository->countSearchResult($departFrom, $travelTo /*$departingOn, $returningOn*/);
+            $countSearchRows = $travelScheduleRepository->countSearchResult($departFrom, $travelTo);
+            return new JsonResponse($schedules);
 
-
-            return $this->render('index/index.html.twig', ['results' => $schedules, 'rows' => $countSearchRows, 'departOn' => $departingOn]);
+            //return $this->render('index/index.html.twig', ['results' => $schedules, 'rows' => $countSearchRows, 'departOn' => $departingOn]);
         }
 
         return $this->render('index/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
 }

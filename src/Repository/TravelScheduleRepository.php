@@ -48,28 +48,8 @@ class TravelScheduleRepository extends ServiceEntityRepository
         $stmt = $connection->prepare($query);
         $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
 
-
         return $result->fetchAllAssociative();
 
-
-
-        // WORKS FOR NOW!
-        /* $connection = $this->getEntityManager()->getConnection();
-
-         $query = 'SELECT * FROM travel_schedule WHERE travel_to = "Rijeka"';
-         $stmt = $connection->prepare($query);
-         $result = $stmt->executeQuery(['travel_to']);
-
-         return $result->fetchAllAssociative();*/
-
-        // THIS WORKS TOO
-       /* $qb = $this->createQueryBuilder('t')
-            ->where('t.fee = :fee')
-            ->setParameter('fee', $fee);
-
-
-        $query = $qb->getQuery();
-        return $query->execute();*/
     }
 
     public function countSearchResult($departFrom, $travelTo/*, $departingOn, $returningOn*/): array
@@ -81,7 +61,6 @@ class TravelScheduleRepository extends ServiceEntityRepository
 
         return $result->fetchAllAssociative();
     }
-
 
 //    /**
 //     * @return TravelSchedule[] Returns an array of TravelSchedule objects

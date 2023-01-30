@@ -6,12 +6,17 @@ use App\Entity\CartTicket;
 use App\Form\CartType;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
+use App\Session\Session;
 use Doctrine\Persistence\ManagerRegistry;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\DashboardDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use function Symfony\Component\String\b;
 
 class CartController extends AbstractController
 {
@@ -25,25 +30,30 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name="cart_index")
      * @ParamConverter("cartTicket")
-     * @param Request $request
+     * @param Session $cart
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Session $cart): Response
     {
         $user = $this->getUser();
-        $tickets = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
 
-        return $this->render('cart/index.html.twig', ['cartTickets' => $tickets]);
+        $cartTicketQuantity = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $user]);
+        $cartTicket = $cart->getSessionCart();
+
+        if (!$cart->getSessionCart()) {
+            $this->addFlash('warning-cart', 'Cart is empty');
+            return $this->render('cart/index.html.twig', []);
+        }
+
+        return $this->render('cart/index.html.twig', ['cartTicket' => $cartTicket, 'ticketQuantity' => $cartTicketQuantity]);
     }
 
     /**
      * @Route("/cart/add/{id}"), name="cart_addToCart")
      */
-    public function addToCart(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
+    public function addToCart(Session $cart, int $id, Request $request, TravelScheduleRepository $travelScheduleRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-
-        $id = $request->get('id');
 
         $user = $this->getUser();
         $cartTicket = new CartTicket();
@@ -57,16 +67,18 @@ class CartController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $cartTicket->setUser($user);
-            $cartTicket->setTravelSchedule($travelSchedule);
-           /* $cartTicket->setQuantity($cartTicket->getQuantity());*/
             $cartTicket->setChildQuantity($form->getData()->getChildQuantity());
             $cartTicket->setStudentQuantity($form->getData()->getStudentQuantity());
             $cartTicket->setAdultQuantity($form->getData()->getAdultQuantity());
             $cartTicket->setPensionerQuantity($form->getData()->getPensionerQuantity());
-            //$session = $request->getSession()->set('session', $cartTicket);
 
             $this->managerRegistry->getManager()->persist($cartTicket);
             $this->managerRegistry->getManager()->flush();
+
+            /*$this->managerRegistry->getManager()->remove($cartTicket);
+            $this->managerRegistry->getManager()->flush();*/
+
+            $cart->add($id);
 
             $this->addFlash('success', 'Ticket added to cart');
 
@@ -106,15 +118,18 @@ class CartController extends AbstractController
     /**
      * @Route("cart/delete/{id}", name="cart_deleteToCart")
      */
-    public function deleteFromCart(Request $request)
+    public function deleteFromCart(Request $request, int $id): RedirectResponse
     {
-        $id = $request->get('id');
+        $cartTicket = $this->managerRegistry->getRepository(CartTicket::class)->findBy(['user' => $this->getUser()]);
 
-        $cartId = $this->managerRegistry->getRepository(CartTicket::class)->find($id);
+        foreach ($cartTicket as $ticket) {
+            $entityManager = $this->managerRegistry->getManager();
+            $entityManager->remove($ticket);
+            $entityManager->flush();
 
-        $entityManager = $this->managerRegistry->getManager();
-        $entityManager->remove($cartId);
-        $entityManager->flush();
+            $request->getSession()->clear('cart');
+        }
+
         return $this->redirectToRoute('app_index');
     }
 
@@ -133,6 +148,5 @@ class CartController extends AbstractController
         }
 
         return $this->redirectToRoute('app_index');
-
     }
 }

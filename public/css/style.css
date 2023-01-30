@@ -240,7 +240,7 @@ input[type=text]:hover {
     width: 80%;
 }
 
-.container-login {
+.container-fields {
     height: 40vh;
     width: 100%;
     display: flex;
@@ -248,8 +248,8 @@ input[type=text]:hover {
     flex-direction: column;
     place-items: start;
     align-items: center;
-    margin: 10px 0 0 0;
-    border: 1px solid currentColor;
+    /*margin: 10px 0 0 0;*/
+    padding-bottom: 45px;
 }
 
 .login-title {
@@ -279,109 +279,11 @@ input[type=email], input[type=password] {
     height: 60vh;
 }
 
-.panel-group {
-    margin: 20px;
-    border-bottom: 1px solid #0abcde;
-}
-
-.sb--route {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto;
-}
-
-.sb--route-station {
-    margin: 5px;
-}
-
-.sb--route-connect {
-    display: flex;
-    align-items: center;
-    margin-top: -20px;
-}
-
-.sb--row {
-    margin: 10px 0 10px 0;
-}
 
 .btn--green {
     background: #0ab0ab !important;
     padding: 10px;
     border-radius: 10%;
-}
-
-.sb--route-status {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 15px;
-}
-
-.sb--route-price-total {
-    display: flex;
-    align-items: center;
-}
-
-.sb--route-travel-company {
-    display: flex;
-    align-items: center;
-}
-
-.company-more {
-    font-size: 8px;
-    color: darkblue !important;
-    display: block;
-    margin-top: -45px;
-    cursor: pointer;
-}
-
-.sb--route-price-total-euro {
-    display: block;
-    margin-right: auto;
-}
-
-.total-euro-price {
-    color: red;
-}
-
-.travel-duration {
-    font-size: 10px;
-    color: darkblue;
-    margin-right: 15px;
-}
-
-.sb--line-dots-connector {
-    margin-top: 20px;
-    margin-left: -86px;
-    display: flex;
-    align-items: center;
-}
-
-.sb--connect-circle {
-    width: 5px;
-    height: 5px;
-    display: block;
-}
-
-.sb--connect-circle-green {
-    border-radius: 100px;
-    border: 1px solid #777;
-}
-
-.sb--connect-line {
-    width: 6rem;
-    height: 1px;
-    background: #dedede;
-}
-
-.sb--connect-circle-red {
-    border: 1px solid #777;
-    display: flex;
-    border-radius: 100px;
-}
-
-.direct-line {
-    font-size: 12px;
-    margin-top: 45px;
-    margin-left: -28%;
 }
 
 .sb--travel-info {
@@ -405,20 +307,6 @@ input[type=email], input[type=password] {
 
 .sb--main-cart {
     background: #cbb4d4;
-}
-
-.sb--row-title {
-    margin-left: -20px;
-    font-size: 12px;
-    color: brown;
-}
-
-.sb-emphasize {
-    color: black;
-}
-
-.sb--truncate {
-    color: black;
 }
 
 .sb--cart-content {
@@ -462,11 +350,26 @@ input[type=email], input[type=password] {
 
 .modal-content {
     background: #f0f9ff;
+    width: 40%;
+    display: flex;
+    align-items: center;
 }
 
 
+#price-data {
+    margin: 20px;
+}
+
 .fa, .close {
     cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+
+.fa-money {
+    position: relative;
+    top: 20px;
 }
 
 @media only screen and (min-width: 600px) {
@@ -709,3 +612,54 @@ footer {
 .register-alert {
     color: blue !important;
 }
+
+input[type=number] {
+    background: #ddd;
+    margin: 10px;
+}
+
+.quantity-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-around;
+}
+
+.styled-table thead tr {
+    background: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    color: #FFFFFF;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.price-infos {
+    display: flex;
+    align-items: center;
+}
+

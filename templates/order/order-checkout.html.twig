@@ -9,20 +9,18 @@
 
     <div class="example-wrapper">
 
-        {% for cart in userCart %}
-            {{ cart.travelSchedule.getDepartFrom }}
-            {{ cart.travelSchedule.getTravelTo }}
-            {{ cart.travelSchedule.getDepartingOn|date('d-m-Y') }}
-            {{ cart.travelSchedule.getReturningOn|date('d-m-Y') }}
-            {{ cart.travelSchedule.getDepartureTime|date('H:i') }}
-            {{ cart.travelSchedule.getTimeOfArrival|date('H:i') }}
-            {{ cart.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-            {#{{ cart.getQuantity }}#}
-            {{ cart.travelSchedule.getFee }}
+        {{ cart.getDepartFrom }}
+        {{ cart.getTravelTo }}
+        {{ cart.getDepartingOn|date('d-m-Y') }}
+        {{ cart.getReturningOn|date('d-m-Y') }}
+        {{ cart.getDepartureTime|date('H:i') }}
+        {{ cart.getTimeOfArrival|date('H:i') }}
+        {{ cart.getEstimatedArrivalTime|date('H:i') }}
+        {{ cart.getQuantity }}
+        {{ cart.getFee }}
 
-            Total: {#{{ cart.travelSchedule.getFee * cart.getQuantity }}#}<br>
+        Total: {#{{ cart.getFee * cart.getQuantity }}#}<br>
 
-        {% endfor %}
 
         Your data:
         {{ user.firstname }} {{ user.lastname }} {{ user.mobile }} {{ user.email }}

@@ -15,11 +15,12 @@
     {% endif %}
 
 
-    <div class="container-login">
+    <div class="container-fields">
         <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><span>Google Sign up</span></a>
         <h1 class="login-title">Sign up</h1>
         <input type="email" value="{% if last_username is defined%} {{ last_username }} {% endif %}" name="email" id="inputEmail" class="login--input" placeholder="Email"  required autofocus>
         <input type="password" name="password" id="inputPassword" class="login--input" placeholder="password"  required>
+        <input type="checkbox" onclick="showPassword(); ">Show password
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
@@ -31,9 +32,18 @@
 
         <div class="log-question"><p>Does not have an account? Please <a class="register-alert" href="{{ path('app_register') }}">Register!</a></p></div>
 
-
         <button id="btn-submit" class="btn btn--login__submit" type="submit">Proceed</button>
     </div>
-
 </form>
+
+    <script>
+        let showPassword = () => {
+            let password = document.getElementById("inputPassword");
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
 {% endblock %}

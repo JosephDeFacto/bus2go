@@ -17,20 +17,20 @@ class CartType extends AbstractType
         $builder
             /*->add('quantity', NumberType::class, ['attr' => ['class' => 'quantity']])*/
             ->add('childQuantity', IntegerType::class,
-                ['attr' => ['class' => 'quantity'],
+                ['attr' => ['class' => 'quantity', 'min' => 0],
                 'label' => 'Children',
                 'required' => false,
                 'empty_data' => ''])
             ->add('studentQuantity', IntegerType::class,
-                ['attr' => ['class' => 'quantity'],
+                ['attr' => ['class' => 'quantity', 'min' => 0],
                 'label' => 'Student',
                 'required' => false])
             ->add('adultQuantity', IntegerType::class, [
-                'attr' => ['class' => 'quantity'],
+                'attr' => ['class' => 'quantity', 'min' => 0],
                 'label' => 'Adult',
                 'required' => false])
             ->add('pensionerQuantity', IntegerType::class, [
-                'attr' => ['class' => 'quantity'],
+                'attr' => ['class' => 'quantity', 'min' => 0],
                 'label' => 'Pensioner',
                 'required' => false])
 

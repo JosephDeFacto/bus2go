@@ -2,26 +2,21 @@
 
 {% block title %}Bus2GO{% endblock %}
 
-{% set defaultCurrency = 'KN' %}
-{% set currency = '€' %}
-{% set currencyValue = '7.52' %}
-
-
 {% block body %}
 
     {% if form is defined %}
         {{ form_start(form) }}
         <span class="search__select-label-from"></span>
-        {{ form_row(form.departFrom, {'label':false}) }}
+        {{ form_row(form.departFrom, {'label':false, id: 'departFrom'}) }}
         <span class="search__select-label-to"></span>
-        {{ form_row(form.travelTo, {'label':false}) }}
+        {{ form_row(form.travelTo, {'label':false, id: 'travelTo'}) }}
         <span class="search__select-label-datefrom"></span>
         {{ form_row(form.departingOn, {'label':false}) }}
-       {# <span class="search__select-label-dateto"></span>
-        {{ form_row(form.returningOn, {'label':false}) }}#}
         <input type="submit" value="Search" class="btn btn--black__search">
         {{ form_end(form) }}
     {% endif %}
+
+    <div id="search-result"></div>
 
     {% for flash in app.flashes('success') %}
         <div class="alert alert-success">{{ flash }}</div>
@@ -30,7 +25,6 @@
         <div class="alert alert-danger">{{ flash }}</div>
     {% endfor %}
 
-    {#dump (results) radi#}
     {# {{ dump(results) }}#}
     {# <button type="submit" class="btn">Search</button>#}
     {#<form action="{{ path('app_search') }}" method="get">#}
@@ -47,6 +41,28 @@
                 dateFormat: 'dd-mm-yy'
             });
         });
+
+        $(document).ready(function () {
+            $('#departFrom', '#travelTo').on('keyup', function () {
+                let input1 = $(this).val();
+                let input2 = $(this).val();
+                console.log(input1);
+                console.log(input2);
+                $.ajax({
+                    url: "{{ path('app_index') }}",
+                    data: {input1: input1, input2: input2},
+                    success: function (data) {
+                        let results = '';
+                        for (let i = 0; i < data.length; i++) {
+                            results += '<div' + data[i] + '</div>';
+                        }
+                        $('#search-result').html(results);
+                    }
+                })
+            })
+
+        })
+
     </script>
     <div class="sb--travel-info">
         <div class="sb--column sb--container">
@@ -57,13 +73,6 @@
                         {% if departOn is defined %}
                         {{ departOn }}
                         {% endif %}
-                        {#{% if results is defined %}
-                            {% for searchResult in results|slice(0,1) %}
-                                Departing On: {{ searchResult.departing_on }}<br>
-                                Returning On: {{ searchResult.returning_on }}
-
-                            {% endfor %}
-                        {% endif %}#}
                     </div>
                 </div>
             </div>
@@ -71,75 +80,28 @@
     </div>
 
     {% if results is defined %}
+        {% for searchResult in results %}
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Depart from</th>
+                        <th>Travel to</th>
+                        <th>Departure time</th>
+                        <th>Arrival time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ searchResult.depart_from }}</td>
+                        <td>{{ searchResult.travel_to }}</td>
+                        <td>{{ searchResult.departure_time|date('H:i') }}</td>
+                        <td>{{ searchResult.estimated_arrival_time|date('H:i') }}</td>
+                        <td><a href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Select</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endfor %}
 
-    {% for searchResult in results %}
-
-        {% set knToEuro = searchResult.fee * currencyValue|number_format %}
-        {% set euro = knToEuro %}
-    <div class="search-results_main-content">
-
-        <div class="panel-group">
-            <div class="sb--route">
-                <div class="sb--route-element sb--route-station">
-                    <div>
-                        <div class="sb--row">
-                            <div class="sb--row-title">
-                                DEPARTURE TIME
-                            </div>
-                            <span class="sb-emphasize">{{ searchResult.departure_time|date('H:i') }}</span>
-                        </div>
-                        <div class="sb--row-title">
-                            DEPART FROM
-                        </div>
-                        <span class="sb--truncate">{{ searchResult.depart_from }}</span>
-                    </div>
-
-                </div>
-                <div class="sb--route-element sb--route-connect">
-                    <span class="travel-duration">{{ searchResult.estimated_arrival_time|date('H:i') }}</span>
-                    <div class="sb--line-dots-connector">
-                        <span class="sb--connect-circle sb--connect-circle-green"></span>
-                        <span class="sb--connect-line"></span>
-                        <span class="sb--connect-circle sb--connect-circle-red"></span>
-                    </div>
-                    <span class="direct-line">&nbsp;DIRECT</span>
-                </div>
-                <div class="sb--route-element sb--route-station">
-                    <div class="sb--row">
-                        <div class="sb--row-title">
-                            TIME OF ARRIVAL
-                        </div>
-                        <span class="sb-emphasize">{{ searchResult.time_of_arrival|date('H:i') }}</span>
-                    </div>
-                    <div class="sb--row-title">
-                        TRAVEL TO
-                    </div>
-                    <span class="sb--truncate">{{ searchResult.travel_to }}</span>
-                </div>
-                <div class="sb--route-element sb--route-travel-company">
-                    <a class="company-more">more info</a>
-                    <span class="sb--company-code">Slavonija Bus (hardkodirano)</span>
-                </div>
-                <div class="sb--route-element">
-                    <div class="sb--route-status">
-                        <div class="sb--route-price-total">
-                            <span class="total-price">{{ searchResult.fee }} {{ defaultCurrency }}</span>
-                        </div>
-                        <div class="sb--route-price-total-euro">
-                            <span class="total-euro-price">({{ euro }}{{ currency }})</span>
-                        </div>
-                        <div class="sb--route-element route--select">
-                            <a href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Buy ticket<div class="sb--column-middle"></div></a>
-                            {#<a href="{{ path('app_cart_addtocart') }}">Buy ticket<div class="sb--column-middle"></div></a>#}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    {% endfor %}
-        {% endif %}
-    </div>
+    {% endif %}
 
 {% endblock %}

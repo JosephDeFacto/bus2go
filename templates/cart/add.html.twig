@@ -2,7 +2,8 @@
 
 {% block body %}
     <div class="sb--cart-content">
-            {% if travelSchedule is defined %}
+
+            {#{% if travelSchedule is defined %}
                 <div class="sb--cart-row">
                     DEPART FROM: {{ travelSchedule.departFrom }}
                 </div>
@@ -23,62 +24,120 @@
                 </div>
                 <div class="sb--cart-row">
                     ESTIMATED ARRIVAL TIME: {{ travelSchedule.estimatedArrivalTime|date('H:i') }}
-                </div>
-                <div class="sb--cart-row">
-                    <i id="icon-open" class="fa fa-money" style="font-size: 24px;"></i>
-                    <div id="myModal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <div id="price-data">
-                                Prices based on passenger type: (fix this dummy design :(<br>
-                                CHILDREN: {{ travelSchedule.childPrice }}
-                                STUDENT: {{ travelSchedule.studentPrice }}
-                                ADULT: {{ travelSchedule.adultPrice }}
-                                PENSIONER: {{ travelSchedule.pensionerPrice }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>#}
 
-            {% endif %}
+            {#{% endif %}#}
             <div class="sb--cart-row">
                 {% if form is defined %}
-                    {{ form_start(form) }}
+                    <div class="container-fields">
+                        <small></small>
+                        {{ form_start(form, {'attr': {'class': 'quantity-form', 'onsubmit': 'return checkOneFilled();'}}) }}
+                            {{ form_row(form.childQuantity) }}
+                            {{ form_row(form.studentQuantity) }}
+                            {{ form_row(form.adultQuantity) }}
+                            {{ form_row(form.pensionerQuantity) }}
+                        {{ form_end(form) }}
+                    </div>
+                    <div class="price-infos">
+                        <p>Child: <span id="child-price">{{ travelSchedule.childPrice }}€</span></p>
+                        <p>Student: <span id="student-price">{{ travelSchedule.studentPrice }}€</span></p>
+                        <p>Adult: <span id="adult-price">{{ travelSchedule.adultPrice }}€</span></p>
+                        <p>Pensioner: <span id="pensioner-price">{{ travelSchedule.pensionerPrice }}€</span></p>
+                        <div>
+                            <span class="price-subtotals"></span>
+                        </div>
 
-                    {{ form_end(form) }}
+                        <div>
+                            <span class="price-totals" style="margin: 50px; color: white"></span>
+                        </div>
+                    </div>
+
 
                 {% endif %}
             </div>
     </div>
     <script>
-        let modalInfo = function () {
-            let modal = document.getElementById('myModal');
-            let iconBtn = document.getElementById('icon-open');
 
-            let spanBtn = document.getElementsByClassName('close')[0];
+        let quantityInputs = document.querySelectorAll('.quantity');
+        let total = 0;
 
-            iconBtn.addEventListener('click', function () {
-                modal.style.display = "block";
-            });
+        quantityInputs.forEach(function(input) {
+            // define previousVal as the initial value of the input
+            let previousValue = parseInt(input.value);
+            input.addEventListener("change", function() {
 
-            spanBtn.addEventListener('click', function () {
-                modal.style.display = 'none';
-            })
+                let quantity = parseInt(input.value);
+                let childPrice = parseInt(document.getElementById("child-price").textContent);
+                let studentPrice = parseInt(document.getElementById("student-price").textContent);
+                let adultPrice = parseInt(document.getElementById("adult-price").textContent);
+                let pensionerPrice = parseInt(document.getElementById("pensioner-price").textContent);
 
-            window.addEventListener('click', function (event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
+                if (input.id === "cart_childQuantity") {
+                    total = total - (previousValue * childPrice) + (quantity * childPrice);
+
+                } else if (input.id === "cart_studentQuantity") {
+                    total = total - (previousValue * studentPrice) + (quantity * studentPrice);
+
+                } else if (input.id === "cart_adultQuantity") {
+                    total = total - (previousValue * adultPrice) + (quantity * adultPrice);
+
+                } else if (input.id === "cart_pensionerQuantity") {
+                    total = total - (previousValue * pensionerPrice) + (quantity * pensionerPrice);
                 }
-            })
+
+                previousValue = quantity;
+                document.querySelector('.price-totals').innerHTML = total + "€";
+
+            });
+        });
+
+        let form = document.getElementsByTagName('form')['cart'];
+        /**
+         * @param input
+         * @param message
+         * @desc error flag
+         */
+        let showError = (input, message) => {
+            const formField = form.parentElement;
+            formField.classList.remove('success');
+            formField.classList.add('error');
+            const error = formField.querySelector('small');
+            error.style.color = "red";
+            error.style.fontSize = "1.3rem";
+            error.textContent = message;
         }
 
-        modalInfo();
+        /**
+         * @param input
+         * @desc success flag
+         */
+        let showSuccess = (input) => {
+            const formField = form.parentElement;
+            formField.classList.remove('error');
+            formField.classList.add('success');
+            const error = formField.querySelector('small');
+            error.textContent = '';
+        }
 
+        /**
+         * @TODO minimum one field must be filled in!
+         */
+        let checkOneFilled = () => {
+            let quantityFields = document.querySelectorAll('.quantity');
+            let valid = false;
+            for (let i = 0; i < quantityFields.length; i++) {
+                if (typeof quantityFields[i].value === "string") {
+                    if (parseInt(quantityFields[i].value) !== 0) {
+                        showSuccess(quantityFields[i]);
+                        valid = true;
+                        return valid;
+                    } else {
+                        showError(quantityFields[i], "Minimum one field must be filled in!");
+                        return valid;
+                    }
+                }
+            }
+        }
     </script>
 
 {% endblock %}
-
-
-
-
-

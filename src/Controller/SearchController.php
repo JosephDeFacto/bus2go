@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\SearchType;
+use App\Form\SearchFormType;
 use App\Repository\TravelScheduleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,19 +17,11 @@ class SearchController extends AbstractController
      */
     public function searchForTravel(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
     {
-        /*$travelData = $travelScheduleRepository->findAll();
-        $result = [];
-        foreach ($travelData as $data) {
-            $fees = [$data->getFee()];
-            $result[] = $travelScheduleRepository->searchForBuses($fees);
-        }
-        var_dump($result);*/
-        /*$departFrom = $request->get('depart_from');
-        $travelTo = $request->get('travel_to');*/
 
-        $form = $this->createForm(SearchType::class, null, [
+        $form = $this->createForm(SearchFormType::class, null, [
             'method' => 'GET',
         ]);
+
 
         $form->handleRequest($request);
 
@@ -42,34 +34,12 @@ class SearchController extends AbstractController
             $schedules = $travelScheduleRepository->searchForBuses($departFrom, $travelTo, $departingOn, $returningOn);
 
 
-            return $this->render('searchForTravel/search.html.twig', ['results' => $schedules]);
+            return $this->render('searchForTravel/index.html.twig', ['results' => $schedules]);
         }
 
         return $this->render('searchForTravel/index.html.twig', [
             'form' => $form->createView(),
         ]);
 
-        /*$departFrom = $request->get('depart_from');
-        $travelTo = $request->get('travel_to');
-        if ($request->isMethod('GET')) {
-            $schedules = $travelScheduleRepository->searchForBuses($departFrom, $travelTo);
-            foreach ($schedules as $schedule) {
-
-                $results = [];
-                if ($schedule['depart_from'] == $departFrom && $schedule['travel_to'] == $travelTo) {
-                    $results = [
-                        'depart_from' => $schedule['depart_from'],
-                        'travel_to' => $schedule['travel_to'],
-                    ];
-                } else {
-                    echo "Travel route does not exists";
-                }
-            }
-            return $this->render('searchForTravel/index.html.twig', [
-                'results' => $results,
-            ]);
-
-        }
-        return $this->render('searchForTravel/index.html.twig');*/
     }
 }

@@ -49,13 +49,15 @@
             </div>
         {% endfor %}
     {% else %}
-        {{ orders.departFrom }}
-        {{ orders.travelTo }}
-        {{ orders.returnOn|date('d-m-Y') }}
-        {{ orders.departureTime|date('d-m-Y') }}
-        {{ orders.timeOfArrival|date('H:i') }}
-        {{ orders.estArrivalTime|date('H:i') }}
-        {{ orders.fee }}
+        {% for order in orders %}
+            {{ order.travelSchedule.getDepartFrom }}
+            {{ order.travelSchedule.getTravelTo }}
+            {{ order.travelSchedule.getReturningOn|date('d-m-Y') }}
+            {{ order.travelSchedule.getDepartureTime|date('d-m-Y') }}
+            {{ order.travelSchedule.getTimeOfArrival|date('H:i') }}
+            {{ order.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
+            {{ order.travelSchedule.getFee }}
+        {% endfor %}
     {% endif %}
 
 {% endblock %}

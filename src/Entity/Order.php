@@ -52,12 +52,10 @@ class Order
      */
     private $reference;
 
-
-
-    public function __construct()
-    {
-
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=TravelSchedule::class, inversedBy="orders", fetch="EAGER")
+     */
+    private $travelSchedule;
 
 
     public function getId(): ?int
@@ -138,4 +136,15 @@ class Order
         return $this;
     }
 
+    public function getTravelSchedule(): ?TravelSchedule
+    {
+        return $this->travelSchedule;
+    }
+
+    public function setTravelSchedule(?TravelSchedule $travelSchedule): self
+    {
+        $this->travelSchedule = $travelSchedule;
+
+        return $this;
+    }
 }
