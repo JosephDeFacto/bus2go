@@ -42,6 +42,7 @@ class RegistrationController extends AbstractController
 
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,7 +50,7 @@ class RegistrationController extends AbstractController
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $user->setRoles(['IS_AUTHENTICATED_FULLY ']);

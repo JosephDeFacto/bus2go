@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TravelScheduleRepository::class)
  */
-class TravelSchedule
+class TravelSchedule implements \JsonSerializable
 {
 
     /**
@@ -63,11 +63,6 @@ class TravelSchedule
     private $fee;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Bus::class, inversedBy="travelSchedules")
-     */
-    private $bus;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Driver::class, inversedBy="travelSchedules")
      */
     private $busDriver;
@@ -113,6 +108,11 @@ class TravelSchedule
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="travelSchedule")
      */
     private $orders;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=BusCompany::class, inversedBy="travelSchedules", fetch="EAGER")
+     */
+    private $busCompany;
 
     public function __construct()
     {
@@ -220,18 +220,6 @@ class TravelSchedule
     public function setFee(float $fee): self
     {
         $this->fee = $fee;
-
-        return $this;
-    }
-
-    public function getBus(): ?Bus
-    {
-        return $this->bus;
-    }
-
-    public function setBus(?Bus $bus): self
-    {
-        $this->bus = $bus;
 
         return $this;
     }
@@ -384,5 +372,25 @@ class TravelSchedule
         }
 
         return $this;
+    }
+
+    public function getBusCompany(): ?BusCompany
+    {
+        return $this->busCompany;
+    }
+
+    public function setBusCompany(?BusCompany $busCompany): self
+    {
+        $this->busCompany = $busCompany;
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'departFrom' => $this->getDepartFrom(),
+            'travelTo' => $this->getTravelTo(),
+        ];
     }
 }

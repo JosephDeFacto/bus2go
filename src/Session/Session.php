@@ -6,7 +6,6 @@ use App\Entity\TravelSchedule;
 use App\Repository\CartTicketRepository;
 use App\Repository\TravelScheduleRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Session

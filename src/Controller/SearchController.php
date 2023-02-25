@@ -12,10 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SearchController extends AbstractController
 {
+
     /**
      * @Route("/searchForTravel", name="app_search", methods="GET")
      */
-    public function searchForTravel(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
+    /*public function searchForTravel(Request $request, TravelScheduleRepository $travelScheduleRepository): Response
     {
 
         $form = $this->createForm(SearchFormType::class, null, [
@@ -41,5 +42,5 @@ class SearchController extends AbstractController
             'form' => $form->createView(),
         ]);
 
-    }
+    }*/
 }

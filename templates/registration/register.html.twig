@@ -7,18 +7,60 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <div class="container-fields-register">
+        <h1 class="register-title">Register</h1>
 
-    {{ form_start(registrationForm) }}
+        {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.firstname) }}
         {{ form_row(registrationForm.lastname) }}
         {{ form_row(registrationForm.mobile) }}
         {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
+        {{ form_row(registrationForm.password.first) }}
+        {{ form_row(registrationForm.password.second) }}
+        {#{{ form_row(registrationForm.plainPassword, {
             label: 'Password'
-        }) }}
+        }) }}#}
         {{ form_row(registrationForm.agreeTerms) }}
+       
+        <img class="moving-obj" src="busss.jpg">
+        
+        <div class="btn-box-register">
+            <button type="submit" class="btn btn--register__submit">Register</button>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+    <script>
+
+        (function () {
+            const svgImg = document.querySelector('.moving-obj');
+            let startPosition = svgImg.getBoundingClientRect().left;
+            let endPosition = startPosition + 1800;
+            if (window.innerWidth < 700) {
+                return false;
+            }
+            let animate = () => {
+                if (startPosition < endPosition) {
+                    svgImg.style.left = startPosition + 'px';
+                    startPosition++;
+                    window.requestAnimationFrame(animate);
+                }
+            }
+            animate();
+
+        })();
+
+
+        /*let animate = () => {
+            if (startPosition < endPosition) {
+                svgImg.style.left = startPosition + 'px';
+                startPosition++;
+                window.requestAnimationFrame(animate);
+            }
+        }
+
+        animate();*/
+    </script>
+
+
 {% endblock %}

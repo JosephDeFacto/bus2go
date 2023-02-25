@@ -25,11 +25,6 @@ class BusCompany
     private $availability;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bus::class, mappedBy="busCompany")
-     */
-    private $buses;
-
-    /**
      * @ORM\Column(type="string", length=150)
      */
     private $name;
@@ -44,11 +39,16 @@ class BusCompany
      */
     private $invoice;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TravelSchedule::class, mappedBy="busCompany")
+     */
+    private $travelSchedules;
+
     public function __construct()
     {
-        $this->buses = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->invoice = new ArrayCollection();
+        $this->travelSchedules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,36 +64,6 @@ class BusCompany
     public function setAvailability(bool $availability): self
     {
         $this->availability = $availability;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Bus>
-     */
-    public function getBuses(): Collection
-    {
-        return $this->buses;
-    }
-
-    public function addBus(Bus $bus): self
-    {
-        if (!$this->buses->contains($bus)) {
-            $this->buses[] = $bus;
-            $bus->setBusCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBus(Bus $bus): self
-    {
-        if ($this->buses->removeElement($bus)) {
-            // set the owning side to null (unless already changed)
-            if ($bus->getBusCompany() === $this) {
-                $bus->setBusCompany(null);
-            }
-        }
 
         return $this;
     }
@@ -164,6 +134,36 @@ class BusCompany
             // set the owning side to null (unless already changed)
             if ($invoice->getBusCompany() === $this) {
                 $invoice->setBusCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TravelSchedule>
+     */
+    public function getTravelSchedules(): Collection
+    {
+        return $this->travelSchedules;
+    }
+
+    public function addTravelSchedule(TravelSchedule $travelSchedule): self
+    {
+        if (!$this->travelSchedules->contains($travelSchedule)) {
+            $this->travelSchedules[] = $travelSchedule;
+            $travelSchedule->setBusCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTravelSchedule(TravelSchedule $travelSchedule): self
+    {
+        if ($this->travelSchedules->removeElement($travelSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($travelSchedule->getBusCompany() === $this) {
+                $travelSchedule->setBusCompany(null);
             }
         }
 

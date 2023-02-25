@@ -86,4 +86,15 @@
         </div>
     </div>
 </div>
+
+    <script>
+
+        setTimeout(() => {
+            let flashSuccess = document.querySelector('.flash-success');
+            if (!flashSuccess) {
+                return false;
+            }
+            flashSuccess.style.display = 'none';
+        }, 1500);
+    </script>
 {% endblock %}

@@ -34,7 +34,7 @@ class CartType extends AbstractType
                 'label' => 'Pensioner',
                 'required' => false])
 
-            ->add('submit', SubmitType::class, ['attr' =>  ['class' => 'btn-cart-submit']])
+            ->add('submit', SubmitType::class, ['attr' =>  ['class' => 'btn-cart-submit'], 'label' => 'Proceed'])
         ;
 
     }

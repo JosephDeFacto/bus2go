@@ -37,29 +37,12 @@ class OrderController extends AbstractController
 
         return $this->render('order/index.html.twig', ['orders' => $orders]);
 
-        /*foreach ($myOrders as $orders) {
-            $orderData['departFrom'] = $orders->getCartTicket()->getTravelSchedule()->getDepartFrom();
-            $orderData['travelTo'] = $orders->getCartTicket()->getTravelSchedule()->getTravelTo();
-            $orderData['returnOn'] = $orders->getCartTicket()->getTravelSchedule()->getReturningOn();
-            $orderData['departureTime'] = $orders->getCartTicket()->getTravelSchedule()->getDepartureTime();
-            $orderData['timeOfArrival'] = $orders->getCartTicket()->getTravelSchedule()->getTimeOfArrival();
-            $orderData['estArrivalTime'] = $orders->getCartTicket()->getTravelSchedule()->getEstimatedArrivalTime();
-            $orderData['fee'] = $orders->getCartTicket()->getTravelSchedule()->getFee();
-        }
-
-        if ($orderData) {
-            return $this->render('order/index.html.twig', ['orders' => $orderData]);
-        }
-
-        $this->addFlash('warning-orders', 'You have no orders yet!');
-        return $this->render('order/index.html.twig', []);*/
     }
 
     /**
      * @Route("/order-checkout", name="app_order")
      * @param Request $request
-     * @param CartTicketRepository $cartTicketRepository
-     * @param OrderRepository $orderRepository
+     * @param Session $session
      * @return Response|null
      */
     public function orderCheckout(Request $request, Session $session): ?Response
@@ -89,9 +72,7 @@ class OrderController extends AbstractController
             $order->setTravelSchedule($cart);
             $this->managerRegistry->getManager()->persist($order);
             $this->managerRegistry->getManager()->flush();
-            /**
-             * @TODO do loop over an array of objects, then do deletion / or use findByOne() then delete without doing extra work with looping
-             */
+
             $this->managerRegistry->getManager()->remove($cartQuantities[0]);
             $this->managerRegistry->getManager()->flush();
 

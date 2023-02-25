@@ -2,60 +2,62 @@
 
 {% block body %}
     <div class="sb--cart-content">
+        <h1 class="cart-title">Cart Information</h1>
+            {% if travelSchedule is defined %}
+                <div class="sb--cart-row">
+                    Depart from: {{ travelSchedule.departFrom }}
+                </div>
+                <div class="sb--cart-row">
+                    Travel to: {{ travelSchedule.travelTo }}
+                </div>
+                <div class="sb--cart-row">
+                    Departing on: {{ travelSchedule.departingOn|date('Y-m-d') }}
+                </div>
+                <div class="sb--cart-row">
+                    Departure time: {{ travelSchedule.departureTime|date('H:i') }}h
+                </div>
+                <div class="sb--cart-row">
+                    Time of arrival: {{ travelSchedule.timeOfArrival|date('H:i') }}h
+                </div>
+                <div class="sb--cart-row">
+                    Estimated arrival time: {{ travelSchedule.estimatedArrivalTime|date('H:i') }}h
+                </div>
 
-            {#{% if travelSchedule is defined %}
-                <div class="sb--cart-row">
-                    DEPART FROM: {{ travelSchedule.departFrom }}
-                </div>
-                <div class="sb--cart-row">
-                    TRAVEL TO: {{ travelSchedule.travelTo }}
-                </div>
-                <div class="sb--cart-row">
-                    DEPARTING ON: {{ travelSchedule.departingOn|date('Y-m-d') }}
-                </div>
-                <div class="sb--cart-row">
-                    RETURNING ON: {{ travelSchedule.returningOn|date('Y-m-d') }}
-                </div>
-                <div class="sb--cart-row">
-                    DEPARTURE TIME: {{ travelSchedule.departureTime|date('H:i') }}
-                </div>
-                <div class="sb--cart-row">
-                    TIME OF ARRIVAL: {{ travelSchedule.timeOfArrival|date('H:i') }}
-                </div>
-                <div class="sb--cart-row">
-                    ESTIMATED ARRIVAL TIME: {{ travelSchedule.estimatedArrivalTime|date('H:i') }}
-                </div>#}
+            {% endif %}
+        <hr class="cart-break-info">
+        <div class="company-info">
+            <span>{{ busCompany }}</span>
+        </div>
+        <div class="price-infos">
+            <h4 class="pricing-title">Bus ticket pricing</h4>
+            Children: <span id="child-price">{{ travelSchedule.childPrice }}€</span> |
+            Students: <span id="student-price"> {{ travelSchedule.studentPrice }}€</span> |
+            Adults: <span id="adult-price"> {{ travelSchedule.adultPrice }}€</span> |
+            Pensioners: <span id="pensioner-price"> {{ travelSchedule.pensionerPrice }}€</span>
+           {# <div>
+                <span class="price-subtotals"></span>
+            </div>#}
+            <hr class="cart-break">
 
-            {#{% endif %}#}
-            <div class="sb--cart-row">
-                {% if form is defined %}
-                    <div class="container-fields">
-                        <small></small>
-                        {{ form_start(form, {'attr': {'class': 'quantity-form', 'onsubmit': 'return checkOneFilled();'}}) }}
-                            {{ form_row(form.childQuantity) }}
-                            {{ form_row(form.studentQuantity) }}
-                            {{ form_row(form.adultQuantity) }}
-                            {{ form_row(form.pensionerQuantity) }}
-                        {{ form_end(form) }}
-                    </div>
-                    <div class="price-infos">
-                        <p>Child: <span id="child-price">{{ travelSchedule.childPrice }}€</span></p>
-                        <p>Student: <span id="student-price">{{ travelSchedule.studentPrice }}€</span></p>
-                        <p>Adult: <span id="adult-price">{{ travelSchedule.adultPrice }}€</span></p>
-                        <p>Pensioner: <span id="pensioner-price">{{ travelSchedule.pensionerPrice }}€</span></p>
-                        <div>
-                            <span class="price-subtotals"></span>
-                        </div>
-
-                        <div>
-                            <span class="price-totals" style="margin: 50px; color: white"></span>
-                        </div>
-                    </div>
-
-
-                {% endif %}
+            <div>
+                <p class="total-price-text">Total price: </p>
+                <span class="price-totals" style="margin: 50px; color: black"></span>
             </div>
+        </div>
+
+        {% if form is defined %}
+            <div class="container-fields-cart">
+                {{ form_start(form, {'attr': {'class': 'quantity-form', 'onsubmit': 'return checkOneFilled();'}}) }}
+                {{ form_row(form.childQuantity) }}
+                {{ form_row(form.studentQuantity) }}
+                {{ form_row(form.adultQuantity) }}
+                {{ form_row(form.pensionerQuantity) }}
+                {{ form_end(form) }}
+            </div>
+
+        {% endif %}
     </div>
+
     <script>
 
         let quantityInputs = document.querySelectorAll('.quantity');
@@ -63,10 +65,10 @@
 
         quantityInputs.forEach(function(input) {
             // define previousVal as the initial value of the input
-            let previousValue = parseInt(input.value);
+            let previousValue = parseInt(input.value) || 0;
             input.addEventListener("change", function() {
 
-                let quantity = parseInt(input.value);
+                let quantity = parseInt(input.value) || 0;
                 let childPrice = parseInt(document.getElementById("child-price").textContent);
                 let studentPrice = parseInt(document.getElementById("student-price").textContent);
                 let adultPrice = parseInt(document.getElementById("adult-price").textContent);
@@ -86,8 +88,8 @@
                 }
 
                 previousValue = quantity;
-                document.querySelector('.price-totals').innerHTML = total + "€";
 
+                document.querySelector('.price-totals').innerHTML = total + " €";
             });
         });
 

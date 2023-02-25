@@ -16,23 +16,28 @@
 
 
     <div class="container-fields">
-        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><span>Google Sign up</span></a>
+
         <h1 class="login-title">Sign up</h1>
+        <p>via</p>
+        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><span><i class="fa fa-google" aria-hidden="true"></i></span></a>
+        <p>or login: </p>
         <input type="email" value="{% if last_username is defined%} {{ last_username }} {% endif %}" name="email" id="inputEmail" class="login--input" placeholder="Email"  required autofocus>
         <input type="password" name="password" id="inputPassword" class="login--input" placeholder="password"  required>
-        <input type="checkbox" onclick="showPassword(); ">Show password
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <div class="checkbox mb-3">
             <label>
+                <input type="checkbox" onclick="showPassword(); "> Show password
+            </label>
+            <label>
                 <input type="checkbox" name="_remember_me"> Remember me
             </label>
         </div>
-
         <div class="log-question"><p>Does not have an account? Please <a class="register-alert" href="{{ path('app_register') }}">Register!</a></p></div>
 
-        <button id="btn-submit" class="btn btn--login__submit" type="submit">Proceed</button>
+        <button id="btn-submit" class="btn btn--login__submit" onclick="clickValidation();" type="submit">Proceed</button>
+
     </div>
 </form>
 
@@ -43,6 +48,18 @@
                 password.type = "text";
             } else {
                 password.type = "password";
+            }
+        }
+
+        let clickCount = 0;
+        let clickValidation = () => {
+            clickCount++;
+
+            if (clickCount === 3) {
+
+                let btnClass = document.querySelector(".btn--login__submit");
+                btnClass.classList.add('warning');
+                btnClass.textContent = "Are you sure you have an account?";
             }
         }
     </script>

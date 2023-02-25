@@ -3,20 +3,18 @@
 {% block title %}Bus2GO{% endblock %}
 
 {% block body %}
-
     {% if form is defined %}
         {{ form_start(form) }}
+
         <span class="search__select-label-from"></span>
-        {{ form_row(form.departFrom, {'label':false, id: 'departFrom'}) }}
+        {{ form_row(form.departFrom, {'label':false}) }}
         <span class="search__select-label-to"></span>
-        {{ form_row(form.travelTo, {'label':false, id: 'travelTo'}) }}
+        {{ form_row(form.travelTo, {'label':false}) }}
         <span class="search__select-label-datefrom"></span>
         {{ form_row(form.departingOn, {'label':false}) }}
         <input type="submit" value="Search" class="btn btn--black__search">
         {{ form_end(form) }}
     {% endif %}
-
-    <div id="search-result"></div>
 
     {% for flash in app.flashes('success') %}
         <div class="alert alert-success">{{ flash }}</div>
@@ -25,45 +23,150 @@
         <div class="alert alert-danger">{{ flash }}</div>
     {% endfor %}
 
-    {# {{ dump(results) }}#}
-    {# <button type="submit" class="btn">Search</button>#}
-    {#<form action="{{ path('app_search') }}" method="get">#}
-    {#<input name="q" value="query">#}
-    {# <input name="depart_from" value="">
-        <input name="travel_to" value="">#}
-    {# </form>#}
-
     <script>
 
-        $(document).ready(function() {
-            // you may need to change this code if you are not using Bootstrap Datepicker
-            $(".js-datepicker").datepicker({
-                dateFormat: 'dd-mm-yy'
-            });
-        });
+        let autosuggest = (inputSelector, minLength) => {
+            let input = document.querySelector(inputSelector);
+            input.addEventListener("keyup", () => {
+                let searchTerm = input.value.trim();
+                console.log(input);
 
-        $(document).ready(function () {
-            $('#departFrom', '#travelTo').on('keyup', function () {
-                let input1 = $(this).val();
-                let input2 = $(this).val();
-                console.log(input1);
-                console.log(input2);
-                $.ajax({
-                    url: "{{ path('app_index') }}",
-                    data: {input1: input1, input2: input2},
-                    success: function (data) {
-                        let results = '';
-                        for (let i = 0; i < data.length; i++) {
-                            results += '<div' + data[i] + '</div>';
+                if (searchTerm.length >= minLength) {
+                    fetch('{{ path('app_search') }}', {
+                        //dataType: "json",
+                        method: "POST",
+                        body: JSON.stringify({ searchTerm: searchTerm}),
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
-                        $('#search-result').html(results);
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const results = data;
+
+                            const suggestions = document.createElement('ul');
+                            suggestions.classList.add('suggestions');
+
+                            for (let i = 0; i < results.length; i++) {
+                                const suggestion = document.createElement('li');
+
+                                suggestion.classList.add('suggestion');
+                                suggestion.textContent = results[i];
+                                suggestions.appendChild(suggestion);
+                                if (i % 2 === 0) {
+                                    suggestion.style.background = "#ccc";
+                                }
+                                suggestion.addEventListener('click', () => {
+                                    input.value = suggestion.textContent;
+                                })
+                            }
+
+                            const currentSuggestions = input.parentNode.querySelector('.suggestions');
+                            if (currentSuggestions) {
+                                input.parentNode.removeChild(currentSuggestions);
+                            }
+
+                            input.parentNode.appendChild(suggestions);
+                        })
+                        .catch(error => console.log(error));
+                }
+
+                let closeSuggestList = () => {
+                    let suggestions = document.getElementsByClassName('suggestions');
+                    for (let i = 0; i < suggestions.length; i++) {
+                        suggestions[i].parentNode.removeChild(suggestions[i]);
                     }
+                }
+
+                document.addEventListener('click', (e) => {
+                    closeSuggestList(e.target);
                 })
             })
+        };
 
-        })
+        autosuggest(".search__select--from", 3);
+        autosuggest(".search__select--to", 3);
+
+
+        $(document).ready(function() {
+            $(".js-datepicker").datepicker({
+                dateFormat: 'dd-mm-yy',
+                beforeShowDay: $.datepicker.noWeekends
+            });
+
+
+            /*
+            $(".search__select--from").on("keyup", function() {
+                let departFrom = $(".search__select--from").val();
+
+                $.ajax({
+                    url: "",
+                    dataType: "json",
+                    type: "POST",
+                    data: {departFrom: departFrom},
+                    //data: $(this).serialize(),
+                    success: function(data) {
+                        console.log(data)
+
+                    },
+                    error: function(jqXHR, textStatus) {
+                        console.error(textStatus);
+                    }
+                });
+            });
+            */
+            /*
+            $(".search__select--to").on("keyup", function() {
+                let searchDepartFrom = $(this).val();
+
+                if (searchDepartFrom.length < 3) {
+                    $(".search__select--to").next('.search-results').remove();
+                    return;
+                }
+
+
+                $.ajax({
+                    url: "",
+                    dataType: "json",
+                    type: "POST",
+                    data: {departFrom: searchDepartFrom},
+                    //data: $(this).serialize(),
+                    success: function(data) {
+                        let table = $('<table>');
+                        $.each(data, function(index, item) {
+                            let row = $('<tr>').append(
+                                //$('<td>').text(item.name),
+                                $('<td>').text(item),
+                            );
+                            table.append(row);
+                        })
+                        let container = $('<div>').addClass('search-results').html(table);
+                        $(".search__select--to").next('.search-results').remove();
+                        $(".search__select--to").after(container);
+
+                        //$("#ajax--search-results").html(data);
+                        //$("#ajax--search-results").fadeIn();
+                    },
+                    error: function(jqXHR, textStatus) {
+                        console.error(textStatus);
+                    }
+                });
+            });
+            */
+
+
+            setTimeout(() => {
+                let alertSuccess = document.querySelector('.alert-success');
+                if (!alertSuccess) {
+                    return false;
+                }
+                alertSuccess.style.display = 'none';
+            }, 1500);
+        });
 
     </script>
+
+    {#<div id="results" style="color: red";></div>
     <div class="sb--travel-info">
         <div class="sb--column sb--container">
             <div class="sb--row sb--row-middle sb--travel-info__title">
@@ -79,6 +182,7 @@
         </div>
     </div>
 
+
     {% if results is defined %}
         {% for searchResult in results %}
             <table class="styled-table">
@@ -88,20 +192,23 @@
                         <th>Travel to</th>
                         <th>Departure time</th>
                         <th>Arrival time</th>
+                        <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ searchResult.depart_from }}</td>
-                        <td>{{ searchResult.travel_to }}</td>
-                        <td>{{ searchResult.departure_time|date('H:i') }}</td>
-                        <td>{{ searchResult.estimated_arrival_time|date('H:i') }}</td>
-                        <td><a href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Select</a></td>
+                        <td>{{ searchResult.departFrom }}</td>
+                        <td>{{ searchResult.travelTo }}</td>
+                        <td>{{ searchResult.departureTime|date('H:i') }}h</td>
+                        <td>{{ searchResult.timeOfArrival|date('H:i') }}h</td>
+                        <td>{{ searchResult.estimatedArrivalTime|date('H:i') }}h</td>
+                        <td>{{ searchResult.busCompany.getName }}</td>
+                        <td><a class="cart-select" href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Select</a></td>
                     </tr>
                 </tbody>
             </table>
         {% endfor %}
 
-    {% endif %}
+    {% endif %}#}
 
 {% endblock %}

@@ -44,10 +44,6 @@ class Driver
      */
     private $busCompany;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Bus::class, inversedBy="drivers")
-     */
-    private $bus;
 
     public function __construct()
     {
@@ -133,18 +129,6 @@ class Driver
     public function setBusCompany(?BusCompany $busCompany): self
     {
         $this->busCompany = $busCompany;
-
-        return $this;
-    }
-
-    public function getBus(): ?Bus
-    {
-        return $this->bus;
-    }
-
-    public function setBus(?Bus $bus): self
-    {
-        $this->bus = $bus;
 
         return $this;
     }

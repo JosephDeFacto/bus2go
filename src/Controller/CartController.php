@@ -41,7 +41,7 @@ class CartController extends AbstractController
         $cartTicket = $cart->getSessionCart();
 
         if (!$cart->getSessionCart()) {
-            $this->addFlash('warning-cart', 'Cart is empty');
+            $this->addFlash('warning-cart', '');
             return $this->render('cart/index.html.twig', []);
         }
 
@@ -59,6 +59,9 @@ class CartController extends AbstractController
         $cartTicket = new CartTicket();
 
         $travelSchedule = $travelScheduleRepository->find($id);
+
+        $busCompany = $travelSchedule->getBusCompany();
+
 
         $form = $this->createForm(CartType::class, $cartTicket);
 
@@ -85,7 +88,7 @@ class CartController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
 
-        return $this->render('cart/add.html.twig', ['form' => $form->createView(), 'cartTicket' => $cartTicket, 'travelSchedule' => $travelSchedule]);
+        return $this->render('cart/add.html.twig', ['form' => $form->createView(), 'cartTicket' => $cartTicket, 'travelSchedule' => $travelSchedule, 'busCompany' => $busCompany->getName()]);
     }
 
     /**

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="sb--travel-info">
+    <div class="sb--column sb--container">
+        <div class="sb--row sb--row-middle sb--travel-info__title">
+            <div class="sb--row sb--row-justify">
+                <div class="sb--results-notification">
+                    <span data-notification="{% if rows is defined %}{{ rows[0]['COUNT(*)'] }} results">{{ rows[0]['COUNT(*)'] }} results <br>{% endif %}</span>
+                    {% if departOn is defined %}
+                        {{ departOn }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if results is defined %}
+    {% for searchResult in results %}
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>Depart from</th>
+                <th>Travel to</th>
+                <th>Departure time</th>
+                <th>Arrival time</th>
+                <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ searchResult.departFrom }}</td>
+                <td>{{ searchResult.travelTo }}</td>
+                <td>{{ searchResult.departureTime|date('H:i') }}h</td>
+                <td>{{ searchResult.timeOfArrival|date('H:i') }}h</td>
+                <td>{{ searchResult.estimatedArrivalTime|date('H:i') }}h</td>
+                <td>{{ searchResult.getBusCompany.getName }}</td>
+                <td><a class="cart-select" href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Select</a></td>
+            </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

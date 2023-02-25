@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
+use PDO;
+
 
 /**
  * @extends ServiceEntityRepository<TravelSchedule>
@@ -43,12 +45,21 @@ class TravelScheduleRepository extends ServiceEntityRepository
 
     public function searchForBuses($departFrom, $travelTo /*$departingOn, $returningOn*/): array
     {
-        $connection = $this->getEntityManager()->getConnection();
+        /*$connection = $this->getEntityManager()->getConnection();
         $query = "SELECT * FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
         $stmt = $connection->prepare($query);
-        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
+        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*///]);
 
-        return $result->fetchAllAssociative();
+        /*return $result->fetchAllAssociative();*/
+
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('t')
+            ->andWhere($qb->expr()->like('t.departFrom', ':departFrom'))
+            ->andWhere($qb->expr()->like('t.travelTo', ':travelTo'))
+            ->setParameter('departFrom', '%'.$departFrom.'%')
+            ->setParameter('travelTo', '%'.$travelTo.'%');
+
+        return $qb->getQuery()->getResult();
 
     }
 
@@ -60,6 +71,17 @@ class TravelScheduleRepository extends ServiceEntityRepository
         $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
 
         return $result->fetchAllAssociative();
+    }
+
+    /* get bus company based on travel*/
+    public function busCompany(int $id)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->andWhere('t.busCompany = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
