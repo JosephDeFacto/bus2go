@@ -68,7 +68,7 @@ class TravelScheduleRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
         $query = "SELECT COUNT(*) FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
         $stmt = $connection->prepare($query);
-        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*/]);
+        $result = $stmt->executeQuery();
 
         return $result->fetchAllAssociative();
     }
