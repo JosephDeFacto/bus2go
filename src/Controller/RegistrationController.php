@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
+use App\Security\EmailVerifier;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Verificator\VerifyEmailInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,17 +23,13 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 class RegistrationController extends AbstractController
 {
-    private VerifyEmailHelperInterface $verifyEmailHelper;
-    private MailerInterface $mailer;
-    private VerifyEmailInterface $verifyEmail;
 
-    public function __construct(MailerInterface $mailer, VerifyEmailHelperInterface $helper, VerifyEmailInterface $verifyEmail)
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $verifier)
     {
-        $this->verifyEmailHelper = $helper;
-        $this->mailer = $mailer;
-        $this->verifyEmail = $verifyEmail;
+       $this->emailVerifier = $verifier;
     }
-
 
     /**
      * @Route("/register", name="app_register")
@@ -53,59 +50,27 @@ class RegistrationController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-            $user->setRoles(['IS_AUTHENTICATED_FULLY ']);
+            $user->setRoles(['IS_AUTHENTICATED_FULLY']);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_login');
-
-            // generate a signed url and email it to the user
-            //$signature = $this->verifyEmail->generateSignature('app_verify_email', $user->getId(), $user->getEmail());
-           /* $signatureComponents = $this->verifyEmailHelper->generateSignature(
-                'app_verify_email',
-                $user->getId(),
-                $user->getEmail()
-            );*/
-
-           /* $expiresAt = \DateTime::createFromImmutable($signatureComponents->getExpiresAt());
-            $expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            $expiryTime = \IntlDateFormatter::formatObject($expiresAt->setTimezone(new \DateTimeZone(date_default_timezone_get())));*/
-
-           /* $email = new TemplatedEmail();
-            $email->from('admin.admin@no-reply.com');
-            $email->to($user->getEmail());
-            $email->htmlTemplate('registration/confirmation_email.html.twig');
-            $email->context(['signedUrl' => $signature->getSignedUrl()]);
-
-            try {
-                $this->mailer->send($email);
-            } catch (TransportExceptionInterface $exception)
-            {
-                $exception->getDebug();
-            }
-
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request,
-            );*/
-
-
-           /* $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('admin.admin@no-reply.com', 'ADmin'))
+                    ->from('admin.support@no-reply.com')
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Please confirm your email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );*/
+                $user, $authenticator, $request
+            );
+
+            //$this->addFlash('success', 'Confirm your email at: '.$signatureComponents->getSignedUrl());
+            //return $this->redirectToRoute('app_homepage');
+
+            //return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -114,7 +79,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/verify/email", name="app_verify_email")
+     * @Route("/verify", name="app_verify_email")
      */
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, User $user, ManagerRegistry $registry): Response
     {
@@ -123,7 +88,7 @@ class RegistrationController extends AbstractController
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
