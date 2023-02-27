@@ -412,10 +412,6 @@ label {
     color: #888888;
 }
 
-.sb--main-cart {
-
-}
-
 .cart-title {
     color: #20002c;
     text-align: center;
@@ -485,16 +481,6 @@ label {
     z-index: 1;
     padding: 50px;
 }
-
-/*
-za sada ne treba
-.modal-content {
-    background: #f0f9ff;
-    width: 40%;
-    display: flex;
-    align-items: center;
-}
-*/
 
 #price-data {
     margin: 20px;
@@ -616,6 +602,24 @@ za sada ne treba
     .bs--header {
         justify-content: end;
     }
+
+    .icon {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        margin-left: 10px;
+    }
+
+    .logo {
+        width: 100%;
+    }
+
+    .bs--menu__nav {
+        position: fixed;
+        bottom: 0;
+    }
+
 }
 
 @media only screen and (max-width: 952px) {
@@ -710,6 +714,57 @@ za sada ne treba
     .search__select--from, .search__select--to, .js-datepicker {
         margin: 2px;
     }
+}
+
+@media only screen and (max-width: 500px) {
+    .container-fields-cart {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .sb--cart-row {
+        display: flex;
+        margin-top: 20px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    .btn-cart-submit {
+        margin-right: 100px;
+        position: relative;
+        padding: 10px;
+    }
+
+    .quantity-form {
+        margin-top: 10px;
+    }
+
+    label[for="cart_childQuantity"] {
+        margin-left: 10px;
+    }
+
+    label[for="cart_studentQuantity"] {
+        margin-left: 10px;
+    }
+
+    label[for="cart_adultQuantity"] {
+        margin-left: 10px;
+    }
+
+    label[for="cart_pensionerQuantity"] {
+        margin-left: 10px;
+    }
+
+    .cart-title {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+    }
+
 }
 
 .bs-about-title {
