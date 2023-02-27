@@ -43,27 +43,19 @@ class TravelScheduleRepository extends ServiceEntityRepository
         }
     }
 
-    public function searchForBuses($departFrom, $travelTo /*$departingOn, $returningOn*/): array
+    public function searchForBuses($departFrom, $travelTo): array
     {
-        /*$connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
-        $stmt = $connection->prepare($query);
-        $result = $stmt->executeQuery(['depart_from' => $departFrom, 'travel_to' => $travelTo/*, 'departing_on' => $departingOn, 'returning_on' => $returningOn*///]);
-
-        /*return $result->fetchAllAssociative();*/
-
         $qb = $this->createQueryBuilder('t');
         $qb->select('t')
-            ->andWhere($qb->expr()->like('t.departFrom', ':departFrom'))
-            ->andWhere($qb->expr()->like('t.travelTo', ':travelTo'))
+            ->where($qb->expr()->like('t.departFrom', ':departFrom'))
+            ->orWhere($qb->expr()->like('t.travelTo', ':travelTo'))
             ->setParameter('departFrom', '%'.$departFrom.'%')
             ->setParameter('travelTo', '%'.$travelTo.'%');
 
         return $qb->getQuery()->getResult();
-
     }
 
-    public function countSearchResult($departFrom, $travelTo/*, $departingOn, $returningOn*/): array
+    public function countSearchResult($departFrom, $travelTo): array
     {
         $connection = $this->getEntityManager()->getConnection();
         $query = "SELECT COUNT(*) FROM travel_schedule WHERE depart_from LIKE '%$departFrom%' AND travel_to LIKE '%$travelTo%'";
@@ -73,7 +65,6 @@ class TravelScheduleRepository extends ServiceEntityRepository
         return $result->fetchAllAssociative();
     }
 
-    /* get bus company based on travel*/
     public function busCompany(int $id)
     {
         return $this->createQueryBuilder('t')
@@ -83,29 +74,4 @@ class TravelScheduleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * @return TravelSchedule[] Returns an array of TravelSchedule objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?TravelSchedule
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
