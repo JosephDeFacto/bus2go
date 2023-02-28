@@ -4,12 +4,17 @@
 
 html {
     background: white;
-    margin: 5px;
+    /*margin: 5px;*/
+    width: 100%;
+    height: 100%;
 }
 
 body {
-    height: 100vh;
+    /*height: 100vh;*/
+    display: flex;
+    flex-flow: column;
 }
+
 
 .homepage-bs {
     font-size: 1rem;
@@ -74,6 +79,10 @@ a {
 
 .bs-menu--item:hover {
     -webkit-transform: scale(1.2);
+}
+
+.logo {
+    margin-top: 5px;
 }
 
 .bs--logo__text {
@@ -167,11 +176,11 @@ a {
 }
 
 .suggestion {
-    height: 65px;
+    /*height: 65px;*/
     width: 15vw;
     cursor: pointer;
+    padding: 10px;
 }
-
 
 .btn--black__search {
     grid-area: none;
@@ -179,9 +188,6 @@ a {
     background: cornflowerblue !important;
     color: white;
     border-radius: 10%;
-   /* position: absolute;
-    left: 81%;
-    bottom: 67%;*/
     margin-bottom: 20px;
     padding: 20px;
     top: 0.5rem;
@@ -236,14 +242,12 @@ a {
 }
 
 input[type=text] {
-    background: #02fafa;
-    opacity: 0.88;
+    border-bottom-color: white;
     margin: 10px;
 }
 
 input[type=number] {
-    background: #02fafa;
-    opacity: 0.88;
+    border-bottom-color: white;
     margin: 10px;
 }
 
@@ -259,10 +263,6 @@ input[type=number] {
 }
 
 form[name="registration"] {
-    /*display: flex;
-    flex-direction: column;
-    margin-top: 50px;*/
-    width: 100px;
     display: flex;
     flex-direction: column;
     margin-top: 50px;
@@ -276,6 +276,7 @@ form[name="registration"] {
     right: 65vh;
     mix-blend-mode: overlay;
     left: -1800px;
+    width: 100px;
 }
 
 #id-modal {
@@ -338,7 +339,8 @@ form[name="registration"] {
 }
 
 input[type=email], input[type=password] {
-    background: #02fafa;
+    background: white;
+    border-bottom-color: white;
     margin: 10px;
 }
 
@@ -351,8 +353,8 @@ input[type=email], input[type=password] {
 }
 
 .btn-box-register {
-    margin-left: 50%;
-    margin-top: -100%;
+
+    margin-top: -40%;
 }
 
 .btn--register__submit {
@@ -381,6 +383,7 @@ input[type=checkbox] {
     display: block;
     margin-left: auto;
     bottom: 50%;
+    margin-right: 20%;
 }
 
 .btn--green {
@@ -530,15 +533,20 @@ label {
 /*----------------------------------------------------------------------------*/
 
 @media only screen and (max-width: 600px) {
+    .homepage-bs {
+        justify-content: center;
+        /*height: calc(100% + 10px);*/
+    }
+
     .bs-menu--item {
         display: none;
     }
 
     .icon {
-        display: block;
+        display: contents;
         position: absolute;
-        right: 20px;
     }
+
 
     .responsive {
         display: flex;
@@ -551,16 +559,13 @@ label {
         text-align: center;
     }
 
-    .responsive .bs-menu--item a {
-       /* display: block;*/
+
+    .moving-obj {
+        display: none;
     }
-}
 
-/*-----------------------------------------------------------------------------*/
-
-@media only screen and (max-width: 600px) {
-    .homepage-bs {
-        justify-content: center;
+    .btn-box-register {
+        margin-top: 0px;
     }
 
     .main-hero__title {
@@ -603,23 +608,80 @@ label {
         justify-content: end;
     }
 
-    .icon {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        margin-left: 10px;
-    }
-
     .logo {
         width: 100%;
     }
 
-    .bs--menu__nav {
-        position: fixed;
-        bottom: 0;
+    .suggestion {
+        width: 100%;
+        margin-left: 20px;
+        padding: 10px;
+    }
+}
+
+@media only screen and (max-width: 415px) {
+    .p-question {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/*-----------------------------------------------------------------------------*/
+
+@media only screen and (max-width: 600px) {
+    /*.homepage-bs {
+        justify-content: center;
+        height: calc(100% + 10px);
+    }*/
+
+    /*.btn-box-register {
+        margin-top: 0px;
+    }*/
+
+    /*.main-hero__title {
+        font-size: 14px;
+        width: 100%;
     }
 
+    .main-hero__subtitle {
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .bs--search-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .search__select--from, .search__select--to, .js-datepicker {
+        height: 50px;
+        margin: 2px;
+    }
+
+    input[type=submit] {
+        padding-top: 15px;
+        margin-top: 2px;
+    }
+
+    .btn--black__search {
+        position: relative;
+        left: 0;
+        margin-left: 5px;
+        height: 50px;
+    }
+
+    input::placeholder {
+        font-size: 9px;
+    }
+
+    .bs--header {
+        justify-content: end;
+    }
+
+    .logo {
+        width: 100%;
+    }*/
 }
 
 @media only screen and (max-width: 952px) {
@@ -764,7 +826,36 @@ label {
         justify-content: center;
         margin: 0;
     }
+}
 
+label[for="registration_firstname"] {
+    display: flex;
+    margin-left: 10px;
+}
+
+label[for="registration_lastname"] {
+    display: flex;
+    margin-left: 10px;
+}
+
+label[for="registration_email"] {
+    display: flex;
+    margin-left: 10px;
+}
+
+label[for="registration_mobile"] {
+    display: flex;
+    margin-left: 10px;
+}
+
+label[for="registration_password_first"] {
+    display: flex;
+    margin-left: 10px;
+}
+
+label[for="registration_password_second"] {
+    display: flex;
+    margin-left: 10px;
 }
 
 .bs-about-title {
@@ -779,7 +870,6 @@ label {
     align-items: center;
     margin: 20px 0 0 0;
 }
-
 
 .img-container {
     width: 250px;
@@ -823,7 +913,6 @@ footer {
     color: blue !important;
 }
 
-
 .quantity-form {
     display: flex;
     flex-direction: column;
@@ -839,7 +928,6 @@ footer {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     width: 100%;
     text-align: center;
-
 }
 
 .styled-table thead tr {
@@ -847,13 +935,8 @@ footer {
     color: #ffffff;
 }
 
-
 .styled-table th, .styled-table td {
     padding: 12px 15px;
-}
-
-.styled-table td {
-
 }
 
 .styled-table tbody tr {
@@ -869,4 +952,3 @@ footer {
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
-
