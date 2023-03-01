@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BuyController!{% endblock %}
+{% block title %}Cart Controller{% endblock %}
 
 {% set childQuantity = 0 %}
 {% set studentQuantity = 0 %}
 {% set adultQuantity = 0 %}
 {% set pensionerQuantity = 0 %}
 
+{% set totalPrice = 0 %}
+
+{% set customerType = ['Child', 'Student', 'Adult', 'Pensioner'] %}
+
 {% block body %}
 
-<div class="sb--main-cart">
-    <div class="sb--main__content">
+<div class="sb--cart-container">
+    <div class="sb--cart-content">
         {% for message in app.flashes('success') %}
             <div class="flash-success">
                 {{ message }}
@@ -22,55 +26,72 @@
             </div>
         {% endfor %}
         <div class="sb--main-info">
+            <h1 class="cart-title">Outbound ticket info</h1>
             {% if cartTicket is defined and cartTicket is not null %}
-                {{ cartTicket.getDepartFrom }}
-                {{ cartTicket.getTravelTo }}
-                {{ cartTicket.getDepartingOn|date('d-m-Y') }}
-                {{ cartTicket.getReturningOn|date('d-m-Y') }}
-                {{ cartTicket.getDepartureTime|date('H:i') }}
-                {{ cartTicket.getTimeOfArrival|date('H:i') }}
-                {{ cartTicket.getEstimatedArrivalTime|date('H:i') }}
+                <div class="sb--cart-row">
+                    Depart from: {{ cartTicket.getDepartFrom }}
+                </div>
+                <div class="sb--cart-row">
+                   Travel to: {{ cartTicket.getTravelTo }}
+                </div>
+                <div class="sb--cart-row">
+                   Departing on: {{ cartTicket.getDepartingOn|date('d-m-Y') }}
+                </div>
+                <div class="sb--cart-row">
+                   Departure time: {{ cartTicket.getDepartureTime|date('H:i') }}
+                </div>
+                <div class="sb--cart-row">
+                   Time of arrival:  {{ cartTicket.getTimeOfArrival|date('H:i') }}
+                </div>
+                <div class="sb--cart-row">
+                   Estimated arrival time: {{ cartTicket.getEstimatedArrivalTime|date('H:i') }}
+                </div>
             {% endif %}
-            {% if ticketQuantity is defined and ticketQuantity is not null %}
-                {% for quantity in ticketQuantity %}
-                    {{ quantity.getChildQuantity }}
-                    {{ quantity.getStudentQuantity }}
-                    {{ quantity.getAdultQuantity }}
-                    {{ quantity.getPensionerQuantity }}
-                {% endfor %}
-                {#<a href="{{ path('app_order') }}">Make an order</a>#}
-            {% endif %}
+            <hr class="cart-break-info">
+            <div class="cart--price-info">
+                {% if ticketQuantity is defined and ticketQuantity is not null %}
+                    {% for quantity in ticketQuantity %}
+                        {% for type in customerType %}
+                            {#{% set customerType = ['Child', 'Student', 'Adult', 'Pensioner'][i] %}#}
+                            {% set quantityValue = attribute(quantity, 'get' ~ type ~ 'Quantity') %}
+                            {% if quantityValue > 0 %}
+                              <div class="{{ type|lower ~ '-price-cart' }}">{{ type ~ ' Quantity' }}  {{ quantityValue }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
 
-            {% if ticketQuantity is defined and ticketQuantity is not null %}
+                {% if ticketQuantity is defined and ticketQuantity is not null %}
 
-                {% for quantity in ticketQuantity %}
+                    {% for quantity in ticketQuantity %}
 
-                    {% if quantity.getChildQuantity >= 0 %}
-                        {% set childSubtotal = (childQuantity + quantity.childQuantity) * cartTicket.childPrice %}
-                    {% endif %}
+                        {% if quantity.getChildQuantity >= 0 %}
+                            {% set childSubtotal = (childQuantity + quantity.childQuantity) * cartTicket.childPrice %}
+                        {% endif %}
 
-                    {% if quantity.studentQuantity >= 0 %}
-                        {% set studentSubtotal = (studentQuantity + quantity.studentQuantity) * cartTicket.studentPrice %}
-                    {% endif %}
+                        {% if quantity.studentQuantity >= 0 %}
+                            {% set studentSubtotal = (studentQuantity + quantity.studentQuantity) * cartTicket.studentPrice %}
+                        {% endif %}
 
-                    {% if quantity.adultQuantity >= 0 %}
-                        {% set adultSubtotal = (studentQuantity + quantity.adultQuantity) * cartTicket.adultPrice %}
-                    {% endif %}
+                        {% if quantity.adultQuantity >= 0 %}
+                            {% set adultSubtotal = (studentQuantity + quantity.adultQuantity) * cartTicket.adultPrice %}
+                        {% endif %}
 
-                    {% if quantity.pensionerQuantity >= 0 %}
-                        {% set pensionerSubtotal = (pensionerQuantity + quantity.pensionerQuantity) * cartTicket.pensionerPrice %}
-                    {% endif %}
+                        {% if quantity.pensionerQuantity >= 0 %}
+                            {% set pensionerSubtotal = (pensionerQuantity + quantity.pensionerQuantity) * cartTicket.pensionerPrice %}
+                        {% endif %}
 
-                    {% set totalPrice = childSubtotal + studentSubtotal + adultSubtotal + pensionerSubtotal %}
+                        {% set totalPrice = childSubtotal + studentSubtotal + adultSubtotal + pensionerSubtotal %}
 
-                    Total Price: {{ totalPrice|number_format(2, '.', '') }}
-                {% endfor %}
+                    {% endfor %}
+                    <div>
+                        <p class="total-price-text-cart">Total price: </p>
+                        <span class="price-totals-cart"> {{ totalPrice|number_format(2, '.', '') }}</span>
+                    </div>
 
-            {% endif %}
+                {% endif %}
+            </div>
 
-{#
-            <a href="{{ path('cart_updateToCart', {id: tickets.id}) }}">Change Quantity</a>
-#}
             {% if cartTicket is defined %}
                 <a href="{{ path('cart_deleteToCart', {id: cartTicket.id}) }}">Delete</a>
                 <a href="{{ path('app_order') }}">Make an order</a>
@@ -81,8 +102,6 @@
                 </div>
             {% endfor %}
             {% endif %}
-
-           {# <a href="{{ path('cart_clear') }}">Clear Cart</a>#}
         </div>
     </div>
 </div>

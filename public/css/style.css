@@ -4,17 +4,14 @@
 
 html {
     background: white;
-    /*margin: 5px;*/
     width: 100%;
     height: 100%;
 }
 
 body {
-    /*height: 100vh;*/
     display: flex;
     flex-flow: column;
 }
-
 
 .homepage-bs {
     font-size: 1rem;
@@ -353,7 +350,6 @@ input[type=email], input[type=password] {
 }
 
 .btn-box-register {
-
     margin-top: -40%;
 }
 
@@ -367,10 +363,6 @@ input[type=email], input[type=password] {
     width: 100%;
     margin-top: -20px;
     height: 60vh;
-}
-
-.checkbox {
-    /*display: inline-block;*/
 }
 
 input[type=checkbox] {
@@ -450,13 +442,17 @@ label {
     font-weight: 600;
 }
 
+.child-price-cart, .student-price-cart, .adult-price-cart, .pensioner-price-cart {
+    display: flex;
+    justify-content: center;
+}
+
 .pricing-title {
     color: black;
     font-weight: 600;
 }
 
 .btn-cart-submit {
-    /*width: 350px;*/
     text-align: center;
     margin-top: 10px;
     background: cornflowerblue !important;
@@ -628,61 +624,6 @@ label {
 }
 
 /*-----------------------------------------------------------------------------*/
-
-@media only screen and (max-width: 600px) {
-    /*.homepage-bs {
-        justify-content: center;
-        height: calc(100% + 10px);
-    }*/
-
-    /*.btn-box-register {
-        margin-top: 0px;
-    }*/
-
-    /*.main-hero__title {
-        font-size: 14px;
-        width: 100%;
-    }
-
-    .main-hero__subtitle {
-        font-size: 14px;
-        width: 100%;
-    }
-
-    .bs--search-form {
-        display: flex;
-        justify-content: center;
-    }
-
-    .search__select--from, .search__select--to, .js-datepicker {
-        height: 50px;
-        margin: 2px;
-    }
-
-    input[type=submit] {
-        padding-top: 15px;
-        margin-top: 2px;
-    }
-
-    .btn--black__search {
-        position: relative;
-        left: 0;
-        margin-left: 5px;
-        height: 50px;
-    }
-
-    input::placeholder {
-        font-size: 9px;
-    }
-
-    .bs--header {
-        justify-content: end;
-    }
-
-    .logo {
-        width: 100%;
-    }*/
-}
 
 @media only screen and (max-width: 952px) {
     .main-hero__title, .main-hero__subtitle {
@@ -919,6 +860,16 @@ footer {
     align-items: flex-end;
 }
 
+.total-price-text-cart {
+    text-align: center;
+}
+
+.price-totals-cart {
+    text-align: center;
+    display: block;
+}
+
+
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -951,4 +902,9 @@ footer {
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
+}
+
+.sb--cart-container {
+    display: flex;
+    justify-content: center;
 }
