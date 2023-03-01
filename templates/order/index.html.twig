@@ -1,63 +1,55 @@
-{#
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %} Orders {% endblock %}
 
 {% block body %}
-<style>
-
-</style>
-
-<div class="example-wrapper">
-
-    {% for cart in userCart %}
-        {{ cart.travelSchedule.getDepartFrom }}
-        {{ cart.travelSchedule.getTravelTo }}
-        {{ cart.travelSchedule.getDepartingOn|date('d-m-Y') }}
-        {{ cart.travelSchedule.getReturningOn|date('d-m-Y') }}
-        {{ cart.travelSchedule.getDepartureTime|date('H:i') }}
-        {{ cart.travelSchedule.getTimeOfArrival|date('H:i') }}
-        {{ cart.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-        {{ cart.getQuantity }}
-        {{ cart.travelSchedule.getFee }}
-
-        Total: {{ cart.travelSchedule.getFee * cart.getQuantity }}<br>
-
-    {% endfor %}
-
-        Your data:
-        {{ user.firstname }} {{ user.lastname }} {{ user.mobile }} {{ user.email }}
-    {{ form_start(orderForm) }}
-
-    {{ form_end(orderForm) }}
-
-
-</div>
-{% endblock %}
-#}
-
-{% extends 'base.html.twig' %}
-
-{% block title %} {% endblock %}
-
-{% block body %}
-
     {% if orders is not defined %}
-        {% for message in app.flashes('warning-orders') %}
+        {% for message in app.flashes('flash-warning') %}
             <div class="flash-warning">
                 {{ message }}
             </div>
         {% endfor %}
     {% else %}
-        {% for order in orders %}
-            {{ order.travelSchedule.getDepartFrom }}
-            {{ order.travelSchedule.getTravelTo }}
-            {{ order.travelSchedule.getReturningOn|date('d-m-Y') }}
-            {{ order.travelSchedule.getDepartureTime|date('d-m-Y') }}
-            {{ order.travelSchedule.getTimeOfArrival|date('H:i') }}
-            {{ order.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
-            {{ order.travelSchedule.getFee }}
-        {% endfor %}
+    <div class="sb--summary-container">
+        <div class="sb--summary-info">
+            <h1 class="summary-title">Orders</h1>
+            <h2 class="summary-paragraph">Here are all of your orders</h2>
+            <div class="summary-description">Information about the purchased driving ticket</div>
+            <div class="summary-main">
+                {% for order in orders %}
+                    <div class="sb--summary-column grey">
+                        <div class="sb--summary-row">
+                           Depart from: {{ order.travelSchedule.getDepartFrom }}
+                        </div>
+                        <div class="sb--summary-row">
+                           Travel to: {{ order.travelSchedule.getTravelTo }}
+                        </div>
+                        <div class="sb--summary-row">
+                         Departing on (date): {{ order.travelSchedule.getDepartingOn|date('d-m-Y') }}
+                        </div>
+                        <div class="sb--summary-row">
+                          Departure time: {{ order.travelSchedule.getDepartureTime|date('H:i') }}
+                        </div>
+                        <div class="sb--summary-row">
+                           Time of arrival: {{ order.travelSchedule.getTimeOfArrival|date('H:i') }}
+                        </div>
+                        <div class="sb--summary-row">
+                           Estimated arrival time: {{ order.travelSchedule.getEstimatedArrivalTime|date('H:i') }}
+                        </div>
+                        <div class="sb--summary-row">
+                            <span class="sb--summary-row price">Total: {{ order.total|number_format(2, '.', '') }} €</span>
+                        </div>
+                    </div>
+                    <div class="summary-main">
+                        <div class="sb--summary-column lightgrey">
+                            <div class="sb--summary-row">
+                                <span class="sb--bus-company">Bus company:</span>
+                                {{ order.getTravelSchedule.getBusCompany.getName }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
     {% endif %}
 
 {% endblock %}

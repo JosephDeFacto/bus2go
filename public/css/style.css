@@ -908,3 +908,89 @@ footer {
     display: flex;
     justify-content: center;
 }
+
+.sb--summary-container {
+    display: flex;
+}
+
+.sb--summary-info {
+    padding: 20px;
+    width: 100%;
+}
+
+.summary-title {
+    text-align: center;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.summary-paragraph {
+    text-align: center;
+    font-family: inherit;
+    margin-top: 10px;
+}
+
+.summary-description {
+    text-align: center;
+    padding: 10px;
+}
+
+.summary-main {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.sb--summary-column {
+    width: 600px;
+    height: 235px;
+}
+
+.grey {
+    background: #aba8a7;
+    margin-top: 20px;
+}
+
+.lightgrey {
+    background: #dedad9;
+}
+
+.sb--summary-row {
+    text-align: center;
+    padding: 5px;
+}
+
+.sb--bus-company {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 1280px) {
+    .summary-main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sb--summary-column {
+
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .sb--summary-column {
+        width: 100%;
+    }
+
+    .summary-main {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .sb--summary-column.grey {
+        height: 300px;
+        padding: 10px;
+    }
+}
