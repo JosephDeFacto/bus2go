@@ -57,6 +57,21 @@ class Order
      */
     private $travelSchedule;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="orders")
+     */
+    private $invoices;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2)
+     */
+    private $total;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -144,6 +159,48 @@ class Order
     public function setTravelSchedule(?TravelSchedule $travelSchedule): self
     {
         $this->travelSchedule = $travelSchedule;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getOrders() === $this) {
+                $invoice->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
