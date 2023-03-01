@@ -25,17 +25,16 @@
 
     <script>
 
-        let autosuggest = (inputSelector, minLength) => {
+        let autosuggest = (inputSelector, minLength, searchField) => {
             let input = document.querySelector(inputSelector);
             input.addEventListener("keyup", () => {
                 let searchTerm = input.value.trim();
-                console.log(input);
 
                 if (searchTerm.length >= minLength) {
                     fetch('{{ path('app_search') }}', {
                         //dataType: "json",
                         method: "POST",
-                        body: JSON.stringify({ searchTerm: searchTerm}),
+                        body: JSON.stringify({ [searchField]: searchTerm}),
                         headers: {
                             'Content-Type': 'application/json'
                         }
@@ -84,76 +83,16 @@
             })
         };
 
-        autosuggest(".search__select--from", 3);
-        autosuggest(".search__select--to", 3);
+        autosuggest(".search__select--from", 3, "departFrom");
+        autosuggest(".search__select--to", 3, "travelTo");
 
 
         $(document).ready(function() {
             $(".js-datepicker").datepicker({
                 dateFormat: 'dd-mm-yy',
-                beforeShowDay: $.datepicker.noWeekends
+                beforeShowDay: $.datepicker.noWeekends,
+                minDate: 0
             });
-
-
-            /*
-            $(".search__select--from").on("keyup", function() {
-                let departFrom = $(".search__select--from").val();
-
-                $.ajax({
-                    url: "",
-                    dataType: "json",
-                    type: "POST",
-                    data: {departFrom: departFrom},
-                    //data: $(this).serialize(),
-                    success: function(data) {
-                        console.log(data)
-
-                    },
-                    error: function(jqXHR, textStatus) {
-                        console.error(textStatus);
-                    }
-                });
-            });
-            */
-            /*
-            $(".search__select--to").on("keyup", function() {
-                let searchDepartFrom = $(this).val();
-
-                if (searchDepartFrom.length < 3) {
-                    $(".search__select--to").next('.search-results').remove();
-                    return;
-                }
-
-
-                $.ajax({
-                    url: "",
-                    dataType: "json",
-                    type: "POST",
-                    data: {departFrom: searchDepartFrom},
-                    //data: $(this).serialize(),
-                    success: function(data) {
-                        let table = $('<table>');
-                        $.each(data, function(index, item) {
-                            let row = $('<tr>').append(
-                                //$('<td>').text(item.name),
-                                $('<td>').text(item),
-                            );
-                            table.append(row);
-                        })
-                        let container = $('<div>').addClass('search-results').html(table);
-                        $(".search__select--to").next('.search-results').remove();
-                        $(".search__select--to").after(container);
-
-                        //$("#ajax--search-results").html(data);
-                        //$("#ajax--search-results").fadeIn();
-                    },
-                    error: function(jqXHR, textStatus) {
-                        console.error(textStatus);
-                    }
-                });
-            });
-            */
-
 
             setTimeout(() => {
                 let alertSuccess = document.querySelector('.alert-success');
@@ -165,50 +104,5 @@
         });
 
     </script>
-
-    {#<div id="results" style="color: red";></div>
-    <div class="sb--travel-info">
-        <div class="sb--column sb--container">
-            <div class="sb--row sb--row-middle sb--travel-info__title">
-                <div class="sb--row sb--row-justify">
-                    <div class="sb--results-notification">
-                        <span data-notification="{% if rows is defined %}{{ rows[0]['COUNT(*)'] }} results">{{ rows[0]['COUNT(*)'] }} results <br>{% endif %}</span>
-                        {% if departOn is defined %}
-                        {{ departOn }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {% if results is defined %}
-        {% for searchResult in results %}
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Depart from</th>
-                        <th>Travel to</th>
-                        <th>Departure time</th>
-                        <th>Arrival time</th>
-                        <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ searchResult.departFrom }}</td>
-                        <td>{{ searchResult.travelTo }}</td>
-                        <td>{{ searchResult.departureTime|date('H:i') }}h</td>
-                        <td>{{ searchResult.timeOfArrival|date('H:i') }}h</td>
-                        <td>{{ searchResult.estimatedArrivalTime|date('H:i') }}h</td>
-                        <td>{{ searchResult.busCompany.getName }}</td>
-                        <td><a class="cart-select" href="{{ path('app_cart_addtocart', {id: searchResult.id}) }}">Select</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        {% endfor %}
-
-    {% endif %}#}
 
 {% endblock %}
