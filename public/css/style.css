@@ -14,6 +14,7 @@ body {
 }
 
 .homepage-bs {
+    height: 70vw;
     font-size: 1rem;
     font-family: DejaVu Sans Mono, monospace;
     color: #302e2e;
@@ -24,6 +25,8 @@ body {
     background: #FFFFFF;
     border-radius: 35px;
 }
+
+
 
 .bs--header {
     margin-left: 20px;
@@ -45,7 +48,7 @@ body {
     display: flex;
     border: none;
     margin-top: 20px;
-    color: #20002c;
+    /*color: #20002c;*/
     font-family: DejaVu Sans Mono, monospace;
     font-size: 14px;
 }
@@ -71,7 +74,7 @@ CHECK COLOR OF ANCHORS, #2002c seems pretty okay
  */
 a {
     text-decoration: none;
-    color: #20002c !important;
+    /*color: #20002c !important*/;
 }
 
 .bs-menu--item:hover {
@@ -180,25 +183,25 @@ a {
 }
 
 .btn--black__search {
-    grid-area: none;
+    /*grid-area: none;*/
     cursor: pointer;
     background: cornflowerblue !important;
     color: white;
-    border-radius: 10%;
-    margin-bottom: 20px;
-    padding: 20px;
-    top: 0.5rem;
-    height: 65px;
+    border-radius: 20px;
+    margin: 20px 10px;
+    padding: 10px;
+    height: fit-content;
 }
 
 .cart-select {
     background: cornflowerblue;
-    color: #20002c !important;
+    /*color: #20002c !important*/;
     font-weight: 600;
     position: relative;
     bottom: 10px;
     border-radius: 20px;
-    padding: 20px;
+    padding: 15px;
+    color: white;
 }
 
 .search__select-label-from {
@@ -246,6 +249,10 @@ input[type=text] {
 input[type=number] {
     border-bottom-color: white;
     margin: 10px;
+}
+
+input[type=submit] {
+    padding-top: 10px;
 }
 
 .container-fields-register {
@@ -388,8 +395,10 @@ input[type=email], input[type=password] {
 }
 
 .btn--change-password__submit {
-    background: cornflowerblue !important;
+    background: forestgreen !important;
     color: white;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .btn--register__submit {
@@ -496,10 +505,12 @@ label {
     margin-top: 10px;
     background: cornflowerblue !important;
     border-radius: 20px;
-    color: #20002c;
-    padding: 20px;
+    /*color: #20002c;*/
+    padding: 10px;
     position: relative;
     font-weight: 600;
+    color: white;
+    margin-right: 100px;
 }
 
 .flash-success {
@@ -571,6 +582,7 @@ label {
     .homepage-bs {
         justify-content: center;
         /*height: calc(100% + 10px);*/
+        height: 70vw;
     }
 
     .bs-menu--item {
@@ -739,18 +751,6 @@ label {
 
     .main-hero__subtitle {
         width: 100%;
-    }
-
-    input[type=submit] {
-        padding-top: 24px;
-    }
-
-    .btn--black__search {
-        position: relative;
-        left: 0;
-        margin-left: 5px;
-        padding-bottom: 17px;
-        margin-top: 1px;
     }
 
     .search__select--from, .search__select--to, .js-datepicker {
@@ -1032,4 +1032,46 @@ footer {
         height: 300px;
         padding: 10px;
     }
+}
+
+.href-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.row-delete, .cart-order {
+    padding: 10px;
+    color: white;
+    border-radius: 20px;
+}
+
+.row-delete {
+    background: darkred;
+}
+
+.row-delete:hover {
+    color: red;
+}
+
+.cart-order {
+    background: forestgreen;
+}
+
+.dropdown-content {
+    display: block;
+    position: absolute;
+    background: black;
+    min-width: 100px;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-item {
+    color: white;
 }
