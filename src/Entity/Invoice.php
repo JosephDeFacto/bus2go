@@ -44,6 +44,11 @@ class Invoice
      */
     private $busCompany;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="invoices")
+     */
+    private $orders;
+
 
     public function getId(): ?int
     {
@@ -106,6 +111,18 @@ class Invoice
     public function setBusCompany(?BusCompany $busCompany): self
     {
         $this->busCompany = $busCompany;
+
+        return $this;
+    }
+
+    public function getOrders(): ?Order
+    {
+        return $this->orders;
+    }
+
+    public function setOrders(?Order $orders): self
+    {
+        $this->orders = $orders;
 
         return $this;
     }
