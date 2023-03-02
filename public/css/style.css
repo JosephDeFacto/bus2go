@@ -1060,7 +1060,7 @@ footer {
 }
 
 .dropdown-content {
-    display: block;
+    display: none;
     position: absolute;
     background: black;
     min-width: 100px;
