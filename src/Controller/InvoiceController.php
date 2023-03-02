@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
+use App\Entity\User;
 use App\Helper\InvoiceGenerator;
 use App\Repository\OrderRepository;
 use App\Service\Mailer;
@@ -36,18 +37,16 @@ class InvoiceController extends AbstractController
         $user = $this->getUser();
 
         $orders = $orderRepository->findOneBy(['user' => $user]);
-        $lastID = $orderRepository->fetchLastRow($user);
 
-        $invoiceNumber = $this->invoiceGenerator->generateInvoicer($lastID, 5, "F-");
 
         $invoice = new Invoice();
 
-        $invoice->setInvoiceNumber($invoiceNumber);
+        $invoice->setInvoiceNumber(0);
         $invoice->setIssueDate(new \DateTime('now'));
         $invoice->setIsSent(true);
         $invoice->setUser($user);
         $invoice->setBusCompany(null);
-        //$invoice->setOrders($orders);
+        $invoice->setOrders($orders);
 
         $this->managerRegistry->getManager()->persist($invoice);
         $this->managerRegistry->getManager()->flush();
