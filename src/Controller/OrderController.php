@@ -90,9 +90,8 @@ class OrderController extends AbstractController
 
            $this->addFlash('success', 'Checkout completed.');
            $request->getSession()->clear('cart');
-           return $this->redirectToRoute('app_invoice');
 
-           //return $this->redirectToRoute('app_index');
+           return $this->redirectToRoute('app_index');
         }
 
         return $this->render('order/order-checkout.html.twig', [
