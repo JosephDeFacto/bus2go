@@ -28,10 +28,11 @@
             <header class="bs--header">
                 <span class="logo">
                     <a href="{{ path('app_index') }}">
-                        <img class="bs__img" src="bus.png">
+                        <img class="bs__img" src="/../bus.png">
                         <p class="bs--logo__text bs--logo__text-six">#gowiththebus</p>
                     </a>
                 </span>
+
 
                 <ul class="bs--menu__nav" id="bs--menu__nav-id">
 
@@ -48,8 +49,12 @@
                             <a href="{{ path('order_index') }}"><i class="fa fa-ticket fa-lg" aria-hidden="true"></i></a>
                         </li>
 
-                        <li class="bs-menu--item">
-                            <a href="{{ path('user_account') }}"><i class="fa fa-user fa-lg" aria-hidden="true"></i></a>
+                        <li class="bs-menu--item dropdown">
+                            <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" href="{{ path('user_account') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ path('user_change_password') }}">Change password</a>
+                            </div>
                         </li>
 
                         <li class="bs-menu--item">
@@ -80,6 +85,8 @@
                                 nav.className = "bs--menu__nav";
                             }
                         }
+
+
                     </script>
 
                     <a href="javascript:void(0);" class="icon" onclick="responsiveDropdown()">&#9776;</a>
