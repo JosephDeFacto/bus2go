@@ -53,13 +53,14 @@
                             <i class="fa fa-user fa-lg" aria-hidden="true"></i>
                             <div class="dropdown-content">
                                 <a class="dropdown-item" href="{{ path('user_account') }}">Profile</a>
-                                <a class="dropdown-item" href="{{ path('user_change_password') }}">Change password</a>
+                                <a class="dropdown-item" href="{{ path('user_change_password') }}"><i class="fa fa-key" aria-hidden="true"></i> Change password</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
                             </div>
                         </li>
 
-                        <li class="bs-menu--item">
+                        {#<li class="bs-menu--item">
                             <a href="{{ path('app_logout') }}"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
-                        </li>
+                        </li>#}
                     {% else %}
 
                         <li class="bs-menu--item">
