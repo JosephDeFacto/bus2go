@@ -60,3 +60,5 @@ services:
         arguments:
             - '@fos_user.user_manager'
             - ['username']
+
+    Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
