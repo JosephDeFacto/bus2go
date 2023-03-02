@@ -19,15 +19,15 @@ class SearchFormType extends AbstractType
     {
         $builder
             ->add('departFrom', TextType::class, [
-                'attr' => ['placeholder' => 'From', 'class' => 'search__select--from'],
+                'attr' => ['placeholder' => 'From', 'class' => 'search__select--from', 'autocomplete' => 'off'],
             ])
             ->add('travelTo', TextType::class, [
-                'attr' => ['placeholder' => 'To', 'class' => 'search__select--to'],
+                'attr' => ['placeholder' => 'To', 'class' => 'search__select--to', 'autocomplete' => 'off'],
             ])
             ->add('departingOn', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
-                'attr' => ['class' => 'js-datepicker', 'placeholder' => 'Select date for depart'],
+                'attr' => ['class' => 'js-datepicker', 'placeholder' => 'Select date for depart', 'autocomplete' => 'off'],
                 'required' => false,
                 'html5' => false,
             ])
