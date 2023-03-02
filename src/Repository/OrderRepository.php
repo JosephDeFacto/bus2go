@@ -52,14 +52,5 @@ class OrderRepository extends ServiceEntityRepository
         return $stmt->executeQuery();
     }
 
-    public function fetchLastRow($user_id)
-    {
-        $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT id /*CONCAT('F-', LPAD(id, 6, '0'))*/ FROM `order` WHERE user_id = '$user_id' ORDER BY id DESC LIMIT 1";
-        $stmt = $connection->prepare($query);
-        $stmt->bindValue(':user_id', $user_id);
-        $result = $stmt->executeQuery();
 
-        return $result->fetchOne();
-    }
 }
