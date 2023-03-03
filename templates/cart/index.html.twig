@@ -20,32 +20,41 @@
                 {{ message }}
             </div>
         {% endfor %}
-        {% for message in app.flashes('warning-cart') %}
-            <div class="flash-warning">
-                {{ message }}
-            </div>
-        {% endfor %}
+
+        {% if cartTicket is not defined %}
+            {% for message in app.flashes('warning-cart') %}
+                <div class="flash-warning">
+                    {{ message }}
+                </div>
+            {% endfor %}
         <div class="sb--main-info">
+            {% else  %}
             <h1 class="cart-title">Outbound ticket info</h1>
-            {% if cartTicket is defined and cartTicket is not null %}
+
                 <div class="sb--cart-row">
                     Depart from: {{ cartTicket.getDepartFrom }}
                 </div>
+
                 <div class="sb--cart-row">
                    Travel to: {{ cartTicket.getTravelTo }}
                 </div>
+
                 <div class="sb--cart-row">
                    Departing on: {{ cartTicket.getDepartingOn|date('d-m-Y') }}
                 </div>
+
                 <div class="sb--cart-row">
                    Departure time: {{ cartTicket.getDepartureTime|date('H:i') }}
                 </div>
+
                 <div class="sb--cart-row">
                    Time of arrival:  {{ cartTicket.getTimeOfArrival|date('H:i') }}
                 </div>
+
                 <div class="sb--cart-row">
                    Estimated arrival time: {{ cartTicket.getEstimatedArrivalTime|date('H:i') }}
                 </div>
+
             {% endif %}
             <hr class="cart-break-info">
             <div class="cart--price-info">
@@ -93,20 +102,35 @@
             </div>
 
             {% if cartTicket is defined %}
-                <a href="{{ path('cart_deleteToCart', {id: cartTicket.id}) }}">Delete</a>
-                <a href="{{ path('app_order') }}">Make an order</a>
-            {% else %}
-            {% for message in app.flashes('warning-cart') %}
-                <div class="flash-warning">
-                    {{ message }}
+                <div class="href-container">
+                    <!-- make user confirmation before delete ticket from the cart -->
+                    <a class="row-delete" onclick="return confirmAction();" href="{{ path('cart_deleteToCart', {id: cartTicket.id}) }}">Delete</a>
+                    <a class="cart-order" href="{{ path('app_order') }}">Make an order</a>
                 </div>
-            {% endfor %}
+
+
+            {% else %}
+                {% for message in app.flashes('warning-cart') %}
+                    <div class="flash-warning">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
             {% endif %}
         </div>
     </div>
 </div>
 
     <script>
+
+        let confirmAction = () => {
+
+            if (!confirm('Confirm delete?')) {
+                return false;
+            }
+
+            window.location = "{{ path('app_index') }}";
+        }
 
         setTimeout(() => {
             let flashSuccess = document.querySelector('.flash-success');
