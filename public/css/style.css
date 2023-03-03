@@ -3,7 +3,7 @@
 }
 
 html {
-    background: white;
+    background: #009879;
     width: 100%;
     height: 100%;
 }
@@ -11,6 +11,9 @@ html {
 body {
     display: flex;
     flex-flow: column;
+    margin-left: 40px !important;
+    height: 100%;
+
 }
 
 .homepage-bs {
@@ -22,10 +25,7 @@ body {
     /*background: linear-gradient(to right, #0f3443, #34e89e);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     /*background: #faf9f5;*/
     background: #FFFFFF;
-    border-radius: 35px;
 }
-
-
 
 .bs--header {
     margin-left: 20px;
@@ -1099,4 +1099,54 @@ footer {
 
 .dropdown-item {
     color: white;
+}
+
+.order-checkout-container {
+
+}
+
+.order-checkout-header {
+
+}
+
+.order-checkout-main {
+    padding: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.order-checkout-column {
+    margin-top: 10px;
+    border-bottom: 2.5px solid #009879;
+    display: flex;
+    gap: 50px;
+    justify-content: space-between;
+}
+
+.date {
+    margin-left: 25%;
+    margin-top: 20px;
+    color: red;
+}
+
+.order-info {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.btn-order {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: forestgreen !important;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.btn-order:hover {
+    color: black;
 }

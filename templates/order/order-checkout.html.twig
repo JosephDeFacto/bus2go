@@ -1,33 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Order{% endblock %}
 
 {% block body %}
-    <style>
-
-    </style>
-
-    <div class="example-wrapper">
-
-        {{ cart.getDepartFrom }}
-        {{ cart.getTravelTo }}
-        {{ cart.getDepartingOn|date('d-m-Y') }}
-        {{ cart.getReturningOn|date('d-m-Y') }}
-        {{ cart.getDepartureTime|date('H:i') }}
-        {{ cart.getTimeOfArrival|date('H:i') }}
-        {{ cart.getEstimatedArrivalTime|date('H:i') }}
-        {{ cart.getQuantity }}
-        {{ cart.getFee }}
-
-        Total: {#{{ cart.getFee * cart.getQuantity }}#}<br>
-
-
-        Your data:
-        {{ user.firstname }} {{ user.lastname }} {{ user.mobile }} {{ user.email }}
-        {{ form_start(orderForm) }}
-
-        {{ form_end(orderForm) }}
-
-
+    <div class="order-checkout-header">
+        <h2 class="cart-title">Checkout page</h2>
     </div>
+    <div class="order-checkout-container">
+        <div class="order-checkout-main">
+            <div class="order-checkout-column date">
+                Date: {{ "now"|date("m/d/Y") }}
+            </div>
+            <span class="order-info">Order information</span>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">broj ordera</div>
+                <div class="order-checkout-row">#1</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Depart from</div>
+                <div class="order-checkout-row">{{ cart.getDepartFrom }}</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Travel to</div>
+                <div class="order-checkout-row">{{ cart.getTravelTo }}</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Depart on</div>
+                <div class="order-checkout-row">{{ cart.getDepartingOn|date('d-m-Y') }}</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Departure time</div>
+                <div class="order-checkout-row">{{ cart.getDepartureTime|date('H:i') }}</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Time of arrival</div>
+                <div class="order-checkout-row">{{ cart.getTimeOfArrival|date('H:i') }}</div>
+            </div>
+            <div class="order-checkout-column">
+                <div class="order-checkout-row">Estimated arrival time</div>
+                <div class="order-checkout-row">{{ cart.getEstimatedArrivalTime|date('H:i') }}</div>
+            </div>
+        </div>
+        <div class="order-checkout-main main-second">
+            <div class="order-checkout-column column-second">
+                <span class="order-info">Personal information</span>
+            </div>
+            <div class="order-checkout-column column-second">
+                <div class="order-checkout-row">Firstname</div>
+                <div class="order-checkout-row">{{ user.firstname }}</div>
+            </div>
+            <div class="order-checkout-column column-second">
+                <div class="order-checkout-row">Lastname</div>
+                <div class="order-checkout-row">{{ user.lastname }}</div>
+            </div>
+            <div class="order-checkout-column column-second">
+                <div class="order-checkout-row">Mobile</div>
+                <div class="order-checkout-row">{{ user.mobile }}</div>
+            </div>
+            <div class="order-checkout-column column-second">
+                <div class="order-checkout-row">Email</div>
+                <div class="order-checkout-row">{{ user.email }}</div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_start(orderForm) }}
+
+    {{ form_end(orderForm) }}
+
+
+
 {% endblock %}
