@@ -41,7 +41,7 @@ class CartController extends AbstractController
         $cartTicket = $cart->getSessionCart();
 
         if (!$cart->getSessionCart()) {
-            $this->addFlash('warning-cart', '');
+            $this->addFlash('warning-cart', 'Your cart is empty');
             return $this->render('cart/index.html.twig', []);
         }
 
@@ -61,7 +61,6 @@ class CartController extends AbstractController
         $travelSchedule = $travelScheduleRepository->find($id);
 
         $busCompany = $travelSchedule->getBusCompany();
-
 
         $form = $this->createForm(CartType::class, $cartTicket);
 
