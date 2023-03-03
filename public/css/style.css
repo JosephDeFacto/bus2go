@@ -3,17 +3,13 @@
 }
 
 html {
-    background: #009879;
     width: 100%;
-    height: 100%;
 }
 
 body {
     display: flex;
     flex-flow: column;
-    margin-left: 40px !important;
     height: 100%;
-
 }
 
 .homepage-bs {
@@ -824,7 +820,7 @@ label {
     }
 
     label[for="cart_pensionerQuantity"] {
-        margin-left: 10px;
+        /*margin-left: 10px;*/
     }
 
     .cart-title {
