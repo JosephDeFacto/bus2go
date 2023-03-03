@@ -50,7 +50,7 @@
                         </li>
 
                         <li class="bs-menu--item dropdown">
-                            <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+                            <i class="fa fa-user drop fa-lg" aria-hidden="true"></i>
                             <div class="dropdown-content">
                                 <a class="dropdown-item" href="{{ path('user_account') }}">Profile</a>
                                 <a class="dropdown-item" href="{{ path('user_change_password') }}"><i class="fa fa-key" aria-hidden="true"></i> Change password</a>
@@ -58,9 +58,14 @@
                             </div>
                         </li>
 
-                        {#<li class="bs-menu--item">
-                            <a href="{{ path('app_logout') }}"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
-                        </li>#}
+                        <li class="bs-menu--item account">
+                            <a href="{{ path('user_account') }}"><i class="fa fa-user fa-lg" aria-hidden="true"></i></a>
+                        </li>
+
+                        <li class="bs-menu--item logout">
+                            <a href="{{ path('app_logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                        </li>
+
                     {% else %}
 
                         <li class="bs-menu--item">
@@ -76,21 +81,22 @@
                         </li>
 
                     {% endif %}
+                    <a href="#" class="fa fa-caret-down" id="dropdown" aria-hidden="true" onclick="responsiveDropdown();">{#&#9776;#}</a>
                     <script>
                         function responsiveDropdown() {
                             let nav = document.getElementById('bs--menu__nav-id');
+                            let icon = document.getElementById('dropdown');
 
                             if (nav.className === "bs--menu__nav") {
                                 nav.className += " responsive";
+                                icon.className = "fa fa-times";
                             } else {
                                 nav.className = "bs--menu__nav";
+                                icon.className = "fa fa-caret-down";
                             }
                         }
-
-
                     </script>
 
-                    <a href="javascript:void(0);" class="icon" onclick="responsiveDropdown()">&#9776;</a>
                 </ul>
 
             </header>

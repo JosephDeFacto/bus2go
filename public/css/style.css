@@ -14,7 +14,6 @@ body {
 }
 
 .homepage-bs {
-    height: 70vw;
     font-size: 1rem;
     font-family: DejaVu Sans Mono, monospace;
     color: #302e2e;
@@ -69,12 +68,9 @@ body {
 .bs__img:hover {
     -webkit-transform: scale(1);
 }
-/**
-CHECK COLOR OF ANCHORS, #2002c seems pretty okay
- */
+
 a {
     text-decoration: none;
-    /*color: #20002c !important*/;
 }
 
 .bs-menu--item:hover {
@@ -176,14 +172,12 @@ a {
 }
 
 .suggestion {
-    /*height: 65px;*/
     width: 15vw;
     cursor: pointer;
     padding: 10px;
 }
 
 .btn--black__search {
-    /*grid-area: none;*/
     cursor: pointer;
     background: cornflowerblue !important;
     color: white;
@@ -195,7 +189,6 @@ a {
 
 .cart-select {
     background: cornflowerblue;
-    /*color: #20002c !important*/;
     font-weight: 600;
     position: relative;
     bottom: 10px;
@@ -505,7 +498,6 @@ label {
     margin-top: 10px;
     background: cornflowerblue !important;
     border-radius: 20px;
-    /*color: #20002c;*/
     padding: 10px;
     position: relative;
     font-weight: 600;
@@ -538,7 +530,6 @@ label {
 .fa, .close {
     cursor: pointer;
 }
-
 
 .fa-money {
     position: relative;
@@ -581,8 +572,6 @@ label {
 @media only screen and (max-width: 600px) {
     .homepage-bs {
         justify-content: center;
-        /*height: calc(100% + 10px);*/
-        height: 70vw;
     }
 
     .bs-menu--item {
@@ -594,7 +583,6 @@ label {
         position: absolute;
     }
 
-
     .responsive {
         display: flex;
         position: relative;
@@ -605,7 +593,6 @@ label {
         display: block;
         text-align: center;
     }
-
 
     .moving-obj {
         display: none;
@@ -664,6 +651,41 @@ label {
         margin-left: 20px;
         padding: 10px;
     }
+
+    .bs__img {
+        width: 80px;
+        height: 60px;
+    }
+
+    .dropdown, .drop {
+        display: none;
+    }
+
+    .account, .logout {
+        display: block;
+    }
+
+    .fa-user {
+        position: relative;
+        margin-left: -20px;
+    }
+
+    .fa-times {
+        display: block !important;
+        color: #20004e !important;
+        margin-top: 2px;
+    }
+
+    .fa-caret-down {
+        display: block !important;
+        margin-top: 2px;
+        color: #20004e !important;
+    }
+
+}
+
+.fa-times, .fa-caret-down {
+    display: none;
 }
 
 @media only screen and (max-width: 415px) {
@@ -690,6 +712,10 @@ label {
     .search__select--from, .search__select--to, .js-datepicker {
         width: 100%;
     }
+}
+
+.account, .logout {
+    display: none;
 }
 
 @media only screen and (min-width: 952px) {
@@ -907,7 +933,6 @@ footer {
     text-align: center;
     display: block;
 }
-
 
 .styled-table {
     border-collapse: collapse;
