@@ -5,16 +5,13 @@ namespace App\Controller;
 use App\Entity\CartTicket;
 use App\Entity\Order;
 use App\Form\OrderType;
-use App\Repository\CartTicketRepository;
 use App\Repository\OrderRepository;
-use App\Repository\TravelScheduleRepository;
 use App\Service\TotalPriceCalculator;
 use App\Session\Session;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -61,8 +58,10 @@ class OrderController extends AbstractController
         $user= $this->getUser();
 
         $cart = $this->session->getSessionCart();
+        if (!$cart) {
+            return $this->render('order/index.html.twig');
+        }
         $totalPrice = $totalPriceCalculator->calculateTotalPrice($this->session, $user);
-
 
         $cartQuantities = $this->managerRegistry->getRepository(CartTicket::class)->findOneBy(['user' => $user]);
 

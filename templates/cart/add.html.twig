@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <div class="sb--cart-content">
-        <h1 class="cart-title">Cart Information</h1>
+        <h1 class="cart-title">Outbound ticket info</h1>
             {% if travelSchedule is defined %}
                 <div class="sb--cart-row">
                     Depart from: {{ travelSchedule.departFrom }}
@@ -30,13 +31,11 @@
         </div>
         <div class="price-infos">
             <h4 class="pricing-title">Bus ticket pricing</h4>
-            Children: <span id="child-price">{{ travelSchedule.childPrice }}€</span> |
-            Students: <span id="student-price"> {{ travelSchedule.studentPrice }}€</span> |
-            Adults: <span id="adult-price"> {{ travelSchedule.adultPrice }}€</span> |
-            Pensioners: <span id="pensioner-price"> {{ travelSchedule.pensionerPrice }}€</span>
-           {# <div>
-                <span class="price-subtotals"></span>
-            </div>#}
+            Children: <span id="child-price">{{ travelSchedule.childPrice|number_format(2, '.', ',') }}€</span> |
+            Students: <span id="student-price"> {{ travelSchedule.studentPrice|number_format(2, '.', ',') }}€</span> |
+            Adults: <span id="adult-price"> {{ travelSchedule.adultPrice|number_format(2, '.', ',') }}€</span> |
+            Pensioners: <span id="pensioner-price"> {{ travelSchedule.pensionerPrice|number_format(2, '.', ',') }}€</span>
+
             <hr class="cart-break">
 
             <div>
@@ -48,6 +47,7 @@
         {% if form is defined %}
             <div class="container-fields-cart">
                 {{ form_start(form, {'attr': {'class': 'quantity-form', 'onsubmit': 'return checkOneFilled();'}}) }}
+                <small></small>
                 {{ form_row(form.childQuantity) }}
                 {{ form_row(form.studentQuantity) }}
                 {{ form_row(form.adultQuantity) }}
@@ -69,10 +69,10 @@
             input.addEventListener("change", function() {
 
                 let quantity = parseInt(input.value) || 0;
-                let childPrice = parseInt(document.getElementById("child-price").textContent);
-                let studentPrice = parseInt(document.getElementById("student-price").textContent);
-                let adultPrice = parseInt(document.getElementById("adult-price").textContent);
-                let pensionerPrice = parseInt(document.getElementById("pensioner-price").textContent);
+                let childPrice = parseInt(document.getElementById("child-price").textContent) || 0;
+                let studentPrice = parseInt(document.getElementById("student-price").textContent) || 0;
+                let adultPrice = parseInt(document.getElementById("adult-price").textContent) || 0;
+                let pensionerPrice = parseInt(document.getElementById("pensioner-price").textContent) || 0;
 
                 if (input.id === "cart_childQuantity") {
                     total = total - (previousValue * childPrice) + (quantity * childPrice);
@@ -89,31 +89,23 @@
 
                 previousValue = quantity;
 
-                document.querySelector('.price-totals').innerHTML = total + " €";
+                document.querySelector('.price-totals').innerHTML = formatTotalPrice(total) + " €";
             });
         });
 
         let form = document.getElementsByTagName('form')['cart'];
-        /**
-         * @param input
-         * @param message
-         * @desc error flag
-         */
+
         let showError = (input, message) => {
             const formField = form.parentElement;
             formField.classList.remove('success');
             formField.classList.add('error');
             const error = formField.querySelector('small');
             error.style.color = "red";
-            error.style.fontSize = "1.3rem";
+            error.style.fontSize = "14px";
             error.textContent = message;
         }
 
-        /**
-         * @param input
-         * @desc success flag
-         */
-        let showSuccess = (input) => {
+        let showSuccess = () => {
             const formField = form.parentElement;
             formField.classList.remove('error');
             formField.classList.add('success');
@@ -121,9 +113,6 @@
             error.textContent = '';
         }
 
-        /**
-         * @TODO minimum one field must be filled in!
-         */
         let checkOneFilled = () => {
             let quantityFields = document.querySelectorAll('.quantity');
             let valid = false;
@@ -139,6 +128,11 @@
                     }
                 }
             }
+        }
+
+        let formatTotalPrice = (price) => {
+
+            return (Math.round(price * 100) / 100).toFixed(2);
         }
     </script>
 
