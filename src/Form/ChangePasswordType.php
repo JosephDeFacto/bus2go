@@ -21,9 +21,11 @@ class ChangePasswordType extends AbstractType
                 'constraints' => [
                     new UserPassword(),
                 ],
+                'label' => 'Current password',
                 'mapped' => false,
                 'attr' => [
-                    'autocomplete' => 'off'
+                    'autocomplete' => 'off',
+                    'label' => 'label.current_password',
                 ],
             ])
             ->add('newPassword', RepeatedType::class, [
@@ -43,7 +45,7 @@ class ChangePasswordType extends AbstractType
                     'label' => 'New password',
                 ],
                 'second_options' => [
-                    'label' => 'Confirm password',
+                    'label' => 'New password',
                 ],
             ])
 
@@ -52,7 +54,7 @@ class ChangePasswordType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        /*$resolver->setDefaults([
+       /* $resolver->setDefaults([
             'data_class' => User::class,
         ]);*/
     }
